@@ -1,0 +1,20 @@
+<resources>
+
+    <!-- common -->
+    <dimen name="dp_thirty">30dp</dimen>
+    <dimen name="dp_twenty">20dp</dimen>
+    <dimen name="dp_fifteen">15dp</dimen>
+    <dimen name="dp_ten">10dp</dimen>
+    <dimen name="dp_five">5dp</dimen>
+    <dimen name="dp_three">3dp</dimen>
+    <dimen name="dp_two">2dp</dimen>
+    <dimen name="dp_one">1dp</dimen>
+
+    <!-- recycler divider -->
+    <dimen name="list_divider_thickness">1dp</dimen>
+
+    <!-- main button -->
+    <dimen name="main_button_width">140dp</dimen>
+    <dimen name="main_button_height">100dp</dimen>
+
+</resources>

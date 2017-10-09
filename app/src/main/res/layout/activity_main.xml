@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/blue_background"
+              android:orientation="vertical"
+              tools:background="@drawable/blue_background">
+
+    <include layout="@layout/layout_custom_title"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/main_button_recyclerview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/dp_twenty"
+                android:backgroundTint="@color/transparent"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="@dimen/dp_ten"
+                android:text="@string/main_status"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"/>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_ten"
+                android:background="@color/transparent"
+                android:paddingLeft="@dimen/dp_ten"
+                android:paddingRight="@dimen/dp_ten"
+                android:shrinkColumns="0"
+                android:stretchColumns="1">
+
+                <include layout="@layout/custom_horizontal_divider"/>
+
+                <TableRow
+                    android:background="@color/transparent"
+                    android:backgroundTint="@color/transparent">
+
+                    <TextView
+                        style="@style/MainStatusTextView"
+                        android:layout_width="wrap_content"
+                        android:background="@color/transparent"
+                        android:clickable="false"
+                        android:text="@string/main_status_param1"
+                        android:textColor="@android:color/white"/>
+
+                    <TextView
+                        android:id="@+id/main_status_param1"
+                        style="@style/MainStatusTextView"
+                        android:layout_width="wrap_content"
+                        android:background="@color/transparent"
+                        android:clickable="false"
+                        android:textColor="@color/colorPrimary"/>
+
+                </TableRow>
+
+                <include layout="@layout/custom_horizontal_divider"/>
+
+                <TableRow android:background="@color/transparent">
+
+                    <TextView
+                        style="@style/MainStatusTextView"
+                        android:layout_width="wrap_content"
+                        android:background="@color/transparent"
+                        android:clickable="false"
+                        android:text="@string/main_status_param2"
+                        android:textColor="@android:color/white"/>
+
+                    <TextView
+                        android:id="@+id/main_status_param2"
+                        style="@style/MainStatusTextView"
+                        android:layout_width="wrap_content"
+                        android:background="@color/transparent"
+                        android:clickable="false"
+                        android:textColor="@color/colorPrimary"/>
+
+                </TableRow>
+
+                <include layout="@layout/custom_horizontal_divider"/>
+
+                <TableRow android:background="@color/transparent">
+
+                    <TextView
+                        style="@style/MainStatusTextView"
+                        android:background="@color/transparent"
+                        android:text="@string/main_status_param5"
+                        android:textColor="@android:color/white"/>
+
+                    <TextView
+                        android:id="@+id/main_status_param5"
+                        style="@style/MainStatusTextView"
+                        android:layout_width="wrap_content"
+                        android:background="@color/transparent"
+                        android:clickable="false"
+                        android:textColor="@color/colorPrimary"/>
+                </TableRow>
+
+                <include layout="@layout/custom_horizontal_divider"/>
+
+                <TableRow android:background="@android:color/transparent">
+
+                    <TextView
+                        style="@style/MainStatusTextView"
+                        android:background="@color/transparent"
+                        android:text="@string/main_status_param6"
+                        android:textColor="@android:color/white"/>
+
+                    <TextView
+                        android:id="@+id/main_status_param6"
+                        style="@style/MainStatusTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/transparent"
+                        android:clickable="false"
+                        android:textColor="@color/colorPrimary"
+                        tools:text="0"/>
+                </TableRow>
+
+                <include layout="@layout/custom_horizontal_divider"/>
+
+                <TableRow android:background="@color/transparent">
+
+                    <TextView
+                        style="@style/MainStatusTextView"
+                        android:background="@color/transparent"
+                        android:text="@string/main_status_param7"
+                        android:textColor="@android:color/white"/>
+
+                    <TextView
+                        android:id="@+id/main_status_param7"
+                        style="@style/MainStatusTextView"
+                        android:layout_width="wrap_content"
+                        android:background="@color/transparent"
+                        android:clickable="false"
+                        android:textColor="@color/colorPrimary"/>
+
+                </TableRow>
+
+                <include layout="@layout/custom_horizontal_divider"/>
+
+            </TableLayout>
+
+
+            <TextView
+                style="@style/MainStatusTextView"
+                android:background="@color/transparent"
+                android:text="@string/main_status_param3"
+                android:visibility="gone"/>
+
+            <TextView
+                style="@style/MainStatusTextView"
+                android:background="@color/transparent"
+                android:text="@string/main_status_param4"
+                android:visibility="gone"/>
+
+            <TextView
+                style="@style/MainStatusTextView"
+                android:background="@color/transparent"
+                android:text="@string/main_status_param8"
+                android:visibility="gone"/>
+
+            <TextView
+                style="@style/MainStatusTextView"
+                android:background="@color/transparent"
+                android:text="@string/main_status_param8"
+                android:visibility="gone"/>
+
+            <TextView
+                style="@style/MainStatusTextView"
+                android:background="@color/transparent"
+                android:text="@string/main_status_param8"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

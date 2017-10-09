@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/blue_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_custom_title" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_ten"
+            android:paddingLeft="@dimen/dp_ten"
+            android:paddingRight="@dimen/dp_ten"
+            android:shrinkColumns="0"
+            android:stretchColumns="1">
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/vp_year"
+                    android:textColor="@android:color/white"/>
+
+                <EditText
+                    android:id="@+id/vp_year_edittext"
+                    style="@style/EdittableContentEditTextStyle"
+                    android:inputType="none"
+                    android:textColor="@color/colorPrimary"/>
+
+            </TableRow>
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/vp_brand"
+                    android:textColor="@android:color/white"/>
+
+                <EditText
+                    android:id="@+id/vp_brand_edittext"
+                    style="@style/EdittableContentEditTextStyle"
+                    android:textColor="@color/colorPrimary"/>
+
+            </TableRow>
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/vp_model"
+                    android:textColor="@android:color/white"/>
+
+                <EditText
+                    android:id="@+id/vp_model_edittext"
+                    style="@style/EdittableContentEditTextStyle"
+                    android:textColor="@color/colorPrimary"/>
+
+            </TableRow>
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/vp_color"
+                    android:textColor="@android:color/white"/>
+
+                <EditText
+                    android:id="@+id/vp_color_edittext"
+                    style="@style/EdittableContentEditTextStyle"
+                    android:textColor="@color/colorPrimary"/>
+
+            </TableRow>
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/vp_mileage"
+                    android:textColor="@android:color/white"/>
+
+                <EditText
+                    android:id="@+id/vp_mileage_edittext"
+                    style="@style/EdittableContentEditTextStyle"
+                    android:textColor="@color/colorPrimary"/>
+
+            </TableRow>
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/vp_vin"
+                    android:textColor="@android:color/white"/>
+
+                <EditText
+                    android:id="@+id/vp_vin_edittext"
+                    style="@style/EdittableContentEditTextStyle"
+                    android:textColor="@color/colorPrimary"/>
+
+            </TableRow>
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+
+        </TableLayout>
+
+        <include layout="@layout/layout_custom_bottom_buttons" />
+
+    </LinearLayout>
+</ScrollView>

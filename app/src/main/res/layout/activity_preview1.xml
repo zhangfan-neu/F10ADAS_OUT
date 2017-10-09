@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <android.opengl.GLSurfaceView
+        android:id="@+id/camera_glsurface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <com.neusoft.oddc.ui.CustomTrailView
+        android:id="@+id/custom_trail_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent" />
+
+    <View
+        android:id="@+id/camera_loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/preview_activity_back_btn"
+        style="@style/CustomEditModeBottomButtonStyle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/title_main" />
+
+</RelativeLayout>

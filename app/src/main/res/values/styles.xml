@@ -1,0 +1,165 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- common text appearance -->
+    <style name="Title.Large.TextAppearance" parent="android:TextAppearance">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Title.Small.TextAppearance" parent="android:TextAppearance">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Primary.Normal.TextAppearance" parent="android:TextAppearance">
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Primary.Small.TextAppearance" parent="android:TextAppearance">
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Secondary.Large.TextAppearance" parent="android:TextAppearance">
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Secondary.Normal.TextAppearance" parent="android:TextAppearance">
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Secondary.Small.TextAppearance" parent="android:TextAppearance">
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!-- common textview -->
+    <style name="CommonTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="CommonSingleLineTextView" parent="CommonTextView">
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="CommonWhiteTextView" parent="CommonTextView">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="CommonBlackTextView" parent="CommonTextView">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="CommonSingleLineWhiteTextView" parent="CommonSingleLineTextView">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="CommonSingleLineBlackTextView" parent="CommonSingleLineTextView">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <!-- Main status TextView style -->
+    <style name="MainStatusTextView" parent="CommonBlackTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:paddingTop">@dimen/dp_ten</item>
+        <item name="android:paddingBottom">@dimen/dp_ten</item>
+        <item name="android:paddingLeft">@dimen/dp_ten</item>
+        <item name="android:paddingRight">@dimen/dp_ten</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/material_layout_ripple_background</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <!-- Custom Title Button Style -->
+    <style name="CustomTitleButtonStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">@dimen/dp_ten</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:background">@drawable/material_button_ripple_background</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- Custom Title Button Style -->
+    <style name="CustomEditModeBottomButtonStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">@dimen/dp_ten</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:background">@drawable/material_button_ripple_background</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- Edittable UI Style -->
+    <style name="EdittableTitleTextViewStyle" parent="CommonSingleLineTextView">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:padding">@dimen/dp_ten</item>
+    </style>
+
+    <style name="EdittableContentEditTextStyle" parent="CommonSingleLineTextView">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:gravity">right</item>
+        <item name="android:enabled">false</item>
+        <item name="android:layout_marginLeft">@dimen/dp_ten</item>
+    </style>
+
+    <!-- Real time data -->
+    <style name="RealTimeDataTextView" parent="CommonWhiteTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/dp_ten</item>
+        <item name="android:paddingBottom">@dimen/dp_ten</item>
+        <item name="android:paddingLeft">@dimen/dp_ten</item>
+        <item name="android:paddingRight">@dimen/dp_ten</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@null</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <!-- Continuous upload -->
+    <style name="ContinuousUploadTextViewStyle" parent="CommonSingleLineBlackTextView">
+        <item name="android:padding">@dimen/dp_five</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- Loading Dialog Style -->
+    <style name="loading_dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimAmount">0.5</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+
+</resources>

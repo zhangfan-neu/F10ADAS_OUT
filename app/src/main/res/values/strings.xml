@@ -1,0 +1,171 @@
+<resources>
+
+    <string name="app_name">ODDC</string>
+
+    <!-- common -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">Ok</string>
+    <string name="done">Done</string>
+    <string name="back">Back</string>
+    <string name="cancel">Cancel</string>
+    <string name="tbd">To be done ......</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="mm">mm</string>
+    <string name="debug">Debug</string>
+    <string name="startStop">Start/Stop</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="loading">Loading...</string>
+    <string name="vin">1B3LC46R38N557181</string>
+
+    <!-- titles -->
+    <string name="title_main">Main</string>
+    <string name="title_setting">Setting</string>
+    <string name="title_dvr_adas">DVR/ADAS</string>
+    <string name="title_oddc_agent">ODDC agent</string>
+    <string name="title_continuous_upload">Continuous upload</string>
+    <string name="title_event_upload">Event upload</string>
+    <string name="title_on_demand_upload">On demand upload</string>
+    <string name="title_property">Property</string>
+    <string name="title_dvr_playback">DVR Playback</string>
+
+    <!-- Main -->
+    <string name="main_status">Status</string>
+    <string name="main_button_data_collection">Data\ncollection</string>
+    <string name="main_button_setting">Setting</string>
+    <string name="main_button_oddc_agent">ODDC\nagent</string>
+    <string name="main_button_schedules">Schedules</string>
+    <string name="main_button_dvr_playback">DVR\nPlayback</string>
+    <string name="main_button_other">Other app</string>
+    <string name="main_camera_permission_hint">All permissions need to be granted!</string>
+    <string name="main_camera_no_space">No enough space!</string>
+    <string name="main_adas_key_ng">ADAS key is not set, please set ADAS key!</string>
+    <string name="main_adas_init_error">Failed to initialise ADAS , please check ADAS key or other configuration!</string>
+    <!-- Main status -->
+    <string name="main_status_param1">Username</string>
+    <string name="main_status_param2">Current vehicle</string>
+    <string name="main_status_param3">Total time used</string>
+    <string name="main_status_param4">Total distance driven</string>
+    <string name="main_status_param5">Number of events</string>
+    <string name="main_status_param6">Number of on\ndemand updates</string>
+    <string name="main_status_param7">Server connection</string>
+    <string name="main_status_param8">Others</string>
+
+    <!-- Setting group title -->
+    <string name="setting_group_item1">User profile</string>
+    <string name="setting_group_item2">Vehicle profile</string>
+    <string name="setting_group_item3">ADAS calibration</string>
+    <string name="setting_group_item4">ADAS parameters</string>
+    <string name="setting_group_item5">DVR Setting</string>
+
+    <!-- Oddc agent group title -->
+    <string name="oddc_agent_item1">Continuous upload log</string>
+    <string name="oddc_agent_item2">Event upload log</string>
+    <string name="oddc_agent_item3">On demand upload log</string>
+    <string name="oddc_agent_item4">Data collection property</string>
+
+    <!-- User Profile -->
+    <string name="up_user_name">User Name</string>
+    <string name="up_first_name">First Name</string>
+    <string name="up_last_name">Last Name</string>
+    <string name="up_phone_no">Phone No.</string>
+    <string name="up_email">Email</string>
+    <string name="up_driver_license_no">Driver\'s\nLicense No.</string>
+
+    <!-- Vehicle Profile -->
+    <string name="vp_year">Year</string>
+    <string name="vp_brand">Brand</string>
+    <string name="vp_model">Model</string>
+    <string name="vp_color">Color</string>
+    <string name="vp_mileage">Mileage</string>
+    <string name="vp_vin">VIN</string>
+
+    <!-- ADAS Parameters -->
+    <string name="ap_ld_sensor_sensitivity">LD Sensor Sensitivity</string>
+    <string name="ap_fwd_col_sensitivity">FWD Col. Sensitivity</string>
+    <string name="ap_vehicle_length">Vehicle Length</string>
+    <string name="ap_vehicle_width">Vehicle Width</string>
+    <string name="ap_vehicle_height">Vehicle Height</string>
+    <string name="ap_camera_fov">Camera FOV</string>
+    <string name="ap_camera_ht_from_ground">Camera Ht. From Ground</string>
+    <string name="ap_camera_offset_from_center">Camera Offset From Center</string>
+    <string name="ap_camera_dist_from_front">Camera Dist. From Front</string>
+
+    <string name="ap_gps_frequency">GPS Frequency</string>
+    <string name="ap_accelerometer_sensitivity">Accelerometer Sensitivity</string>
+    <string name="ap_wheelbase">Wheelbase</string>
+    <string name="ap_curb_weight">Curb Weight</string>
+
+
+    <!-- ADAS Calibration -->
+    <string name="ac_camera">Camera</string>
+    <string name="ac_gps">GPS</string>
+    <string name="ac_g_sensor">G Sensor</string>
+    <string name="ac_ld_sensor">LD Sensor</string>
+    <string name="ac_fc_sensor">FC Sensor</string>
+    <string name="ac_other_component">Other Component</string>
+
+    <!-- DVR Settings -->
+    <string name="ds_movie_clip_path">Movie Clip Path</string>
+    <string name="ds_movie_clip_path_default">/sdcard/oddc/</string>
+
+    <!-- Real time data -->
+    <string name="real_time_data_param1">Date</string>
+    <string name="real_time_data_param2">Time</string>
+    <string name="real_time_data_param3">Latitude</string>
+    <string name="real_time_data_param4">Longitude</string>
+    <string name="real_time_data_param5">Speed</string>
+    <string name="real_time_data_param6">accelerationX</string>
+    <string name="real_time_data_param7">accelerationY</string>
+    <string name="real_time_data_param8">accelerationZ</string>
+    <string name="real_time_data_param9">REC.time</string>
+    <string name="real_time_data_param10">Vehicle distance</string>
+    <string name="real_time_data_param11">Lane distance\n(R)</string>
+    <string name="real_time_data_param12">Lane distance\n(L)</string>
+    <string name="real_time_data_param13">Events</string>
+
+    <!-- Real time continuous data -->
+    <string name="real_time_continuous_data_param1">Date</string>
+    <string name="real_time_continuous_data_param2">Time</string>
+    <string name="real_time_continuous_data_param3">Latitude</string>
+    <string name="real_time_continuous_data_param4">Longitude</string>
+    <string name="real_time_continuous_data_param5">Speed</string>
+    <string name="real_time_continuous_data_param6">accelerationX</string>
+    <string name="real_time_continuous_data_param7">accelerationY</string>
+    <string name="real_time_continuous_data_param8">accelerationZ</string>
+    <string name="real_time_continuous_data_param9">REC.time</string>
+    <string name="real_time_continuous_data_param10">Vehicle distance</string>
+    <string name="real_time_continuous_data_param11">Lane distance\n(R)</string>
+    <string name="real_time_continuous_data_param12">Lane distance\n(L)</string>
+    <string name="real_time_continuous_data_param13">Events</string>
+
+    <!-- OA Continuous Upload Log -->
+    <string name="oa_continuous_upload_log_data_package_type_1">Continuous</string>
+    <string name="oa_continuous_upload_log_data_package_type_2">Event</string>
+    <string name="oa_continuous_upload_log_data_package_type_3">Selective</string>
+    <string name="oa_continuous_upload_log_data_loading">Loading Data, please wait!</string>
+
+    <!-- ODDC String -->
+    <string name="base_url">http://52.52.124.97:8080/ODDCServer/</string>
+    <string name="database_name">ODDC</string>
+    <integer name="database_version">1</integer>
+
+    <!-- DVR Playback -->
+    <string name="dvr_playback_events_title">Events:</string>
+    <string name="dvr_playback_event1">Fwd Vehicle</string>
+    <string name="dvr_playback_event2">Lane Departure(L)</string>
+    <string name="dvr_playback_event3">Lane Departure(R)</string>
+    <string name="dvr_playback_event4">Sudden braking</string>
+    <string name="dvr_playback_event5">Cut in</string>
+
+    <!-- Error Messages -->
+    <string name="error_message1">Unable to connect to server(Download/Upload)</string>
+    <string name="error_message2">Insufficient Storage Space</string>
+    <string name="error_message3">Unable to log in(Authenticate)</string>
+
+    <!-- -->
+    <string name="str"></string>
+
+</resources>

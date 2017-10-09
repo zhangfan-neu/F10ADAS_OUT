@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tool="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/colorPrimary"
+              android:clickable="true"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dvr_playback_group_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp_ten"
+        android:paddingLeft="@dimen/dp_thirty"
+        android:paddingTop="@dimen/dp_ten"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        tool:text="title"/>
+
+</LinearLayout>

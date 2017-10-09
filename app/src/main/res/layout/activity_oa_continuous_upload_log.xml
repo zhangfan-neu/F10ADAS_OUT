@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/blue_background"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_custom_title" />
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/continuous_log_type_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:dropDownWidth="match_parent"
+        android:gravity="fill"
+        android:overlapAnchor="false"
+        android:spinnerMode="dialog" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/oa_continuous_upload_log_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+            android:background="@drawable/blue_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_custom_title" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_ten"
+            android:paddingLeft="@dimen/dp_ten"
+            android:paddingRight="@dimen/dp_ten"
+            android:shrinkColumns="0"
+            android:stretchColumns="1">
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/ap_ld_sensor_sensitivity"
+                    android:textColor="@android:color/white"/>
+
+                <Spinner
+                    android:id="@+id/ap_ld_sensor_sensitivity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:overlapAnchor="false"
+                    android:spinnerMode="dropdown" />
+
+            </TableRow>
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/ap_fwd_col_sensitivity"
+                    android:textColor="@android:color/white"/>
+
+                <Spinner
+                    android:id="@+id/ap_fwd_col_sensitivity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:overlapAnchor="false"
+                    android:spinnerMode="dropdown" />
+
+            </TableRow>
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/ap_vehicle_length"
+                    android:textColor="@android:color/white"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/ap_vehicle_length_edittext"
+                        style="@style/EdittableContentEditTextStyle"
+                        android:layout_weight="1"
+                        android:inputType="number"
+                        android:textColor="@color/colorPrimary"/>
+
+                    <TextView
+                        style="@style/EdittableTitleTextViewStyle"
+                        android:text="@string/mm"
+                        android:textColor="@android:color/white"/>
+
+                </LinearLayout>
+
+
+            </TableRow>
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/ap_vehicle_width"
+                    android:textColor="@android:color/white"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/ap_vehicle_width_edittext"
+                        style="@style/EdittableContentEditTextStyle"
+                        android:layout_weight="1"
+                        android:inputType="number"
+                        android:textColor="@color/colorPrimary"/>
+
+                    <TextView
+                        style="@style/EdittableTitleTextViewStyle"
+                        android:text="@string/mm"
+                        android:textColor="@android:color/white"/>
+
+                </LinearLayout>
+
+
+            </TableRow>
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/ap_vehicle_height"
+                    android:textColor="@android:color/white"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/ap_vehicle_height_edittext"
+                        style="@style/EdittableContentEditTextStyle"
+                        android:layout_weight="1"
+                        android:inputType="number"
+                        android:textColor="@color/colorPrimary"/>
+
+                    <TextView
+                        style="@style/EdittableTitleTextViewStyle"
+                        android:text="@string/mm"
+                        android:textColor="@android:color/white"/>
+
+                </LinearLayout>
+
+            </TableRow>
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/ap_camera_ht_from_ground"
+                    android:textColor="@android:color/white"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/ap_camera_ht_from_ground_edittext"
+                        style="@style/EdittableContentEditTextStyle"
+                        android:layout_weight="1"
+                        android:inputType="number"
+                        android:textColor="@color/colorPrimary"/>
+
+                    <TextView
+                        style="@style/EdittableTitleTextViewStyle"
+                        android:text="@string/mm"
+                        android:textColor="@android:color/white"/>
+
+                </LinearLayout>
+
+
+            </TableRow>
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/ap_camera_offset_from_center"
+                    android:textColor="@android:color/white"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/ap_camera_offset_from_center_edittext"
+                        style="@style/EdittableContentEditTextStyle"
+                        android:layout_weight="1"
+                        android:inputType="number"
+                        android:textColor="@color/colorPrimary"/>
+
+                    <TextView
+                        style="@style/EdittableTitleTextViewStyle"
+                        android:text="@string/mm"
+                        android:textColor="@android:color/white"/>
+
+                </LinearLayout>
+
+
+            </TableRow>
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/ap_camera_dist_from_front"
+                    android:textColor="@android:color/white"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/ap_camera_dist_from_front_edittext"
+                        style="@style/EdittableContentEditTextStyle"
+                        android:layout_weight="1"
+                        android:inputType="number"
+                        android:textColor="@color/colorPrimary"/>
+
+                    <TextView
+                        style="@style/EdittableTitleTextViewStyle"
+                        android:text="@string/mm"
+                        android:textColor="@android:color/white"/>
+
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow android:visibility="gone">
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/ap_wheelbase" />
+
+                <EditText
+                    android:id="@+id/ap_wheel_base_edittext"
+                    style="@style/EdittableContentEditTextStyle"
+                    android:textColor="@color/colorPrimary"/>
+
+            </TableRow>
+
+            <TableRow android:visibility="gone">
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/ap_curb_weight"
+                    android:textColor="@android:color/white"/>
+
+                <EditText
+                    android:id="@+id/ap_curb_weight_edittext"
+                    style="@style/EdittableContentEditTextStyle"
+                    android:textColor="@color/colorPrimary"/>
+
+            </TableRow>
+
+
+            <TableRow android:visibility="gone">
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/ap_gps_frequency"
+                    android:textColor="@android:color/white"/>
+
+                <EditText
+                    android:id="@+id/ap_gps_frequency_edittext"
+                    style="@style/EdittableContentEditTextStyle"
+                    android:inputType="none"
+                    android:textColor="@color/colorPrimary"/>
+
+            </TableRow>
+
+            <TableRow android:visibility="gone">
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/ap_accelerometer_sensitivity"
+                    android:textColor="@android:color/white"/>
+
+                <EditText
+                    android:id="@+id/ap_accelerometer_sensitivity_edittext"
+                    style="@style/EdittableContentEditTextStyle"
+                    android:textColor="@color/colorPrimary"/>
+
+            </TableRow>
+
+            <TableRow android:visibility="gone">
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/ap_camera_fov"
+                    android:textColor="@android:color/white"/>
+
+                <EditText
+                    android:id="@+id/ap_camera_fov_edittext"
+                    style="@style/EdittableContentEditTextStyle"
+                    android:textColor="@color/colorPrimary"/>
+
+            </TableRow>
+
+
+        </TableLayout>
+
+        <include layout="@layout/layout_custom_bottom_buttons" />
+
+    </LinearLayout>
+</ScrollView>

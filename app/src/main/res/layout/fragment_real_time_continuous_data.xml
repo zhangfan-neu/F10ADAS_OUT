@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/blue_background"
+    android:paddingLeft="@dimen/dp_twenty"
+    android:paddingRight="@dimen/dp_twenty">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+        <!--android:shrinkColumns="0"-->
+        <!--android:stretchColumns="1"-->
+
+        <include layout="@layout/custom_horizontal_divider" />
+
+        <TableRow android:background="@android:color/transparent">
+
+            <TextView
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:text="@string/real_time_continuous_data_param1"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/real_time_continuous_data_param1"
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false" />
+
+        </TableRow>
+
+        <include layout="@layout/custom_horizontal_divider" />
+
+        <TableRow android:background="@android:color/transparent">
+
+            <TextView
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:text="@string/real_time_continuous_data_param2"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/real_time_continuous_data_param2"
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false" />
+
+        </TableRow>
+
+        <include layout="@layout/custom_horizontal_divider" />
+
+        <TableRow android:background="@android:color/transparent">
+
+            <TextView
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:text="@string/real_time_continuous_data_param3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/real_time_continuous_data_param3"
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false" />
+
+        </TableRow>
+
+        <include layout="@layout/custom_horizontal_divider" />
+
+        <TableRow android:background="@android:color/transparent">
+
+            <TextView
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:text="@string/real_time_continuous_data_param4"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/real_time_continuous_data_param4"
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false" />
+
+        </TableRow>
+
+        <include layout="@layout/custom_horizontal_divider" />
+
+        <TableRow android:background="@android:color/transparent">
+
+            <TextView
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:text="@string/real_time_continuous_data_param5"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/real_time_continuous_data_param5"
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false" />
+
+        </TableRow>
+
+        <include layout="@layout/custom_horizontal_divider" />
+
+        <TableRow android:background="@android:color/transparent">
+
+            <TextView
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:text="@string/real_time_continuous_data_param6"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/real_time_continuous_data_param6"
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false" />
+
+        </TableRow>
+
+        <include layout="@layout/custom_horizontal_divider" />
+
+        <TableRow android:background="@android:color/transparent">
+
+            <TextView
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:text="@string/real_time_continuous_data_param7"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/real_time_continuous_data_param7"
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false" />
+
+        </TableRow>
+
+        <include layout="@layout/custom_horizontal_divider" />
+
+        <TableRow android:background="@android:color/transparent">
+
+            <TextView
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:text="@string/real_time_continuous_data_param8"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/real_time_continuous_data_param8"
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false" />
+
+        </TableRow>
+
+        <include layout="@layout/custom_horizontal_divider" />
+
+        <TableRow android:background="@android:color/transparent">
+
+            <TextView
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:text="@string/real_time_continuous_data_param9"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/real_time_continuous_data_param9"
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="false" />
+
+        </TableRow>
+
+        <include layout="@layout/custom_horizontal_divider" />
+
+        <TableRow android:background="@android:color/transparent">
+
+            <TextView
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:text="@string/real_time_continuous_data_param10"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/real_time_continuous_data_param10"
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="false" />
+
+        </TableRow>
+
+        <include layout="@layout/custom_horizontal_divider" />
+
+        <TableRow android:background="@android:color/transparent">
+
+            <TextView
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:text="@string/real_time_continuous_data_param11"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/real_time_continuous_data_param11"
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false" />
+
+        </TableRow>
+
+        <include layout="@layout/custom_horizontal_divider" />
+
+        <TableRow android:background="@android:color/transparent">
+
+            <TextView
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:text="@string/real_time_continuous_data_param12"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/real_time_continuous_data_param12"
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false" />
+
+        </TableRow>
+
+        <include layout="@layout/custom_horizontal_divider" />
+
+        <TableRow android:background="@android:color/transparent">
+
+            <TextView
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false"
+                android:text="@string/real_time_continuous_data_param13"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/real_time_continuous_data_param13"
+                style="@style/RealTimeDataTextView"
+                android:layout_width="wrap_content"
+                android:clickable="false" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</ScrollView>

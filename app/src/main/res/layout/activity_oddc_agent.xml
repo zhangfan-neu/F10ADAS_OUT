@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/blue_background"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_custom_title" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/oddc_agent_expandable_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/send_btn"
+        style="@style/CustomEditModeBottomButtonStyle"
+        android:layout_width="181dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/custom_title_layout_button"
+        android:text="Send Cont. Data"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:visibility="gone"/>
+
+</LinearLayout>

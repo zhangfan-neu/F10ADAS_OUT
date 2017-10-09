@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tool="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/continuous_data_list_item_bg"
+              android:clickable="true"
+              android:orientation="horizontal"
+              android:paddingBottom="@dimen/dp_ten"
+              android:paddingLeft="@dimen/dp_twenty"
+              android:paddingRight="@dimen/dp_twenty"
+              android:paddingTop="@dimen/dp_ten">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical|left"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/oa_continuous_upload_log_child_textview1"
+            style="@style/ContinuousUploadTextViewStyle"
+            android:textColor="@android:color/white"
+            tool:text="sessionId"/>
+
+        <TextView
+            android:id="@+id/oa_continuous_upload_log_child_textview2"
+            style="@style/ContinuousUploadTextViewStyle"
+            android:textColor="@android:color/white"
+            tool:text="time"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/oa_continuous_upload_log_child_textview3"
+            style="@style/ContinuousUploadTextViewStyle"
+            android:textColor="@android:color/white"
+            tool:text="Event Type"/>
+
+        <TextView
+            android:id="@+id/oa_continuous_upload_log_child_textview4"
+            style="@style/ContinuousUploadTextViewStyle"
+            android:textColor="@android:color/white"
+            tool:text="Mu:T Del:F DU:F"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.1"
+        android:gravity="center_vertical|right"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/oa_continuous_upload_log_child_textview5"
+            style="@style/ContinuousUploadTextViewStyle"
+            android:textColor="@android:color/white"
+            tool:text="10:23 PM"/>
+
+        <TextView
+            android:id="@+id/oa_continuous_upload_log_child_textview6"
+            style="@style/ContinuousUploadTextViewStyle"
+            android:textColor="@android:color/white"
+            android:visibility="invisible"
+            tool:text=""/>
+    </LinearLayout>
+
+
+</LinearLayout>
