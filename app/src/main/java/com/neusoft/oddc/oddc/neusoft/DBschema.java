@@ -49,6 +49,7 @@ public class DBschema implements BaseColumns {
     public static final String M_D = "MediaDeleted";
     public static final String M_U = "MediaUploaded";
     public static final String D_U = "DataUploaded";
+    public static final String D_TS = "timestamp";
 }
 
 

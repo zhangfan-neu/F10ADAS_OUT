@@ -237,6 +237,8 @@ public class NeusoftHandler implements NeuSoftInterface {
         // NeuSoft prepares data for transfer somewhere in their code
         ContinuousData cd = new ContinuousData();
 
+        cd.timestamp = dateTime;
+
         // Add TimeZone offset
         cd.tzOffset =  TimeZone.getDefault().getRawOffset();
 
@@ -244,14 +246,14 @@ public class NeusoftHandler implements NeuSoftInterface {
         cd.vehicleID = ADASHelper.getvin(); // VIN
         //cd.timezone = 0;
 
-        cd.gpsTimeStamp = dateTime; // from OS not GPS
+//        cd.gpsTimeStamp = dateTime; // from OS not GPS
         Location location = ADASHelper.getCoarseLocation();
         if (null != location) {
             double mLongitude = location.getLongitude();
             double mLatitude = location.getLatitude();
             cd.longitude = mLongitude;
             cd.latitude = mLatitude;
-            cd.gpsTimeStamp = dateTime;
+//            cd.gpsTimeStamp = dateTime;
         } else {
             cd.longitude = 0;
             cd.latitude = 0;
@@ -260,16 +262,16 @@ public class NeusoftHandler implements NeuSoftInterface {
         cd.speed = ADASHelper.getspd();
         cd.speedDetectionType = 0; // always be ZERO
 
-        cd.accelerationTimeStamp = dateTime; /* yyyy-MM-dd HH:mm:ss.SSS for SQLite */
+//        cd.accelerationTimeStamp = dateTime; /* yyyy-MM-dd HH:mm:ss.SSS for SQLite */
         cd.accelerationX = accelerationX;
         cd.accelerationY = accelerationY;
         cd.accelerationZ = accelerationZ;
 
-        cd.gShockTimeStamp = dateTime;
+//        cd.gShockTimeStamp = dateTime;
 //        cd.gShockEvent = false;
         //cd.gShockEventThreshold = getRandomFloat(); /* might be a parameter from FLA */
 
-        cd.fcwTimeStamp = dateTime;
+//        cd.fcwTimeStamp = dateTime;
 //        cd.fcwExistFV = false;
         //cd.fcwTimeToCollision = 0;
 //        cd.fcwDistanceToFV = 0;
@@ -278,7 +280,7 @@ public class NeusoftHandler implements NeuSoftInterface {
 //        cd.fcwEvent = false;
 //        cd.fcwEventThreshold = 0;
 
-        cd.ldwTimeStamp = dateTime;
+//        cd.ldwTimeStamp = dateTime;
 //        cd.ldwDistanceToLeftLane = 0;
 //        cd.ldwDistanceToRightLane = 0;
 //        cd.ldwEvent = 0;

@@ -8,8 +8,8 @@ public class Constants
 {
     public static class ODDCApp
     {
-//        public static final String BASE_URL = "http://52.52.124.97:8080//ODDCServer/";
-        public static final String BASE_URL = "http://52.52.124.97:8080//";
+        public static final String BASE_URL = "http://52.52.124.97:8080//ODDCServer/";
+//        public static final String BASE_URL = "http://52.52.124.97:8080//";
         public static final String VIN = "1B3LC46R38N557181";
 //        public static final String BASE_URL = "http://10.0.2.2:8080//";
         public static final int PING_TIME = 10000;   //10 seconds

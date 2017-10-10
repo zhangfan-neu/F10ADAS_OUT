@@ -267,7 +267,7 @@ public class DataConverter {
             entityContinousChild.setMediaDeleted(item.mediaDeleted);
             entityContinousChild.setDataUploaded(item.dataUploaded);
             // TODO format timestamp
-            entityContinousChild.setTime(item.gpsTimeStamp.toString());
+//            entityContinousChild.setTime(item.gpsTimeStamp.toString());
         }
         return entityContinousChildren;
     }

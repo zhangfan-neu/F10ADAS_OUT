@@ -217,11 +217,11 @@ public class ODDCclass implements ODDCinterface {
             Log.e("onContinuousData ", "insertSQLite ERROR: " + e);
         }
 
-        //NOTE: Removed for testing purposes.  - RMS
         if (data.isEvent()) {
-            SendToFLA fla = new SendToFLA(DataPackageType.EVENT,data.mediaURI);
-            fla.start();
-            return true;
+            //NOTE: Removed for testing purposes.  - RMS
+//            SendToFLA fla = new SendToFLA(DataPackageType.EVENT,data.mediaURI);
+//            fla.start();
+//            return true;
         }
 
         if (loopCount > Constants.ODDCApp.FRAMES_PER_MIN){
@@ -275,12 +275,13 @@ public class ODDCclass implements ODDCinterface {
                     DBschema.LDW_TS   + " TIMESTAMP," +
                     DBschema.LDW_DLL  + " FLOAT(5,2)," +
                     DBschema.LDW_DRL  + " FLOAT(5,2)," +
-                    DBschema.LDW_E    + " INT," +
+                    DBschema.LDW_E    + " BOOLEAN," +
 
                     DBschema.M_URI    + " VARCHAR(32)," +
                     DBschema.M_U      + " BOOLEAN," +
                     DBschema.M_D      + " BOOLEAN," +
-                    DBschema.D_U      + " BOOLEAN )";
+                    DBschema.D_U      + " BOOLEAN," +
+                    DBschema.D_TS     + " TIMESTAMP)";
 
     private static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + DBschema.TABLE_NAME;
 
@@ -295,29 +296,32 @@ public class ODDCclass implements ODDCinterface {
         values.put(DBschema.ID,"");
 //        values.put(DBschema.ID,data.id.toString());
         data.sessionID = ODDCclass.session;
-        values.put(DBschema.SID,data.sessionID.toString());
+        if(data.sessionID != null)
+        {
+            values.put(DBschema.SID,data.sessionID.toString());
+        }
         values.put(DBschema.VIN, data.vehicleID);
         values.put(DBschema.DID,data.driverID);
         values.put(DBschema.MID,data.submitterID);
         //values.put(DBschema.TZ, null); /* milliseconds */
 
-        values.put(DBschema.GPS_TS, String.valueOf(data.gpsTimeStamp));
+//        values.put(DBschema.GPS_TS, String.valueOf(data.gpsTimeStamp));
         values.put(DBschema.GPS_LON, data.longitude);
         values.put(DBschema.GPS_LAT, data.latitude);
 
         values.put(DBschema.SPEED, data.speed);
         values.put(DBschema.SPEED_DT, data.speedDetectionType);
 
-        values.put(DBschema.ACC_TS, String.valueOf(data.accelerationTimeStamp));
+//        values.put(DBschema.ACC_TS, String.valueOf(data.accelerationTimeStamp));
         values.put(DBschema.ACC_X, data.accelerationX);
         values.put(DBschema.ACC_Y, data.accelerationY);
         values.put(DBschema.ACC_Z, data.accelerationZ);
 
-        values.put(DBschema.GS_TS, String.valueOf(data.gShockTimeStamp));
+//        values.put(DBschema.GS_TS, String.valueOf(data.gShockTimeStamp));
         values.put(DBschema.GS_E, data.gShockEvent);
         values.put(DBschema.GS_ET, data.gShockEventThreshold);
 
-        values.put(DBschema.FCW_TS, String.valueOf(data.fcwTimeStamp));
+//        values.put(DBschema.FCW_TS, String.valueOf(data.fcwTimeStamp));
         values.put(DBschema.FCW_EFV, data.fcwExistFV);
         values.put(DBschema.FCW_CI, data.fcwCutIn);
         //values.put(DBschema.FCW_TTC, data.fcwTimeToCollision);
@@ -326,7 +330,7 @@ public class ODDCclass implements ODDCinterface {
         values.put(DBschema.FCW_E, data.fcwEvent);
         values.put(DBschema.FCW_ET, data.fcwEventThreshold);
 
-        values.put(DBschema.LDW_TS, String.valueOf(data.ldwTimeStamp));
+//        values.put(DBschema.LDW_TS, String.valueOf(data.ldwTimeStamp));
         values.put(DBschema.LDW_DLL, data.ldwDistanceToLeftLane);
         values.put(DBschema.LDW_DRL, data.ldwDistanceToRightLane);
         values.put(DBschema.LDW_E, data.ldwEvent);
@@ -335,6 +339,7 @@ public class ODDCclass implements ODDCinterface {
         values.put(DBschema.M_D, false);
         values.put(DBschema.M_U, false);
         values.put(DBschema.D_U, false);
+        values.put(DBschema.D_TS, data.timestamp);
 
         long rid = db.insert(DBschema.TABLE_NAME, null, values);
         Log.d("ODDC INSERTSQL","mediaURI="+values.get(DBschema.M_URI));
@@ -438,7 +443,8 @@ public class ODDCclass implements ODDCinterface {
                     DBschema.M_URI,
                     DBschema.M_D,
                     DBschema.M_U,
-                    DBschema.D_U};
+                    DBschema.D_U,
+                    DBschema.D_TS};
             if (ptype == DataPackageType.CONTINUOUS) {
                 //TODO:
                 selection = new String("rowid in ( select rowid from oddc where rowid % ? = 0 and DataUploaded = 0 limit ? )");
@@ -477,15 +483,15 @@ public class ODDCclass implements ODDCinterface {
                     cd.submitterID = c.getString(4);
                     cd.tzOffset = c.getInt(5);
 
-                    cd.gpsTimeStamp = null;
+//                    cd.gpsTimeStamp = null;
 //                    cd.gpsTimeStamp = c.getString(6);
                     cd.longitude = c.getFloat(7);
                     cd.latitude = c.getFloat(8);
                     cd.speed = c.getFloat(9);
                     cd.speedDetectionType = c.getInt(10);
 
-                    cd.accelerationTimeStamp = null;
-                    cd.accelerationTimeStamp = c.getString(11);
+//                    cd.accelerationTimeStamp = null;
+//                    cd.accelerationTimeStamp = c.getString(11);
                     cd.accelerationX = c.getFloat(12);
                     cd.accelerationY = c.getFloat(13);
                     cd.accelerationZ = c.getFloat(14);
@@ -504,12 +510,12 @@ public class ODDCclass implements ODDCinterface {
                         //cd.gShockEvent = true;
                     }
 
-                    cd.gShockTimeStamp = null;
+//                    cd.gShockTimeStamp = null;
 //                    cd.gShockTimeStamp = c.getString(15);
 //                    cd.gShockEvent = ( c.getInt(16) != 0 );
                     cd.gShockEventThreshold = c.getDouble(17);
 
-                    cd.fcwTimeStamp = null;
+//                    cd.fcwTimeStamp = null;
 //                    cd.fcwTimeStamp = c.getString(18);
                     cd.fcwEvent = ( c.getInt(19) != 0 );
                     cd.fcwCutIn = ( c.getInt(20) != 0 );
@@ -517,16 +523,17 @@ public class ODDCclass implements ODDCinterface {
                     cd.fcwEvent = ( c.getInt(22) != 0 );
                     cd.fcwEventThreshold = c.getFloat(23);
 
-                    cd.ldwTimeStamp = null;
+//                    cd.ldwTimeStamp = null;
 //                    cd.ldwTimeStamp = c.getString(24);
                     cd.ldwDistanceToLeftLane = c.getFloat(25);
                     cd.ldwDistanceToRightLane = c.getFloat(26);
-                    cd.ldwEvent = c.getInt(27);
+                    cd.ldwEvent = ( c.getInt(27) != 0 );
 
                     cd.mediaURI = c.getString(28);
                     cd.mediaDeleted = ( c.getInt(29) != 0 );
                     cd.mediaUploaded = ( c.getInt(30) != 0 );
                     cd.dataUploaded = ( c.getInt(31) != 0 );
+//                    cd.timestamp = c.getString(32);       //NOTE: Yuri is overriding this value on the server.
                     dataCollection.add(cd);
                     //Log.d("ODDC SENDTOFLA",cd.sessionID+" "+cd.gpsTimeStamp+" "+cd.gpsTimeStamp+" "+cd.latitude+" "+cd.speed+" "+cd.gShockEvent+" "+cd.fcwEvent+" "+cd.ldwEvent+" "+cd.mediaURI+" "+cd.mediaDeleted+" "+cd.mediaUploaded+" "+cd.dataUploaded);
                 }

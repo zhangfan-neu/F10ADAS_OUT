@@ -7,6 +7,7 @@ package com.neusoft.oddc.oddc.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.neusoft.oddc.oddc.neusoft.Constants;
+import com.neusoft.oddc.oddc.utilities.Utilities;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -17,28 +18,29 @@ import java.util.UUID;
 
 public class ContinuousData
 {
-    public UUID id = null;;
-    public UUID sessionID = null;;
-    public String vehicleID = null;;
-    public String driverID = null;;
-    public String submitterID = null;;
+    public UUID id = null;
+    public UUID sessionID = null;
+    public String vehicleID = null;
+    public String driverID = null;
+    public String submitterID = null;
     public int tzOffset = 0;
-    public String gpsTimeStamp = null;;
+    public String timestamp;
+//    public String gpsTimeStamp = null;
     public double longitude = 0.0;
     public double latitude = 0.0;
     public double speed;
     public int speedDetectionType = 0;
-    public String accelerationTimeStamp = null;
+//    public String accelerationTimeStamp = null;
     public double accelerationX = 0.0;
     public double accelerationY = 0.0;
     public double accelerationZ = 0.0;
 
-    public String gShockTimeStamp = null;;
+//    public String gShockTimeStamp = null;
     public boolean gShockEvent = false;
     public double gShockEventValue = 0.0;
     public double gShockEventThreshold = 0.0;
 
-    public String fcwTimeStamp = null;;
+//    public String fcwTimeStamp = null;
     public boolean fcwExistFV = false;
     public boolean fcwCutIn = false;
     public double fcwDistanceToFV = 0.0;
@@ -46,10 +48,11 @@ public class ContinuousData
     public boolean fcwEvent = false;
     public double fcwEventThreshold = 0.0;
 
-    public String ldwTimeStamp = null;;
+//    public String ldwTimeStamp = null;
     public double ldwDistanceToLeftLane = 0.0;
     public double ldwDistanceToRightLane = 0.0;
-    public int ldwEvent = 0;
+    public Boolean ldwEvent = false;
+    public int ldwEventType = 0;
     public String mediaURI = null;
 
     public boolean mediaDeleted = false;
@@ -62,7 +65,7 @@ public class ContinuousData
     }
 
     public boolean isEvent(){
-        if (gShockEvent || fcwEvent || (ldwEvent > 0)) return true;
+        if (gShockEvent || fcwEvent || ldwEvent) return true;
         else                                           return false;
     }
 
@@ -225,11 +228,11 @@ public class ContinuousData
         this.ldwDistanceToRightLane = ldwDistanceToRightLane;
     }
 
-    public int isLdwEvent() {
+    public Boolean isLdwEvent() {
         return ldwEvent;
     }
 
-    public void setLdwEvent(int ldwEvent) {
+    public void setLdwEvent(Boolean ldwEvent) {
         this.ldwEvent = ldwEvent;
     }
 

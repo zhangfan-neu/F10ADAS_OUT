@@ -313,7 +313,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             Log.d(TAG, "gForce value = " + gForce);
             if (gForce > Constants.G_THRESH_VALUE) {
                 continuousData.gShockEvent = true;
-                continuousData.gShockTimeStamp = new Timestamp(System.currentTimeMillis()).toString();
+//                continuousData.gShockTimeStamp = new Timestamp(System.currentTimeMillis()).toString();
                 continuousData.gShockEventThreshold = Constants.G_THRESH_VALUE;
                 continuousData.gShockEventValue = gForce;
             }
@@ -322,21 +322,23 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             if (null != dasTrafficEnvironment) {
                 DasLaneMarkings dasLaneMarkings = dasTrafficEnvironment.getLaneMarkings();
                 long ldwTimestamp = dasLaneMarkings.getTimestamp();
-                continuousData.ldwTimeStamp = new Timestamp(ldwTimestamp).toString();
+//                continuousData.ldwTimeStamp = new Timestamp(ldwTimestamp).toString();
                 DasLaneMarkings.DasEgoLane dasEgoLane = dasLaneMarkings.getDasEgoLane();
                 leftDis = dasEgoLane.getLeftDis();
                 continuousData.ldwDistanceToLeftLane = leftDis;
                 rightDis = dasEgoLane.getRightDis();
                 continuousData.ldwDistanceToRightLane = rightDis;
                 if (leftevnet) {
-                    continuousData.ldwEvent = 1;
+                    continuousData.ldwEventType = 1;
+                    continuousData.ldwEvent = true;
                 } else if (rightevnet) {
-                    continuousData.ldwEvent = 2;
+                    continuousData.ldwEventType = 2;
+                    continuousData.ldwEvent = true;
                 }
 
                 DasVehicles dasVehicles = dasTrafficEnvironment.getVehicles();
                 long fdwTimestamp = dasVehicles.getTimestamp();
-                continuousData.fcwTimeStamp = new Timestamp(fdwTimestamp).toString();
+//                continuousData.fcwTimeStamp = new Timestamp(fdwTimestamp).toString();
                 if (dasVehicles.getNums() > 0) {
 
                     for (int i = 0; i < dasVehicles.getNums(); i++) {
