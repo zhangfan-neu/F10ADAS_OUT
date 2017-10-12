@@ -21,7 +21,8 @@
         android:layout_alignParentRight="true"
         android:background="@drawable/custom_title_layout_button"
         android:text="@string/edit"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        />
 
     <TextView
         android:id="@+id/custom_title_textview"

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.neusoft.oddc.NeusoftHandler;
@@ -28,7 +29,7 @@ import com.neusoft.oddc.widget.recycler.DefaultDividerDecoration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OAContinuousUploadLogActivity extends BaseActivity {
+public class OAContinuousUploadLogActivity extends BaseActivity implements View.OnClickListener{
 
     private static final String TAG = OAContinuousUploadLogActivity.class.getSimpleName();
 
@@ -72,7 +73,25 @@ public class OAContinuousUploadLogActivity extends BaseActivity {
             }
         });
 
+        Button button = (Button) findViewById(R.id.custom_title_left_button);
+        if (null != button) {
+            button.setVisibility(View.VISIBLE);
+            button.setText(R.string.back);
+            button.setOnClickListener(this);
+        }
+
         getData(DataPackageType.CONTINUOUS);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.custom_title_left_button:
+                finish();
+                break;
+            default:
+                break;
+        }
     }
 
     private void initViews(List<EntityContinousGroup> entities) {
@@ -114,6 +133,8 @@ public class OAContinuousUploadLogActivity extends BaseActivity {
             }
             initViews(entities);
             dismissLoading();
+
+
         }
     }
 

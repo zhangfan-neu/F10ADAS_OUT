@@ -26,7 +26,7 @@ import com.neusoft.oddc.widget.recycler.DefaultDividerDecoration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ODDCAgentActivity extends BaseActivity {
+public class ODDCAgentActivity extends BaseActivity implements View.OnClickListener  {
 
     private static final String TAG = ODDCAgentActivity.class.getSimpleName();
 
@@ -62,6 +62,17 @@ public class ODDCAgentActivity extends BaseActivity {
     };
 
     @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.custom_title_left_button:
+                finish();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -69,6 +80,13 @@ public class ODDCAgentActivity extends BaseActivity {
         setCustomTitle(R.string.title_oddc_agent);
 
         initViews();
+
+        Button button = (Button) findViewById(R.id.custom_title_left_button);
+        if (null != button) {
+            button.setVisibility(View.VISIBLE);
+            button.setText(R.string.back);
+            button.setOnClickListener(this);
+        }
     }
 
     private void initViews() {
@@ -92,7 +110,7 @@ public class ODDCAgentActivity extends BaseActivity {
         {
             if(BuildConfig.DEBUG)
             {
-                sendButton.setVisibility(View.VISIBLE);
+                sendButton.setVisibility(View.GONE);
                 sendButton.setOnClickListener(new View.OnClickListener()
                 {
                     @Override

@@ -22,7 +22,8 @@ public class SettingDvrSettingActivity extends BaseEdittableActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        hideAllTitleButtons();
+        //hideAllTitleButtons();
+        showAllTitleButtons();
     }
 
     private void initViews() {
