@@ -82,8 +82,8 @@ public class SettingAdasParametersActivity extends BaseEdittableActivity {
             Log.d(TAG, "getData : no data");
             entity = null;
             // Set default values
-            ap_ld_sensor_sensitivity.setSelection(Constants.DEFAULT_LDW_SENSITIVIY - 1);
-            ap_fwd_col_sensitivity.setSelection(Constants.DEFAULT_FCW_SENSITIVIY - 1);
+            ap_ld_sensor_sensitivity.setSelection(Constants.DEFAULT_LDW_SENSITIVIY);
+            ap_fwd_col_sensitivity.setSelection(Constants.DEFAULT_FCW_SENSITIVIY);
             ap_vehicle_length_edittext.setText("" + Constants.DEFAULT_CAR_LENGTH);
             ap_vehicle_width_edittext.setText("" + Constants.DEFAULT_CAR_WIDTH);
             ap_vehicle_height_edittext.setText("" + Constants.DEFAULT_CAR_HEIGHT);

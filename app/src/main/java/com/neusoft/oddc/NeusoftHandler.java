@@ -63,6 +63,19 @@ public class NeusoftHandler implements NeuSoftInterface {
         EventBus.getDefault().post(new EventStartDataCollection());
     }
 
+    @Override
+    public String getVIN() {
+        return ADASHelper.getvin(); // VIN
+    }
+
+    @Override
+    public Location getLatLong() {
+        if (null == adasHelper) {
+            return null;
+        }
+        return adasHelper.getCoarseLocation();
+    }
+
     public void stop() {
         EventBus.getDefault().post(new EventStopDataCollection());
     }

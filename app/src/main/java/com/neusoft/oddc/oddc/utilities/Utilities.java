@@ -22,7 +22,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.neusoft.oddc.MyApplication;
 import com.neusoft.oddc.oddc.model.Video;
 
-import static com.google.android.gms.internal.zzid.runOnUiThread;
 
 public class Utilities
 {
@@ -134,7 +133,11 @@ public class Utilities
 
     public static void showToastMessage(final String msg)
     {
-        runOnUiThread(new Runnable() {
+        if (null == MyApplication.currentActivity) {
+            return;
+        }
+        MyApplication.currentActivity.runOnUiThread(new Runnable() {
+            @Override
             public void run() {
                 Toast.makeText(MyApplication.currentActivity, msg , Toast.LENGTH_LONG ).show();
             }
@@ -143,7 +146,11 @@ public class Utilities
 
     public static void showToastMessageShort(final String msg)
     {
-        runOnUiThread(new Runnable() {
+        if (null == MyApplication.currentActivity) {
+            return;
+        }
+        MyApplication.currentActivity.runOnUiThread(new Runnable() {
+            @Override
             public void run() {
                 Toast.makeText(MyApplication.currentActivity, msg , Toast.LENGTH_SHORT ).show();
             }

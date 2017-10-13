@@ -76,8 +76,6 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     // multi dex
     compile 'com.android.support:multidex:1.0.0'
-    // gps
-    compile 'com.google.android.gms:play-services:8.1.0'
     // neusoft lib
     compile(name: 'neusoftlibrary', ext: 'aar')
     // EventBus

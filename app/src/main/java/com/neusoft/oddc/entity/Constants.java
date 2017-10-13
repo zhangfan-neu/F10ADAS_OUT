@@ -58,8 +58,8 @@ public class Constants {
     public static final int DEFAULT_CAMERA_OFFSET = 0;
     public static final int DEFAULT_CAMERA_DISTANCEFROMHEAD = 1400;
 
-    public static final int DEFAULT_LDW_SENSITIVIY = 2;
-    public static final int DEFAULT_FCW_SENSITIVIY = 2;
+    public static final int DEFAULT_LDW_SENSITIVIY = 1;
+    public static final int DEFAULT_FCW_SENSITIVIY = 1;
 
     // DVR Playback Events
     public static final int ADAS_FORWARD_VEHICLE_WARNING = 0; // adasForwardVehicleWarning
