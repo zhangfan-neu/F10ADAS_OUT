@@ -14,17 +14,11 @@ public class Envelope
     private UUID sessionID;
     @JsonProperty("vehicleID")
     private String vehicleID;
-    @JsonProperty("driverID")
-    private String driverID;
-    @JsonProperty("submitterID")
-    private String submitterID;
 
     public Envelope() {}
-    public Envelope(UUID sessionID, String vehicleID, String driverID, String submitterID) {
+    public Envelope(UUID sessionID, String vehicleID) {
         this.sessionID = sessionID;
         this.vehicleID = vehicleID;
-        this.driverID = driverID;
-        this.submitterID = submitterID;
     }
 
     public UUID getSessionID()
@@ -42,22 +36,6 @@ public class Envelope
     public void setVehicleID(String vehicleID)
     {
         this.vehicleID = vehicleID;
-    }
-    public String getDriverID()
-    {
-        return driverID;
-    }
-    public void setDriverID(String driverID)
-    {
-        this.driverID = driverID;
-    }
-    public String getSubmitterID()
-    {
-        return submitterID;
-    }
-    public void setSubmitterID(String submitterID)
-    {
-        this.submitterID = submitterID;
     }
 }
 

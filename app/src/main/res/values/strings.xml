@@ -19,6 +19,10 @@
     <string name="stop">Stop</string>
     <string name="loading">Loading...</string>
     <string name="vin">1B3LC46R38N557181</string>
+    <string name="event_ldw_left">LDW Left</string>
+    <string name="event_ldw_right">LDW Right</string>
+    <string name="event_fcw">FCW</string>
+    <string name="event_gshock">G-Shock</string>
 
     <!-- titles -->
     <string name="title_main">Main</string>

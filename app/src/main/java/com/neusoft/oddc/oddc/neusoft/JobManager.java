@@ -30,7 +30,7 @@ import java.util.UUID;
 public class JobManager
 {
     private RESTController restController;
-    private Envelope envelope = new Envelope(ODDCclass.session,Constants.ODDCApp.VIN,null,null);
+    private Envelope envelope = new Envelope(ODDCclass.session,Constants.ODDCApp.VIN);
 
     private boolean isProcessingJobs = false;
     private Timer pingTimer;

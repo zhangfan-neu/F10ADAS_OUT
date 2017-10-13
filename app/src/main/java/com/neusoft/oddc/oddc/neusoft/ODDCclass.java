@@ -542,7 +542,7 @@ public class ODDCclass implements ODDCinterface {
                 DataPackage dataPackage = new DataPackage(); //yz
                 //TODO: Update to use stored VIN...
                 //      PACKAGE ENVELOPE PROPERLY!!!!
-                Envelope env = new Envelope(ODDCclass.session,Constants.ODDCApp.VIN,null,null);
+                Envelope env = new Envelope(ODDCclass.session,Constants.ODDCApp.VIN);
 //                env.setVehicleID(cd.vehicleID);
 //                env.setSessionID(cd.sessionID);
                 dataPackage.setEnvelope(env);
@@ -603,7 +603,7 @@ public class ODDCclass implements ODDCinterface {
         DataPackage dataPackage = new DataPackage(); //yz
         dataPackage.setVideos(videos);
         //TODO:      PACKAGE ENVELOPE PROPERLY!!!!
-        Envelope env = new Envelope(ODDCclass.session,Constants.ODDCApp.VIN,null,null);
+        Envelope env = new Envelope(ODDCclass.session,Constants.ODDCApp.VIN);
         //env.setVehicleID(cd.vehicleID);
         dataPackage.setEnvelope(env);
         //dataPackage.setContinuousData(dataCollection); //yz
