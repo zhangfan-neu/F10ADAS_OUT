@@ -30,7 +30,7 @@ import java.util.UUID;
 public class JobManager
 {
     private RESTController restController;
-    private Envelope envelope = new Envelope(ODDCclass.session,Constants.ODDCApp.VIN);
+    private Envelope envelope = new Envelope(ODDCclass.curSession,Constants.ODDCApp.VIN);
 
     private boolean isProcessingJobs = false;
     private Timer pingTimer;
@@ -156,8 +156,8 @@ public class JobManager
         if(jobs.size() > 0)
         {
             Map<String, Object> parameters = jobs.get(0).getTasks().get(0).getParameters();
-            ODDCclass.session = UUID.fromString((String)parameters.get("session"));
-            envelope.setSessionID(ODDCclass.session);
+            ODDCclass.curSession = UUID.fromString((String)parameters.get("session"));
+            envelope.setSessionID(ODDCclass.curSession);
 
             for(ODDCJob job: jobs)
             {
@@ -369,8 +369,8 @@ public class JobManager
                 if(jobs != null)
                 {
                     Map<String, Object> parameters = jobs.get(0).getTasks().get(0).getParameters();
-                    ODDCclass.session = UUID.fromString((String)parameters.get("session"));
-                    envelope.setSessionID(ODDCclass.session);
+                    ODDCclass.curSession = UUID.fromString((String)parameters.get("session"));
+                    envelope.setSessionID(ODDCclass.curSession);
 
                     processJobs(jobs);
                 }

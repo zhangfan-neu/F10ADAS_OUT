@@ -9,22 +9,17 @@ import com.neusoft.oddc.adas.ADASHelper;
 import com.neusoft.oddc.entity.Constants;
 import com.neusoft.oddc.oddc.model.ContinuousData;
 import com.neusoft.oddc.oddc.model.DataPackageType;
-import com.neusoft.oddc.oddc.model.ODDCJob;
-import com.neusoft.oddc.oddc.model.ODDCTask;
 import com.neusoft.oddc.oddc.neusoft.JobManager;
 import com.neusoft.oddc.oddc.neusoft.LogData;
 import com.neusoft.oddc.oddc.neusoft.NeuSoftInterface;
 import com.neusoft.oddc.oddc.neusoft.ODDCclass;
 import com.neusoft.oddc.oddc.neusoft.PlaybackList;
-import com.neusoft.oddc.oddc.utilities.Utilities;
-import com.neusoft.oddc.widget.PropertyUtil;
 import com.neusoft.oddc.widget.eventbus.EventStartDataCollection;
 import com.neusoft.oddc.widget.eventbus.EventStopDataCollection;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,35 +58,44 @@ public class NeusoftHandler implements NeuSoftInterface {
         EventBus.getDefault().post(new EventStartDataCollection());
     }
 
+    @Override
+    public String getVIN() {
+        return ADASHelper.getvin(); // VIN
+    }
+
+    @Override
+    public Location getLatLong() {
+        if (null == adasHelper) {
+            return null;
+        }
+        return adasHelper.getCoarseLocation();
+    }
+
     public void stop() {
         EventBus.getDefault().post(new EventStopDataCollection());
     }
 
 
-    public void init(Context context, String baseUrl) {
+    public void init(Context context) {
         //RMS NOTE: Need to pull server info from one source.  There was a problem where the JobManager was using the
         //          proper URL but the initialization of ODDCclass was using an older one.
         //          I'll see if I have time to put it in the config file and make sure everything points to it.
 
 //        String url = context.getString(R.string.base_url);
         //String url = PropertyUtil.getServerUrl();
-        //String baseUrl = Constants;
-//        String url = com.neusoft.oddc.oddc.neusoft.Constants.ODDCApp.BASE_URL;
+        String url = com.neusoft.oddc.oddc.neusoft.Constants.ODDCApp.BASE_URL;
         File videodir = new File(Constants.FILE_PATH);
-        oddCclass = new ODDCclass(baseUrl, context, videodir);
+        oddCclass = new ODDCclass(url, context, videodir);
         oddCclass.setListener(this);
+        adasHelper = new ADASHelper(context);
 
         //Initialize Job Manager
-        jobManager = new JobManager(baseUrl);
+        jobManager = new JobManager(com.neusoft.oddc.oddc.neusoft.Constants.ODDCApp.BASE_URL);
         jobManager.setODDC(oddCclass);
         oddCclass.setJobManager(jobManager);
 
         //Start Job Manager ping functionality
-        //NOTE: This will only ping once for now...continuous pinging will be enabled later when the server is ready.
-        //jobManager.getStartUpJobList();
-        jobManager.requestInitialSessionId();
-        //jobManager.startPingTimer();
-
+        jobManager.startPingTimer();
     }
 
     public boolean startupOddcClass() {
@@ -116,8 +120,7 @@ public class NeusoftHandler implements NeuSoftInterface {
             isOddcOk = false;
 
             //Null jobManager instance
-            if(jobManager != null)
-            {
+            if (jobManager != null) {
                 jobManager.stopPingTimer();
                 jobManager = null;
             }
@@ -232,28 +235,23 @@ public class NeusoftHandler implements NeuSoftInterface {
     }
 
     public static ContinuousData mkContinuousData(String currentFileName, double accelerationX, double accelerationY, double accelerationZ) {
-        String dateTime = Utilities.getTimestamp();
+        String dateTime = new String(getTimestamp());
 
         // NeuSoft prepares data for transfer somewhere in their code
         ContinuousData cd = new ContinuousData();
 
-        cd.timestamp = dateTime;
-
-        // Add TimeZone offset
-        cd.tzOffset =  TimeZone.getDefault().getRawOffset();
-
-        //Create dummy data
+        cd.sessionID = ODDCclass.curSession;
         cd.vehicleID = ADASHelper.getvin(); // VIN
-        //cd.timezone = 0;
 
-//        cd.gpsTimeStamp = dateTime; // from OS not GPS
+        cd.timestamp = dateTime; // from OS not GPS
+
         Location location = ADASHelper.getCoarseLocation();
         if (null != location) {
             double mLongitude = location.getLongitude();
             double mLatitude = location.getLatitude();
             cd.longitude = mLongitude;
             cd.latitude = mLatitude;
-//            cd.gpsTimeStamp = dateTime;
+            //cd.gpsTimeStamp = new Timestamp(location.getTime());
         } else {
             cd.longitude = 0;
             cd.latitude = 0;
@@ -262,30 +260,33 @@ public class NeusoftHandler implements NeuSoftInterface {
         cd.speed = ADASHelper.getspd();
         cd.speedDetectionType = 0; // always be ZERO
 
-//        cd.accelerationTimeStamp = dateTime; /* yyyy-MM-dd HH:mm:ss.SSS for SQLite */
         cd.accelerationX = accelerationX;
-        cd.accelerationY = accelerationY;
+        cd.accelerationX = accelerationX;
         cd.accelerationZ = accelerationZ;
 
-//        cd.gShockTimeStamp = dateTime;
-//        cd.gShockEvent = false;
-        //cd.gShockEventThreshold = getRandomFloat(); /* might be a parameter from FLA */
+        cd.gShockEvent = false;
+        //cd.gShockEventThreshold /* default for now */
 
-//        cd.fcwTimeStamp = dateTime;
-//        cd.fcwExistFV = false;
+        cd.fcwExistFV = false;
         //cd.fcwTimeToCollision = 0;
-//        cd.fcwDistanceToFV = 0;
-//        cd.fcwRelativeSpeedToFV = 0;
+        cd.fcwDistanceToFV = 0;
+        cd.fcwRelativeSpeedToFV = 0;
 
-//        cd.fcwEvent = false;
-//        cd.fcwEventThreshold = 0;
+        cd.fcwEvent = false;
+        cd.fcwEventThreshold = 0;
 
-//        cd.ldwTimeStamp = dateTime;
-//        cd.ldwDistanceToLeftLane = 0;
-//        cd.ldwDistanceToRightLane = 0;
-//        cd.ldwEvent = 0;
+        cd.ldwDistanceToLeftLane = 0;
+        cd.ldwDistanceToRightLane = 0;
+        cd.ldwEvent = false;
         cd.mediaURI = currentFileName;
 
         return cd;
     }
+
+    private static String getTimestamp() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(com.neusoft.oddc.oddc.neusoft.Constants.ODDCApp.dateTimeFormat);
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
 }

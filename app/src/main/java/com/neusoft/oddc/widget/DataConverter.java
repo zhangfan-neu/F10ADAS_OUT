@@ -258,7 +258,7 @@ public class DataConverter {
         ArrayList<EntityContinousChild> entityContinousChildren = new ArrayList<>();
         for (ContinuousData item : continuousDatas) {
             EntityContinousChild entityContinousChild = new EntityContinousChild();
-            entityContinousChild.setSessionId(item.id.toString());
+            //entityContinousChild.setSessionId(item.id);
             entityContinousChild.setFileName(item.mediaURI);
             ArrayList<Integer> eventTypes = new ArrayList<>();
             // TODO add eventTypes
@@ -267,7 +267,7 @@ public class DataConverter {
             entityContinousChild.setMediaDeleted(item.mediaDeleted);
             entityContinousChild.setDataUploaded(item.dataUploaded);
             // TODO format timestamp
-//            entityContinousChild.setTime(item.gpsTimeStamp.toString());
+            //entityContinousChild.setTime(item.gpsTimeStamp.toString());
         }
         return entityContinousChildren;
     }
