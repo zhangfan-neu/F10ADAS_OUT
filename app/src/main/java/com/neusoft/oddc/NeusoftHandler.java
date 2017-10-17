@@ -92,6 +92,7 @@ public class NeusoftHandler implements NeuSoftInterface {
         //Initialize Job Manager
         jobManager = new JobManager(com.neusoft.oddc.oddc.neusoft.Constants.ODDCApp.BASE_URL);
         jobManager.setODDC(oddCclass);
+        jobManager.setNSH(this);
         oddCclass.setJobManager(jobManager);
 
         //Start Job Manager ping functionality

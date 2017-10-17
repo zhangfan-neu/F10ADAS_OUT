@@ -15,6 +15,7 @@ import com.neusoft.oddc.oddc.model.ODDCTask;
 import com.neusoft.oddc.oddc.model.TaskType;
 import com.neusoft.oddc.oddc.restclient.RESTController;
 import com.neusoft.oddc.oddc.utilities.Utilities;
+import com.neusoft.oddc.NeusoftHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +38,7 @@ public class JobManager
     Timer singlePingTimer;
     private int pingFrequency = 10000;
     private ODDCclass oddc;
+    private NeusoftHandler nsh;
 
     public void setAdasEnabled(boolean adasEnabled)
     {
@@ -70,6 +72,7 @@ public class JobManager
     {
         this.oddc = oddc;
     }
+    public void setNSH(NeusoftHandler n){this.nsh = n;}
     public void setPingFrequency(int value)
     {
         pingFrequency = value;
@@ -364,6 +367,10 @@ public class JobManager
             public void run()
             {
                 ODDCTask task = ODDCTask.createMockTask(envelope);
+                task.setLatitude(nsh.getLatLong().getLatitude());
+                task.setLongitude(nsh.getLatLong().getLongitude());
+                task.setVehicleID(nsh.getVIN());
+                envelope.setVehicleID(nsh.getVIN());
                 ArrayList<ODDCJob> jobs = getJobList(task);
 
                 if(jobs != null)
