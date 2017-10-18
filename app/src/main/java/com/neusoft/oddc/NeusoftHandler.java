@@ -13,14 +13,13 @@ import com.neusoft.oddc.oddc.neusoft.LogData;
 import com.neusoft.oddc.oddc.neusoft.NeuSoftInterface;
 import com.neusoft.oddc.oddc.neusoft.ODDCclass;
 import com.neusoft.oddc.oddc.neusoft.PlaybackList;
-import com.neusoft.oddc.oddc.utilities.Utilities;
-import com.neusoft.oddc.widget.eventbus.EventStartDataCollection;
+import com.neusoft.oddc.oddc.utilities.Utilities;import com.neusoft.oddc.widget.eventbus.EventStartDataCollection;
 import com.neusoft.oddc.widget.eventbus.EventStopDataCollection;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;import java.util.ArrayList;
 
 public class NeusoftHandler implements NeuSoftInterface {
 
@@ -56,24 +55,37 @@ public class NeusoftHandler implements NeuSoftInterface {
         EventBus.getDefault().post(new EventStartDataCollection());
     }
 
+    @Override
+    public String getVIN() {
+        return ADASHelper.getvin(); // VIN
+    }
+
+    @Override
+    public Location getLatLong() {
+        if (null == adasHelper) {
+            return null;
+        }
+        return adasHelper.getCoarseLocation();
+    }
+
     public void stop() {
         EventBus.getDefault().post(new EventStopDataCollection());
     }
 
 
-    public void init(Context context, String baseUrl) {
-        File videodir = new File(Constants.FILE_PATH);
-        oddCclass = new ODDCclass(baseUrl, context, videodir);
+    public void init(Context context) {
+//        String url = com.neusoft.oddc.oddc.neusoft.Constants.ODDCApp.BASE_URL;        File videodir = new File(Constants.FILE_PATH);
+        oddCclass = new ODDCclass(url, context, videodir);
         oddCclass.setListener(this);
+        adasHelper = new ADASHelper(context);
 
         //Initialize Job Manager
-        jobManager = new JobManager(baseUrl);
+        jobManager = new JobManager(com.neusoft.oddc.oddc.neusoft.Constants.ODDCApp.BASE_URL);
         jobManager.setODDC(oddCclass);
+        jobManager.setNSH(this);
         oddCclass.setJobManager(jobManager);
 
-        jobManager.requestInitialSessionId();
-        jobManager.startPingTimer();
-    }
+	    jobManager.startPingTimer();    }
 
     public boolean startupOddcClass() {
         if (null != oddCclass) {
@@ -97,8 +109,7 @@ public class NeusoftHandler implements NeuSoftInterface {
             isOddcOk = false;
 
             //Null jobManager instance
-            if(jobManager != null)
-            {
+            if (jobManager != null) {
                 jobManager.stopPingTimer();
                 jobManager = null;
             }
@@ -158,18 +169,18 @@ public class NeusoftHandler implements NeuSoftInterface {
     }
 
     public static ContinuousData mkContinuousData(String currentFileName, double accelerationX, double accelerationY, double accelerationZ) {
-        String dateTime = Utilities.getTimestamp();
+        String dateTime = new String(getTimestamp());
 
         // NeuSoft prepares data for transfer somewhere in their code
         ContinuousData cd = new ContinuousData();
-        cd.timestamp = dateTime;
+        cd.sessionID = ODDCclass.curSession;
+        cd.vehicleID = ADASHelper.getvin(); // VIN
 //        cd.vehicleID = ADASHelper.getvin(); // VIN
 
-        //TODO: Test this thoroughly...
-//        String obd2Vin = ADASHelper.getvin();
-        String vin = Utilities.getVehicleID();
+		cd.timestamp = dateTime; // from OS not GPS
+		String vin = Utilities.getVehicleID();
 
-        //VIN cannot be empty.
+		//VIN cannot be empty.
         if(!vin.isEmpty())
         {
             cd.vehicleID = vin;
@@ -178,15 +189,13 @@ public class NeusoftHandler implements NeuSoftInterface {
         {
             Log.e("mkContinuousData", "ERROR: Invalid VIN.");
             return null;
-        }
-
-        Location location = ADASHelper.getCoarseLocation();
+        }        Location location = ADASHelper.getCoarseLocation();
         if (null != location) {
             double mLongitude = location.getLongitude();
             double mLatitude = location.getLatitude();
             cd.longitude = mLongitude;
             cd.latitude = mLatitude;
-        } else {
+//            cd.gpsTimeStamp = dateTime;        } else {
             cd.longitude = 0;
             cd.latitude = 0;
         }
@@ -195,11 +204,31 @@ public class NeusoftHandler implements NeuSoftInterface {
         cd.speedDetectionType = 0; // always be ZERO
 
         cd.accelerationX = accelerationX;
-        cd.accelerationY = accelerationY;
+        cd.accelerationX = accelerationX;
         cd.accelerationZ = accelerationZ;
 
-        cd.mediaURI = currentFileName;
+cd.gShockEvent = false;
+        //cd.gShockEventThreshold /* default for now */
+
+        cd.fcwExistFV = false;
+        //cd.fcwTimeToCollision = 0;
+        cd.fcwDistanceToFV = 0;
+        cd.fcwRelativeSpeedToFV = 0;
+
+        cd.fcwEvent = false;
+        cd.fcwEventThreshold = 0;
+
+        cd.ldwDistanceToLeftLane = 0;
+        cd.ldwDistanceToRightLane = 0;
+        cd.ldwEvent = false;        cd.mediaURI = currentFileName;
 
         return cd;
     }
+
+    private static String getTimestamp() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(com.neusoft.oddc.oddc.neusoft.Constants.ODDCApp.dateTimeFormat);
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
 }

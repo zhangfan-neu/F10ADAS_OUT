@@ -16,6 +16,7 @@ import com.neusoft.oddc.oddc.model.ODDCTask;
 import com.neusoft.oddc.oddc.model.TaskType;
 import com.neusoft.oddc.oddc.restclient.RESTController;
 import com.neusoft.oddc.oddc.utilities.Utilities;
+import com.neusoft.oddc.NeusoftHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,13 +34,13 @@ public class JobManager
     private RESTController restController;
     //TODO: Remove fixed VIN information
     private Envelope envelope = new Envelope(ODDCclass.session, ADASHelper.getvin());
-
     private boolean isProcessingJobs = false;
     private Timer pingTimer;
     private Timer singlePingTimer;
     private int pingFrequency = 10000;
     private int pingSessionFrequency = 5000;
     private ODDCclass oddc;
+    private NeusoftHandler nsh;
 
     public void setAdasEnabled(boolean adasEnabled)
     {
@@ -66,6 +67,7 @@ public class JobManager
     {
         this.oddc = oddc;
     }
+    public void setNSH(NeusoftHandler n){this.nsh = n;}
     public void setPingFrequency(int value)
     {
         pingFrequency = value;
@@ -140,8 +142,8 @@ public class JobManager
         if(jobs.size() > 0)
         {
             Map<String, Object> parameters = jobs.get(0).getTasks().get(0).getParameters();
-            ODDCclass.session = UUID.fromString((String)parameters.get("session"));
-            envelope.setSessionID(ODDCclass.session);
+            ODDCclass.curSession = UUID.fromString((String)parameters.get("session"));
+            envelope.setSessionID(ODDCclass.curSession);
 
             for(ODDCJob job: jobs)
             {
@@ -308,13 +310,16 @@ public class JobManager
             @Override
             public void run()
             {
-                //The following retrieves data from VehicleProfileEntityDao and the VIN from OBD-2.
+//The following retrieves data from VehicleProfileEntityDao and the VIN from OBD-2.
 //                String obd2Vin = ADASHelper.getvin();
                 String vin = Utilities.getVehicleID();
+
+
 
                 if(!vin.isEmpty())
                 {
                     envelope = new Envelope(ODDCclass.session, vin);
+
 
                     ODDCTask task = ODDCTask.createMockTask(envelope);
                     ArrayList<ODDCJob> jobs = getJobList(task);
