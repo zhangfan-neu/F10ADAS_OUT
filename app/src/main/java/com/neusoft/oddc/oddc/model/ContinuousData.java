@@ -27,9 +27,10 @@ public class ContinuousData
     public String vehicleID = null;
 
     @JsonProperty("timestamp")
-    public String timestamp = getTimestamp();
+    public String timestamp = Utilities.getTimestamp();
 
-    @JsonProperty("longitude")    public double longitude = 0.0;
+    @JsonProperty("longitude")
+    public double longitude = 0.0;
     @JsonProperty("latitude")
     public double latitude = 0.0;
     @JsonProperty("speed")
@@ -43,11 +44,13 @@ public class ContinuousData
     @JsonProperty("accelerationZ")
     public double accelerationZ = 0.0;
 
-    @JsonProperty("gShockEvent")    public boolean gShockEvent = false;
+    @JsonProperty("gShockEvent")
+    public boolean gShockEvent = false;
     @JsonProperty("gShockEventThreshold")
     public double gShockEventThreshold = 2.0;
 
-    @JsonProperty("fcwExistFV")    public boolean fcwExistFV = false;
+    @JsonProperty("fcwExistFV")
+    public boolean fcwExistFV = false;
     @JsonProperty("fcwCutIn")
     public boolean fcwCutIn = false;
     @JsonProperty("fcwDistanceToFV")
@@ -59,7 +62,8 @@ public class ContinuousData
     @JsonProperty("fcwEventThreshold")
     public double fcwEventThreshold = 0.0;
 
-    @JsonProperty("ldwDistanceToLeftLane")    public double ldwDistanceToLeftLane = 0.0;
+    @JsonProperty("ldwDistanceToLeftLane")
+    public double ldwDistanceToLeftLane = 0.0;
     @JsonProperty("ldwDistanceToRightLane")
     public double ldwDistanceToRightLane = 0.0;
     @JsonProperty("ldwEvent")
@@ -79,8 +83,10 @@ public class ContinuousData
     public boolean dataUploaded = false;
 
     public boolean isEvent(){
-        if (gShockEvent || fcwEvent || ldwEvent) return true;
-        else                                     return false;
+        if (gShockEvent || fcwEvent || ldwEvent)
+            return true;
+        else
+            return false;
     }
 
 
@@ -243,47 +249,5 @@ public class ContinuousData
 
     public void setMediaURI(String mediaURI) {
         this.mediaURI = mediaURI;
-    }
-
-    //TODO: Remove this and call the Utilities version of this method...
-    public static String getTimestamp(){        SimpleDateFormat dateFormat = new SimpleDateFormat( Constants.ODDCApp.dateTimeFormat );
-        Date date = new Date();
-        return dateFormat.format(date);
-    }
-
-    public static ContinuousData createDummyContinuousData()
-    {
-        ContinuousData data = new ContinuousData();
-        String dateTime = getTimestamp();
-        data.id = UUID.randomUUID();
-
-        data.timestamp = dateTime;
-        data.longitude = Math.random() * Math.PI * 2;
-        data.latitude = Math.acos(Math.random() * 2 - 1);
-        data.speed = (double) (Math.random() * (50)) + 50;
-        data.speedDetectionType = 4;
-
-        //data.accelerationTimeStamp = dateTime;
-        data.accelerationX = (int) (Math.random() * 10) + 1;
-        data.accelerationY = (int) (Math.random() * 10) + 1;
-        data.accelerationZ = (int) (Math.random() * 10) + 1;
-
-        //data.gShockTimeStamp = dateTime;
-        data.gShockEvent = Math.random() < 0.5;
-        data.gShockEventThreshold = (int) (Math.random() * 10) + 1;
-        //data.fcwTimeStamp = dateTime;
-        data.fcwExistFV = Math.random() < 0.5;
-        data.fcwCutIn = Math.random() < 0.5;
-        data.fcwDistanceToFV = (double) new Random().nextInt(2) + 3;
-        data.fcwRelativeSpeedToFV = (double) new Random().nextInt(2) + 3;
-        data.fcwEvent = Math.random() < 0.5;
-        data.fcwEventThreshold = (double) (Math.random() * (50)) + 50;
-
-        //data.ldwTimeStamp = dateTime;
-        data.ldwDistanceToLeftLane = (double) new Random().nextInt(2) + 3;
-        data.ldwDistanceToRightLane = (double) new Random().nextInt(2) + 3;
-        data.ldwEvent = false;
-        data.mediaURI = "some/media/uri";
-        return data;
     }
 }

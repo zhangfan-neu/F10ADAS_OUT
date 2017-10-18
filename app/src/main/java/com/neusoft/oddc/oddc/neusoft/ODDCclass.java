@@ -203,8 +203,6 @@ public class ODDCclass implements ODDCinterface {
         return null;
     }
 
-
-
     public boolean onContinuousData(ContinuousData data){
         // Fujitsu processing of continuous data received from NeuSoft
         long fsStat = 0;
@@ -230,28 +228,15 @@ public class ODDCclass implements ODDCinterface {
                     DBschema.ID       + " CHAR(48)," +
                     DBschema.SID      + " CHAR(48)," +
                     DBschema.VIN      + " CHAR(18)," +
-
-
-
-
                     DBschema.GPS_LON  + " FLOAT(10,6)," +
                     DBschema.GPS_LAT  + " FLOAT(10,6)," +
-
                     DBschema.SPEED    + " FLOAT(5,2)," +
                     DBschema.SPEED_DT + " INT," +
-
-
-
-
-
                     DBschema.ACC_X    + " FLOAT(10,6)," +
                     DBschema.ACC_Y    + " FLOAT(10,6)," +
                     DBschema.ACC_Z    + " FLOAT(10,6)," +
-
                     DBschema.GS_E     + " BOOLEAN," +
                     DBschema.GS_T     + " FLOAT(10,6)," +
-
-
                     DBschema.FCW_EFV  + " BOOLEAN," +
                     DBschema.FCW_CI   + " BOOLEAN," +
                     DBschema.FCW_TTC  + " INT," +
@@ -259,15 +244,11 @@ public class ODDCclass implements ODDCinterface {
                     DBschema.FCW_RSFV + " FLOAT(5,2)," +
                     DBschema.FCW_E    + " BOOLEAN," +
                     DBschema.FCW_ET   + " FLOAT(5,2)," +
-
-
                     DBschema.LDW_DLL  + " FLOAT(5,2)," +
                     DBschema.LDW_DRL  + " FLOAT(5,2)," +
                     DBschema.LDW_E    + " BOOLEAN," +
-
                     DBschema.M_URI    + " VARCHAR(32)," +
                     DBschema.M_D      + " BOOLEAN," +
-                    /*DBschema.M_P      + " BOOLEAN," +*/
                     DBschema.M_U      + " BOOLEAN," +
                     DBschema.D_U      + " BOOLEAN )";
 
@@ -277,9 +258,6 @@ public class ODDCclass implements ODDCinterface {
         ContentValues values = new ContentValues();
 
         values.put(DBschema.SID,data.sessionID.toString());
-
-
-
         values.put(DBschema.VIN, data.vehicleID);
 
         values.put(DBschema.TS, data.timestamp);
@@ -292,12 +270,6 @@ public class ODDCclass implements ODDCinterface {
         values.put(DBschema.ACC_X, data.accelerationX);
         values.put(DBschema.ACC_Y, data.accelerationY);
         values.put(DBschema.ACC_Z, data.accelerationZ);
-
-
-
-
-
-
 
         values.put(DBschema.GS_E, data.gShockEvent);
         values.put(DBschema.GS_T, data.gShockEventThreshold);
@@ -414,23 +386,9 @@ public class ODDCclass implements ODDCinterface {
                     DBschema.M_U,
                     DBschema.D_U};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             selectionArgs = new String[]{String.valueOf(curSession), completedVideoFile, String.valueOf(Constants.ODDCApp.SAMPLE_FREQ), String.valueOf(curSession), completedVideoFile};
 
-                selection = new String("select distinct * from oddc where ( sessionID = ? and MediaURI = ? and rowid % ? = 0 ) or ( sessionID = ? and MediaURI = ? and ( GShockEvent = 1 or FCWEvent = 1 or LDWEvent = 1 ) ) ");
+            selection = new String("select distinct * from oddc where ( sessionID = ? and MediaURI = ? and rowid % ? = 0 ) or ( sessionID = ? and MediaURI = ? and ( GShockEvent = 1 or FCWEvent = 1 or LDWEvent = 1 ) ) ");
 
             Log.d("ODDC","ODDCClass.SendtoFLA.runnnnnnnnnnnnnnnnn query="+selection);
 
@@ -449,34 +407,21 @@ public class ODDCclass implements ODDCinterface {
 
                     cd.sessionID = UUID.fromString(c.getString( c.getColumnIndex("sessionID") ));
                     cd.vehicleID = c.getString(c.getColumnIndex("vehicleID"));
-
-
-
-
-
-
-
                     cd.timestamp = c.getString(c.getColumnIndex("timestamp"));
                     cd.longitude = c.getFloat(c.getColumnIndex("longitude"));
                     cd.latitude = c.getFloat(c.getColumnIndex("latitude"));
                     cd.speed = c.getFloat(c.getColumnIndex("Speed"));
                     cd.speedDetectionType = c.getInt(c.getColumnIndex("SpeedDetectionType"));
-
                     cd.accelerationX = c.getFloat(c.getColumnIndex("AccelerationX"));
                     cd.accelerationX = c.getFloat(c.getColumnIndex("AccelerationY"));
                     cd.accelerationX = c.getFloat(c.getColumnIndex("AccelerationZ"));
-
                     cd.gShockEvent = ( c.getInt(c.getColumnIndex("GShockEvent")) != 0 ); if (cd.gShockEvent) cdEvent = true;
-   
                     cd.fcwExistFV = ( c.getInt(c.getColumnIndex("FCWExistFV")) != 0 );
                     cd.fcwCutIn = ( c.getInt(c.getColumnIndex("FCWCutIn")) != 0 );
                     cd.fcwDistanceToFV = c.getFloat(c.getColumnIndex("FCWDistanceToFV"));
                     cd.fcwRelativeSpeedToFV = c.getFloat(c.getColumnIndex("FCWRelativeSpeedToFV"));
                     cd.fcwEvent = ( c.getInt(c.getColumnIndex("FCWEvent")) != 0 ); if (cd.fcwEvent) cdEvent = true;
                     cd.fcwEventThreshold = c.getFloat(c.getColumnIndex("FCWTEventThreshold"));
-
-
-
                     cd.ldwDistanceToLeftLane = c.getFloat(c.getColumnIndex("LDWDistanceToLeftLane"));
                     cd.ldwDistanceToRightLane = c.getFloat(c.getColumnIndex("LDWDistanceToRightLane"));
                     cd.ldwEvent = ( c.getInt(c.getColumnIndex("LDWEvent")) != 0 ); if (cd.ldwEvent) cdEvent = true;
@@ -496,7 +441,8 @@ public class ODDCclass implements ODDCinterface {
                 DataPackage dataPackage = new DataPackage(); //yz
                 Envelope env = new Envelope();
                 env.setSessionID(curSession);
-                env.setVehicleID(cd.vehicleID);                dataPackage.setEnvelope(env);
+                env.setVehicleID(cd.vehicleID);
+                dataPackage.setEnvelope(env);
                 dataPackage.setContinuousData(dataCollection); //yz
                 dataPackage.setPackageType(ptype);
                 status = controller.postDataPackage(dataPackage); //yz
@@ -569,11 +515,4 @@ public class ODDCclass implements ODDCinterface {
         }
         return status.value();
     }
-
-
-
-
-
-
-
 }
