@@ -20,11 +20,6 @@ public class MyApplication extends MultiDexApplication {
     public static boolean ADAS_OK = false;
     public static Activity currentActivity;
 
-    public static Context getContext()
-    {
-        return context;
-    }
-
     private static Context context;
 
     @Override

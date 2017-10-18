@@ -15,6 +15,7 @@ import com.neusoft.oddc.oddc.model.ODDCTask;
 import com.neusoft.oddc.oddc.model.TaskType;
 import com.neusoft.oddc.oddc.restclient.RESTController;
 import com.neusoft.oddc.oddc.utilities.Utilities;
+import com.neusoft.oddc.NeusoftHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,13 +31,14 @@ import java.util.UUID;
 public class JobManager
 {
     private RESTController restController;
-    private Envelope envelope = new Envelope(ODDCclass.session,Constants.ODDCApp.VIN);
+    private Envelope envelope = new Envelope(ODDCclass.curSession,Constants.ODDCApp.VIN);
 
     private boolean isProcessingJobs = false;
     private Timer pingTimer;
     Timer singlePingTimer;
     private int pingFrequency = 10000;
     private ODDCclass oddc;
+    private NeusoftHandler nsh;
 
     public void setAdasEnabled(boolean adasEnabled)
     {
@@ -70,6 +72,7 @@ public class JobManager
     {
         this.oddc = oddc;
     }
+    public void setNSH(NeusoftHandler n){this.nsh = n;}
     public void setPingFrequency(int value)
     {
         pingFrequency = value;
@@ -156,8 +159,8 @@ public class JobManager
         if(jobs.size() > 0)
         {
             Map<String, Object> parameters = jobs.get(0).getTasks().get(0).getParameters();
-            ODDCclass.session = UUID.fromString((String)parameters.get("session"));
-            envelope.setSessionID(ODDCclass.session);
+            ODDCclass.curSession = UUID.fromString((String)parameters.get("session"));
+            envelope.setSessionID(ODDCclass.curSession);
 
             for(ODDCJob job: jobs)
             {
@@ -364,13 +367,17 @@ public class JobManager
             public void run()
             {
                 ODDCTask task = ODDCTask.createMockTask(envelope);
+                task.setLatitude(nsh.getLatLong().getLatitude());
+                task.setLongitude(nsh.getLatLong().getLongitude());
+                task.setVehicleID(nsh.getVIN());
+                envelope.setVehicleID(nsh.getVIN());
                 ArrayList<ODDCJob> jobs = getJobList(task);
 
                 if(jobs != null)
                 {
                     Map<String, Object> parameters = jobs.get(0).getTasks().get(0).getParameters();
-                    ODDCclass.session = UUID.fromString((String)parameters.get("session"));
-                    envelope.setSessionID(ODDCclass.session);
+                    ODDCclass.curSession = UUID.fromString((String)parameters.get("session"));
+                    envelope.setSessionID(ODDCclass.curSession);
 
                     processJobs(jobs);
                 }

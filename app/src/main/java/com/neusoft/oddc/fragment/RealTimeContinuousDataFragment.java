@@ -66,41 +66,35 @@ public class RealTimeContinuousDataFragment extends Fragment {
     }
 
     public void updateUI(ContinuousData continuousData) {
-        String dateTime = ContinuousData.getTimestamp();
-//        String accelerationTimeStamp = continuousData.getAccelerationTimeStamp();
-        String accelerationTimeStamp = dateTime;
+        //String accelerationTimeStamp = continuousData.accelerationTimeStamp;
         double x = continuousData.getAccelerationX();
         double y = continuousData.getAccelerationY();
         double z = continuousData.getAccelerationZ();
-//        String fcwTimeStamp = continuousData.getFcwTimeStamp();
-        String fcwTimeStamp = dateTime;
+        //String fcwTimeStamp = continuousData.fcwTimeStamp;
         double fcwDistanceToFV = continuousData.getFcwDistanceToFV();
         double fcwEventThreshold = continuousData.getFcwEventThreshold();
         double fcwRelativeSpeedToFV = continuousData.getFcwRelativeSpeedToFV();
-//        String gShockTimeStamp = continuousData.getgShockTimeStamp();
-        String gShockTimeStamp = dateTime;
+        //String gShockTimeStamp = continuousData.gShockTimeStamp;
         double gShockEventThreshold = continuousData.getgShockEventThreshold();
-//        String gpsTimeStamp = continuousData.getGpsTimeStamp();
-        String gpsTimeStamp = dateTime;
+        //String gpsTimeStamp = continuousData.gpsTimeStamp;
         double latitude = continuousData.getLatitude();
         double longitude = continuousData.getLongitude();
-//        String LdwTimeStamp = continuousData.getLdwTimeStamp();
-        String LdwTimeStamp = dateTime;
+        //String LdwTimeStamp = continuousData.ldwTimeStamp;
         double LdwDistanceToLeftLane = continuousData.getLdwDistanceToLeftLane();
         double LdwDistanceToRightLane = continuousData.getLdwDistanceToRightLane();
         String MediaURI = continuousData.getMediaURI();
         double Speed = continuousData.getSpeed();
         double SpeedDetectionType = continuousData.getSpeedDetectionType();
 
-        real_time_continuous_data_param1.setText("accelerationTimeStamp \n" + accelerationTimeStamp.toString());
+        //real_time_continuous_data_param1.setText("accelerationTimeStamp \n" + accelerationTimeStamp.toString());
         real_time_continuous_data_param2.setText("acceleration x/y/z \n" + x + "\n" + y + "\n" + z);
-        real_time_continuous_data_param3.setText("fcwTimeStamp \n" + fcwTimeStamp.toString());
+        //real_time_continuous_data_param3.setText("fcwTimeStamp \n" + fcwTimeStamp.toString());
         real_time_continuous_data_param4.setText("fcwDistanceToFV " + fcwDistanceToFV);
         real_time_continuous_data_param5.setText("fcwEventThreshold " + fcwEventThreshold);
         real_time_continuous_data_param6.setText("fcwRelativeSpeedToFV " + fcwRelativeSpeedToFV);
-        real_time_continuous_data_param7.setText("gShockTimeStamp\n" + gShockTimeStamp + " \ngShockEventThreshold " + gShockEventThreshold);
-        real_time_continuous_data_param8.setText("gpsTimeStamp \n" + gpsTimeStamp.toString() + "\nlatitude/longitude  " + latitude + "/" + longitude);
-        real_time_continuous_data_param9.setText("LdwTimeStamp \n" + LdwTimeStamp);
+        //real_time_continuous_data_param7.setText("gShockTimeStamp\n" + gShockTimeStamp + " \ngShockEventThreshold " + gShockEventThreshold);
+        //real_time_continuous_data_param8.setText("gpsTimeStamp \n" + gpsTimeStamp.toString() + "\nlatitude/longitude  " + latitude + "/" + longitude);
+        //real_time_continuous_data_param9.setText("LdwTimeStamp \n" + LdwTimeStamp);
         real_time_continuous_data_param10.setText("LdwDistanceToLeftLane " + LdwDistanceToLeftLane);
         real_time_continuous_data_param11.setText("LdwDistanceToRightLane " + LdwDistanceToRightLane);
         real_time_continuous_data_param12.setText("MediaURI " + MediaURI);

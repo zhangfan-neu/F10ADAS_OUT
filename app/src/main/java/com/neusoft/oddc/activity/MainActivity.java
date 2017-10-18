@@ -168,11 +168,11 @@ public class MainActivity extends BaseActivity {
         // init ADASHelper
         adasHelper = new ADASHelper(context);
         adasHelper.init(context);
-//        Log.d("Jiehunt", adasHelper.getvin());
+        Log.d("Jiehunt", adasHelper.getvin());
 
         // init NeusoftHandler
         nsfh = new NeusoftHandler(context);
-        nsfh.init(context, com.neusoft.oddc.oddc.neusoft.Constants.ODDCApp.BASE_URL);
+        nsfh.init(context);
 
 
         // init ODDC
@@ -186,10 +186,6 @@ public class MainActivity extends BaseActivity {
         String key = FileUtil.getADASKey();
         if (TextUtils.isEmpty(key)) {
             Toast.makeText(this, R.string.main_adas_key_ng, Toast.LENGTH_LONG).show();
-        }
-        else
-        {
-            //key = "mX5xR79OjIGBOGFTZzG58w==";
         }
 
         int result = adasHelper.prepareADAS(key);

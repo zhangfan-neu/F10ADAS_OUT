@@ -1,0 +1,56 @@
+    dal
+GH  dal/DBHelper.java
+--  dal/JobsDAO.java
+     
+    model
+--  model/ContinuousDataCollection.java
+NS  model/ContinuousData.java
+--  model/CreateDB.sql
+GH  model/DataPackage.java
+--  model/DataPackageType.java
+GH  model/Envelope.java
+--  model/EventType.java
+--  model/JobStatus.java
+--  model/MSRDData.java
+--  model/Notification.java
+--  model/ODDCEvent.java
+--  model/ODDCJobCollection.java
+GH  model/ODDCJob.java
+--  model/ODDCMessage.java
+GH  model/ODDCTask.java
+--  model/SelectiveUploadTask.java
+--  model/SendType.java
+--  model/SpeedDetectionType.java
+--  model/TaskEvent.java
+--  model/TaskStatus.java
+--  model/TaskType.java
+--  model/UploadTask.java
+--  model/VideoCollection.java
+GH  model/Video.java
+     
+    neusoft
+GH  neusoft/Constants.java
+NS  neusoft/DBschema.java
+GH  neusoft/JobManager.java
+--  neusoft/LogData.java
+--  neusoft/LogList.java
+NS  neusoft/NeuSoftInterface.java
+--  neusoft/NotificationManager.java
+NS  neusoft/ODDCclass.java
+--  neusoft/ODDCinterface.java
+--  neusoft/PlaybackList.java
+     
+    restclient
+--  restclient/DownloadFileTask.java
+--  restclient/GetJobsRequestTask.java
+--  restclient/PostCommandCheckTask.java
+--  restclient/PostContinuousDataTask.java
+GH  restclient/PostDataPackageTask.java
+--  restclient/PostMediaDataTask.java
+--  restclient/PostNotificationTask.java
+--  restclient/PostSelectiveCheckTask.java
+--  restclient/RESTController.java
+     
+    utilities
+GH  utilities/Utilities.java
+    

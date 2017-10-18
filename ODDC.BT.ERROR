@@ -1,0 +1,111 @@
+10-16 16:53:50.394 13492-13492/? I/art: Late-enabling -Xcheck:jni
+10-16 16:53:50.705 13492-13492/com.neusoft.oddc I/MultiDex: VM with version 2.1.0 has multidex support
+10-16 16:53:50.705 13492-13492/com.neusoft.oddc I/MultiDex: install
+10-16 16:53:50.705 13492-13492/com.neusoft.oddc I/MultiDex: VM has multidex support, MultiDex support library is disabled.
+10-16 16:53:50.707 13492-13492/com.neusoft.oddc I/InstantRun: starting instant run server: is main process
+10-16 16:53:50.821 13492-13492/com.neusoft.oddc W/art: Before Android 4.1, method android.graphics.PorterDuffColorFilter android.support.graphics.drawable.VectorDrawableCompat.updateTintFilter(android.graphics.PorterDuffColorFilter, android.content.res.ColorStateList, android.graphics.PorterDuff$Mode) would have incorrectly overridden the package-private method in android.graphics.drawable.Drawable
+10-16 16:53:50.917 13492-13492/com.neusoft.oddc D/MainActivity: MainActivity onCreate
+10-16 16:53:51.115 13492-13492/com.neusoft.oddc D/BaseActivity: onResume needCheckPermission = true
+10-16 16:53:51.116 13492-13492/com.neusoft.oddc D/BaseActivity: checkPermissions all permission granted 
+10-16 16:53:51.125 13492-13492/com.neusoft.oddc D/MainActivity: getUserProfile : no data
+10-16 16:53:51.126 13492-13492/com.neusoft.oddc D/MainActivity: getVehicleProfile : no data
+10-16 16:53:51.127 13492-13492/com.neusoft.oddc D/MainActivity: getADASParameters : no data
+10-16 16:53:51.129 13492-13492/com.neusoft.oddc D/ADASHelper: ADASHelper init 
+10-16 16:53:51.135 13492-13492/com.neusoft.oddc I/b: Gravity sensor available. (TYPE_GRAVITY)
+10-16 16:53:51.139 13492-13492/com.neusoft.oddc I/b: Magnetic field sensor available. (TYPE_MAGNETIC_FIELD)
+10-16 16:53:51.146 13492-13492/com.neusoft.oddc D/ADASHelper: init location, request location updates
+10-16 16:53:51.158 13492-13492/com.neusoft.oddc D/c: Device Name is OBDLink MX
+10-16 16:53:51.164 13492-13492/com.neusoft.oddc D/c: Starting Bluetooth connection..
+10-16 16:53:51.166 13492-13492/com.neusoft.oddc W/BluetoothAdapter: getBluetoothService() called with no BluetoothManagerCallback
+10-16 16:53:56.306 13492-13492/com.neusoft.oddc E/c: There was an error while establishing Bluetooth connection. Falling back..
+                                                     java.io.IOException: read failed, socket might closed or timeout, read ret: -1
+                                                         at android.bluetooth.BluetoothSocket.readAll(BluetoothSocket.java:682)
+                                                         at android.bluetooth.BluetoothSocket.readInt(BluetoothSocket.java:694)
+                                                         at android.bluetooth.BluetoothSocket.connect(BluetoothSocket.java:374)
+                                                         at com.neusoft.oddc.adas.c$a.<init>(SourceFile:125)
+                                                         at com.neusoft.oddc.adas.c.<init>(SourceFile:86)
+                                                         at com.neusoft.oddc.adas.ADASHelper.init(SourceFile:61)
+                                                         at com.neusoft.oddc.activity.MainActivity.onPermissionGranted(MainActivity.java:170)
+                                                         at com.neusoft.oddc.activity.BaseActivity.checkPermissions(BaseActivity.java:78)
+                                                         at com.neusoft.oddc.activity.BaseActivity.onResume(BaseActivity.java:55)
+                                                         at com.neusoft.oddc.activity.MainActivity.onResume(MainActivity.java:134)
+                                                         at android.app.Instrumentation.callActivityOnResume(Instrumentation.java:1269)
+                                                         at android.app.Activity.performResume(Activity.java:6783)
+                                                         at android.app.ActivityThread.performResumeActivity(ActivityThread.java:3406)
+                                                         at android.app.ActivityThread.handleResumeActivity(ActivityThread.java:3469)
+                                                         at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2732)
+                                                         at android.app.ActivityThread.-wrap12(ActivityThread.java)
+                                                         at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1477)
+                                                         at android.os.Handler.dispatchMessage(Handler.java:102)
+                                                         at android.os.Looper.loop(Looper.java:154)
+                                                         at android.app.ActivityThread.main(ActivityThread.java:6119)
+                                                         at java.lang.reflect.Method.invoke(Native Method)
+                                                         at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:886)
+                                                         at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:776)
+10-16 16:53:56.311 13492-13492/com.neusoft.oddc W/BluetoothAdapter: getBluetoothService() called with no BluetoothManagerCallback
+10-16 16:54:01.450 13492-13492/com.neusoft.oddc E/c: Couldn't fallback while establishing Bluetooth connection.
+                                                     java.io.IOException: read failed, socket might closed or timeout, read ret: -1
+                                                         at android.bluetooth.BluetoothSocket.readAll(BluetoothSocket.java:682)
+                                                         at android.bluetooth.BluetoothSocket.waitSocketSignal(BluetoothSocket.java:641)
+                                                         at android.bluetooth.BluetoothSocket.connect(BluetoothSocket.java:378)
+                                                         at com.neusoft.oddc.adas.c$a.<init>(SourceFile:135)
+                                                         at com.neusoft.oddc.adas.c.<init>(SourceFile:86)
+                                                         at com.neusoft.oddc.adas.ADASHelper.init(SourceFile:61)
+                                                         at com.neusoft.oddc.activity.MainActivity.onPermissionGranted(MainActivity.java:170)
+                                                         at com.neusoft.oddc.activity.BaseActivity.checkPermissions(BaseActivity.java:78)
+                                                         at com.neusoft.oddc.activity.BaseActivity.onResume(BaseActivity.java:55)
+                                                         at com.neusoft.oddc.activity.MainActivity.onResume(MainActivity.java:134)
+                                                         at android.app.Instrumentation.callActivityOnResume(Instrumentation.java:1269)
+                                                         at android.app.Activity.performResume(Activity.java:6783)
+                                                         at android.app.ActivityThread.performResumeActivity(ActivityThread.java:3406)
+                                                         at android.app.ActivityThread.handleResumeActivity(ActivityThread.java:3469)
+                                                         at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2732)
+                                                         at android.app.ActivityThread.-wrap12(ActivityThread.java)
+                                                         at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1477)
+                                                         at android.os.Handler.dispatchMessage(Handler.java:102)
+                                                         at android.os.Looper.loop(Looper.java:154)
+                                                         at android.app.ActivityThread.main(ActivityThread.java:6119)
+                                                         at java.lang.reflect.Method.invoke(Native Method)
+                                                         at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:886)
+                                                         at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:776)
+10-16 16:54:01.487 13492-13492/com.neusoft.oddc D/ODDC THREAD: ODDCclass TID=13492
+10-16 16:54:01.498 13492-13492/com.neusoft.oddc D/MainActivity: oddc trace -> initODDC isOddcOk = true
+10-16 16:54:01.503 13492-13492/com.neusoft.oddc D/PropertyUtil: PROP_KEY_ADAS_KEY value = AN+XPOtTFYgICpsCsdt7gM==
+10-16 16:54:01.503 13492-13492/com.neusoft.oddc D/FileUtil: ADAS key = AN+XPOtTFYgICpsCsdt7gM==
+10-16 16:54:01.516 13492-13492/com.neusoft.oddc V/DasEngine: IMEI's length = 0
+10-16 16:54:01.517 13492-13492/com.neusoft.oddc D/ADASHelper: ADAS imei = {"ProductID":"nicigo2nd","DeviceID":"null"}
+10-16 16:54:01.518 13492-13492/com.neusoft.oddc D/ADASHelper: ADAS saveAuthorizationKey result = 0
+10-16 16:54:01.519 13492-13492/com.neusoft.oddc D/ADASHelper: ADAS version = Version:nicigo_v3 Build:Jul  3 2017_17:42:10
+10-16 16:54:01.527 13492-13492/com.neusoft.oddc V/DasEngine: IMEI's length = 0
+10-16 16:54:01.529 13492-13492/com.neusoft.oddc D/ADASHelper: ADAS initADAS = 1075
+10-16 16:54:01.536 13492-13492/com.neusoft.oddc D/MainActivity: getUserProfile : no data
+10-16 16:54:01.538 13492-13492/com.neusoft.oddc D/MainActivity: getVehicleProfile : no data
+10-16 16:54:01.540 13492-13492/com.neusoft.oddc D/MainActivity: getADASParameters : no data
+10-16 16:54:01.828 13492-13501/com.neusoft.oddc E/System: Uncaught exception thrown by finalizer
+10-16 16:54:01.828 13492-13501/com.neusoft.oddc E/System: java.io.IOException: socket not created
+                                                              at android.net.LocalSocketImpl.shutdownInput(LocalSocketImpl.java:404)
+                                                              at android.net.LocalSocket.shutdownInput(LocalSocket.java:207)
+                                                              at android.bluetooth.BluetoothSocket.close(BluetoothSocket.java:575)
+                                                              at android.bluetooth.BluetoothSocket.finalize(BluetoothSocket.java:273)
+                                                              at java.lang.Daemons$FinalizerDaemon.doFinalize(Daemons.java:222)
+                                                              at java.lang.Daemons$FinalizerDaemon.run(Daemons.java:209)
+                                                              at java.lang.Thread.run(Thread.java:761)
+10-16 16:54:01.828 13492-13501/com.neusoft.oddc E/System: Uncaught exception thrown by finalizer
+10-16 16:54:01.828 13492-13501/com.neusoft.oddc E/System: java.io.IOException: socket not created
+                                                              at android.net.LocalSocketImpl.shutdownInput(LocalSocketImpl.java:404)
+                                                              at android.net.LocalSocket.shutdownInput(LocalSocket.java:207)
+                                                              at android.bluetooth.BluetoothSocket.close(BluetoothSocket.java:575)
+                                                              at android.bluetooth.BluetoothSocket.finalize(BluetoothSocket.java:273)
+                                                              at java.lang.Daemons$FinalizerDaemon.doFinalize(Daemons.java:222)
+                                                              at java.lang.Daemons$FinalizerDaemon.run(Daemons.java:209)
+                                                              at java.lang.Thread.run(Thread.java:761)
+10-16 16:54:01.993 13492-13660/com.neusoft.oddc I/OpenGLRenderer: Initialized EGL, version 1.4
+10-16 16:54:01.993 13492-13660/com.neusoft.oddc D/OpenGLRenderer: Swap behavior 2
+10-16 16:54:02.092 13492-13492/com.neusoft.oddc W/art: Before Android 4.1, method int android.support.v7.widget.ListViewCompat.lookForSelectablePosition(int, boolean) would have incorrectly overridden the package-private method in android.widget.ListView
+10-16 16:54:02.497 13492-13659/com.neusoft.oddc D/ODDC THREAD: JobManager.PingTimer TID=13659
+10-16 16:54:02.498 13492-13659/com.neusoft.oddc W/art: Before Android 4.1, method double java.util.concurrent.ThreadLocalRandom.internalNextDouble(double, double) would have incorrectly overridden the package-private method in java.util.Random
+10-16 16:54:02.498 13492-13659/com.neusoft.oddc W/art: Before Android 4.1, method int java.util.concurrent.ThreadLocalRandom.internalNextInt(int, int) would have incorrectly overridden the package-private method in java.util.Random
+10-16 16:54:02.498 13492-13659/com.neusoft.oddc W/art: Before Android 4.1, method long java.util.concurrent.ThreadLocalRandom.internalNextLong(long, long) would have incorrectly overridden the package-private method in java.util.Random
+10-16 16:54:02.642 13492-13680/com.neusoft.oddc D/NetworkSecurityConfig: No Network Security Config specified, using platform default
+10-16 16:54:03.378 13492-13680/com.neusoft.oddc E/PostCommandCheckTask: Error retrieving comands.I/O error: Connection refused; nested exception is java.net.ConnectException: Connection refused
+
