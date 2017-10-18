@@ -33,7 +33,7 @@ public class JobManager
 {
     private RESTController restController;
     //TODO: Remove fixed VIN information
-    private Envelope envelope = new Envelope(ODDCclass.session, ADASHelper.getvin());
+    private Envelope envelope = new Envelope(ODDCclass.curSession, ADASHelper.getvin());
     private boolean isProcessingJobs = false;
     private Timer pingTimer;
     private Timer singlePingTimer;
@@ -318,7 +318,7 @@ public class JobManager
 
                 if(!vin.isEmpty())
                 {
-                    envelope = new Envelope(ODDCclass.session, vin);
+                    envelope = new Envelope(ODDCclass.curSession, vin);
 
 
                     ODDCTask task = ODDCTask.createMockTask(envelope);
@@ -327,8 +327,8 @@ public class JobManager
                     if(jobs != null)
                     {
                         Map<String, Object> parameters = jobs.get(0).getTasks().get(0).getParameters();
-                        ODDCclass.session = UUID.fromString((String)parameters.get("session"));
-                        envelope.setSessionID(ODDCclass.session);
+                        ODDCclass.curSession = UUID.fromString((String)parameters.get("session"));
+                        envelope.setSessionID(ODDCclass.curSession);
 
                         processJobs(jobs);
                     }

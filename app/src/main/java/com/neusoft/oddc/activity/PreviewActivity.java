@@ -478,7 +478,8 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
 //                }
 //
 //                jobButton.setOnClickListener(this);
-//            }        }
+//            }
+        }
 
         drawerLayout = (DrawerLayout) findViewById(R.id.preview_activity_drawerlayout);
         drawerLayout.setScrimColor(Color.TRANSPARENT);

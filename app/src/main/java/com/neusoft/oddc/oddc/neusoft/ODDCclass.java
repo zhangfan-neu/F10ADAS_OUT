@@ -333,7 +333,8 @@ public class ODDCclass implements ODDCinterface {
 
         if (availSpace > Constants.ODDCApp.MIN_AVAIL_FS) return availSpace;
         else  {
-            String[] columns = new String[]{DBschema.TS,DBschema.GS_E,DBschema.FCW_E,DBschema.FCW_CI,DBschema.LDW_E,DBschema.M_URI,DBschema.M_D,DBschema            String selection = new String("MediaURI NOT IN ( select MediaURI from oddc where GShockEvent = 1 or FCWEvent = 1 or LDWEvent = 1 or MediaDeleted = 1)");
+            String[] columns = new String[]{DBschema.TS,DBschema.GS_E,DBschema.FCW_E,DBschema.FCW_CI,DBschema.LDW_E,DBschema.M_URI,DBschema.M_D,DBschema.M_U};
+            String selection = new String("MediaURI NOT IN ( select MediaURI from oddc where GShockEvent = 1 or FCWEvent = 1 or LDWEvent = 1 or MediaDeleted = 1)");
             String limit = new String("2");
             Cursor c = db.query (true,
                     DBschema.TABLE_NAME,
@@ -548,7 +549,7 @@ public class ODDCclass implements ODDCinterface {
 
         DataPackage dataPackage = new DataPackage(); //yz
         dataPackage.setVideos(videos);
-        Envelope env = new Envelope(ODDCclass.curSession, listener.getVIN());
+        Envelope env = new Envelope(ODDCclass.curSession, Utilities.getVehicleID());
         //env.setVehicleID(cd.vehicleID);        dataPackage.setEnvelope(env);
         dataPackage.setPackageType(DataPackageType.SELECTIVE);
 

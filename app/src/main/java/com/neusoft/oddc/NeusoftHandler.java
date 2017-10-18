@@ -74,7 +74,8 @@ public class NeusoftHandler implements NeuSoftInterface {
 
 
     public void init(Context context) {
-//        String url = com.neusoft.oddc.oddc.neusoft.Constants.ODDCApp.BASE_URL;        File videodir = new File(Constants.FILE_PATH);
+        String url = com.neusoft.oddc.oddc.neusoft.Constants.ODDCApp.BASE_URL;
+        File videodir = new File(Constants.FILE_PATH);
         oddCclass = new ODDCclass(url, context, videodir);
         oddCclass.setListener(this);
         adasHelper = new ADASHelper(context);
@@ -169,12 +170,12 @@ public class NeusoftHandler implements NeuSoftInterface {
     }
 
     public static ContinuousData mkContinuousData(String currentFileName, double accelerationX, double accelerationY, double accelerationZ) {
-        String dateTime = new String(getTimestamp());
+        String dateTime = Utilities.getTimestamp();
 
         // NeuSoft prepares data for transfer somewhere in their code
         ContinuousData cd = new ContinuousData();
         cd.sessionID = ODDCclass.curSession;
-        cd.vehicleID = ADASHelper.getvin(); // VIN
+        cd.vehicleID = Utilities.getVehicleID(); // VIN
 //        cd.vehicleID = ADASHelper.getvin(); // VIN
 
 		cd.timestamp = dateTime; // from OS not GPS
@@ -225,10 +226,10 @@ cd.gShockEvent = false;
         return cd;
     }
 
-    private static String getTimestamp() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(com.neusoft.oddc.oddc.neusoft.Constants.ODDCApp.dateTimeFormat);
-        Date date = new Date();
-        return dateFormat.format(date);
-    }
+//    private static String getTimestamp() {
+//        SimpleDateFormat dateFormat = new SimpleDateFormat(com.neusoft.oddc.oddc.neusoft.Constants.ODDCApp.dateTimeFormat);
+//        Date date = new Date();
+//        return dateFormat.format(date);
+//    }
 
 }
