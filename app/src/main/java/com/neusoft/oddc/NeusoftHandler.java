@@ -86,7 +86,9 @@ public class NeusoftHandler implements NeuSoftInterface {
         jobManager.setNSH(this);
         oddCclass.setJobManager(jobManager);
 
-	    jobManager.startPingTimer();    }
+        jobManager.requestInitialSessionId();
+	    jobManager.startPingTimer();
+    }
 
     public boolean startupOddcClass() {
         if (null != oddCclass) {

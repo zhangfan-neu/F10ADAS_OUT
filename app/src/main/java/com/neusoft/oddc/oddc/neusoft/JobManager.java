@@ -310,11 +310,8 @@ public class JobManager
             @Override
             public void run()
             {
-//The following retrieves data from VehicleProfileEntityDao and the VIN from OBD-2.
-//                String obd2Vin = ADASHelper.getvin();
+                //The following retrieves data from VehicleProfileEntityDao and the VIN from OBD-2.
                 String vin = Utilities.getVehicleID();
-
-
 
                 if(!vin.isEmpty())
                 {
