@@ -4,15 +4,12 @@
 
 package com.neusoft.oddc.oddc.model;
 
-import com.neusoft.oddc.oddc.utilities.Utilities;
+import android.location.Location;
+
+import com.neusoft.oddc.adas.ADASHelper;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
 
 public class ODDCTask
 {
@@ -92,12 +89,20 @@ public class ODDCTask
     public static ODDCTask createMockTask(Envelope envelope)
     {
         ODDCTask task = new ODDCTask();
-        //task.id = (UUID.randomUUID().toString());
-        //task.vehicleID = Utilities.getAlphaNumericString(17);
         task.type = TaskType.JOB_REQUEST;
         task.status = TaskStatus.UNKNOWN;
-        task.latitude = -122.413009;
-        task.longitude = 37.774851;
+
+        Location location = ADASHelper.getCoarseLocation();
+        if (null != location) {
+            task.longitude = location.getLongitude();
+            task.latitude = location.getLatitude();
+        }
+        else
+        {
+            task.latitude = 0.0;
+            task.longitude = 0.0;
+        }
+
         task.vehicleID = envelope.getVehicleID();
         HashMap<String, Object>	parameters = new HashMap<String, Object>();
 //        List<String> fileNames = new ArrayList<String>();

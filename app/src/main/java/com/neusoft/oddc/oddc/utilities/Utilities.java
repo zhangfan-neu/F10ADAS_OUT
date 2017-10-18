@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -20,37 +21,40 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.neusoft.oddc.MyApplication;
+import com.neusoft.oddc.adas.ADASHelper;
+import com.neusoft.oddc.db.dbentity.VehicleProfileEntity;
+import com.neusoft.oddc.db.gen.VehicleProfileEntityDao;
 import com.neusoft.oddc.oddc.model.Video;
 
 import static com.google.android.gms.internal.zzid.runOnUiThread;
 
 public class Utilities
 {
-    public static String generateUUIDString()
-    {
-        return UUID.randomUUID().toString();
-    }
-
-    public static boolean saveVideoFile(Video video, String path)
-    {
-        boolean success = false;
-        String fileName = path + File.separator + video.getFileName();
-
-        try
-        {
-            FileOutputStream out = new FileOutputStream(fileName);
-            byte[] bytes = video.getVideoBytes();
-            out.write(bytes);
-            out.close();
-            success = true;
-        }
-        catch (Exception e)
-        {
-            Log.d("saveVideoFile()", "File '" + fileName + "' saved.");
-        }
-
-        return success;
-    }
+//    public static String generateUUIDString()
+//    {
+//        return UUID.randomUUID().toString();
+//    }
+//
+//    public static boolean saveVideoFile(Video video, String path)
+//    {
+//        boolean success = false;
+//        String fileName = path + File.separator + video.getFileName();
+//
+//        try
+//        {
+//            FileOutputStream out = new FileOutputStream(fileName);
+//            byte[] bytes = video.getVideoBytes();
+//            out.write(bytes);
+//            out.close();
+//            success = true;
+//        }
+//        catch (Exception e)
+//        {
+//            Log.d("saveVideoFile()", "File '" + fileName + "' saved.");
+//        }
+//
+//        return success;
+//    }
 
     public static byte [] downloadFile(String fileURL)
     {
@@ -108,29 +112,29 @@ public class Utilities
         return bytes;
     }
 
-    public static String getAlphaNumericString(int length)
-    {
-        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder salt = new StringBuilder();
-        Random random = new Random();
-        while (salt.length() < length)
-            salt.append(SALTCHARS.charAt((int) (random.nextFloat() * SALTCHARS.length())));
+//    public static String getAlphaNumericString(int length)
+//    {
+//        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+//        StringBuilder salt = new StringBuilder();
+//        Random random = new Random();
+//        while (salt.length() < length)
+//            salt.append(SALTCHARS.charAt((int) (random.nextFloat() * SALTCHARS.length())));
+//
+//        return salt.toString();
+//    }
 
-        return salt.toString();
-    }
-
-    public static int getRandomInteger(int min, int max)
-    {
-        return ThreadLocalRandom.current().nextInt(min, max + 1);
-    }
-    public static double getRandomDouble(double min, double max)
-    {
-        return ThreadLocalRandom.current().nextDouble(min, max + 1);
-    }
-    public static String getRandomFileName(String extension)
-    {
-        return Utilities.getAlphaNumericString(5) + " " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss.SSSZ").format(Calendar.getInstance().getTime()).toString() + extension;
-    }
+//    public static int getRandomInteger(int min, int max)
+//    {
+//        return ThreadLocalRandom.current().nextInt(min, max + 1);
+//    }
+//    public static double getRandomDouble(double min, double max)
+//    {
+//        return ThreadLocalRandom.current().nextDouble(min, max + 1);
+//    }
+//    public static String getRandomFileName(String extension)
+//    {
+//        return Utilities.getAlphaNumericString(5) + " " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss.SSSZ").format(Calendar.getInstance().getTime()).toString() + extension;
+//    }
 
     public static void showToastMessage(final String msg)
     {
@@ -154,5 +158,34 @@ public class Utilities
         SimpleDateFormat dateFormat = new SimpleDateFormat( com.neusoft.oddc.oddc.neusoft.Constants.ODDCApp.dateTimeFormat );
         Date date = new Date();
         return dateFormat.format(date);
+    }
+
+    public static String getVehicleID()
+    {
+        String vin = "";
+
+        //OBD-2 VIN takes priority.  Uses stored VIN as a back up if there is no connection to the server.
+        //ADASHelper.getvin() will only return empty if the app is not connected to the OBD-2.
+        String obd2Vin = ADASHelper.getvin();
+
+        if(!obd2Vin.isEmpty())
+        {
+            vin = obd2Vin;
+        }
+        else
+        {
+            VehicleProfileEntity entity;
+            VehicleProfileEntityDao vehicleProfileEntityDao= ((MyApplication) MyApplication.currentActivity.getApplication()).getDaoSession().getVehicleProfileEntityDao();
+            ArrayList<VehicleProfileEntity> list = (ArrayList<VehicleProfileEntity>) vehicleProfileEntityDao.queryBuilder()
+                    .where(VehicleProfileEntityDao.Properties.Key_user.eq("")).list();
+
+            if (null != list && list.size() > 0)
+            {
+                entity = list.get(0);
+                vin = entity.getVin();
+            }
+        }
+
+        return vin;
     }
 }

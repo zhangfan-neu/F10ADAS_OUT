@@ -21,26 +21,21 @@ public class ContinuousData
     public UUID id = null;
     public UUID sessionID = null;
     public String vehicleID = null;
-    public String driverID = null;
-    public String submitterID = null;
-    public int tzOffset = 0;
     public String timestamp;
-//    public String gpsTimeStamp = null;
+
     public double longitude = 0.0;
     public double latitude = 0.0;
     public double speed;
     public int speedDetectionType = 0;
-//    public String accelerationTimeStamp = null;
+
     public double accelerationX = 0.0;
     public double accelerationY = 0.0;
     public double accelerationZ = 0.0;
 
-//    public String gShockTimeStamp = null;
     public boolean gShockEvent = false;
     public double gShockEventValue = 0.0;
     public double gShockEventThreshold = 0.0;
 
-//    public String fcwTimeStamp = null;
     public boolean fcwExistFV = false;
     public boolean fcwCutIn = false;
     public double fcwDistanceToFV = 0.0;
@@ -48,7 +43,6 @@ public class ContinuousData
     public boolean fcwEvent = false;
     public double fcwEventThreshold = 0.0;
 
-//    public String ldwTimeStamp = null;
     public double ldwDistanceToLeftLane = 0.0;
     public double ldwDistanceToRightLane = 0.0;
     public Boolean ldwEvent = false;
@@ -76,9 +70,6 @@ public class ContinuousData
     public void setId(UUID id) {
         this.id = id;
     }
-
-    //public Timestamp getGpsTimeStamp() {return gpsTimeStamp;}
-    //public void setGpsTimeStamp(Timestamp gpsTimeStamp) {this.gpsTimeStamp = gpsTimeStamp;}
 
     public double getLongitude() {
         return longitude;
@@ -112,9 +103,6 @@ public class ContinuousData
         this.speedDetectionType = speedDetectionType;
     }
 
-    //public Timestamp getAccelerationTimeStamp() {return accelerationTimeStamp;}
-    //public void setAccelerationTimeStamp(Timestamp accelerationTimeStamp) {this.accelerationTimeStamp = accelerationTimeStamp;}
-
     public double getAccelerationX() {
         return accelerationX;
     }
@@ -139,9 +127,6 @@ public class ContinuousData
         this.accelerationZ = accelerationZ;
     }
 
-    //public Timestamp getgShockTimeStamp() {return gShockTimeStamp;}
-    //public void setgShockTimeStamp(Timestamp gShockTimeStamp) {this.gShockTimeStamp = gShockTimeStamp;}
-
     public boolean isgShockEvent() {
         return gShockEvent;
     }
@@ -157,9 +142,6 @@ public class ContinuousData
     public void setgShockEventThreshold(double gShockEventThreshold) {
         this.gShockEventThreshold = gShockEventThreshold;
     }
-
-    //public Timestamp getFcwTimeStamp() {return fcwTimeStamp;}
-    //public void setFcwTimeStamp(Timestamp fcwTimeStamp) {this.fcwTimeStamp = fcwTimeStamp;}
 
     public boolean isFcwExistFV() {
         return fcwExistFV;
@@ -209,9 +191,6 @@ public class ContinuousData
         this.fcwEventThreshold = fcwEventThreshold;
     }
 
-    //public Timestamp getLdwTimeStamp() {return ldwTimeStamp;}
-    //public void setLdwTimeStamp(Timestamp ldwTimeStamp) {this.ldwTimeStamp = ldwTimeStamp;}
-
     public double getLdwDistanceToLeftLane() {
         return ldwDistanceToLeftLane;
     }
@@ -244,6 +223,7 @@ public class ContinuousData
         this.mediaURI = mediaURI;
     }
 
+    //TODO: Remove this and call the Utilities version of this method...
     public static String getTimestamp(){
         SimpleDateFormat dateFormat = new SimpleDateFormat( Constants.ODDCApp.dateTimeFormat );
         Date date = new Date();

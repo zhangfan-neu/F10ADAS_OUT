@@ -281,20 +281,6 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             }
         }
 
-        // Test code only
-        /*
-        Random random = new Random();
-        int ranInt = random.nextInt(1000);
-        Log.d(TAG, "ranInt = " + ranInt);
-        if (ranInt < 5) {
-            leftevnet = true;
-        } else if (ranInt < 10) {
-            rightevnet = true;
-        } else if (ranInt < 20) {
-            ttcevent = true;
-        }
-        */
-
         // ODDC
         if (NeusoftHandler.isOddcOk && JobManager.getInstance().isAdasEnabled()) {
             String filename = fileOutputPath.substring(fileOutputPath.lastIndexOf("/") + 1, fileOutputPath.length());
@@ -302,8 +288,12 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             double accelerationY = adasHelper.getAccelerometerY();
             double accelerationZ = adasHelper.getAccelerometerZ();
 
-
             ContinuousData continuousData = nsfh.mkContinuousData(filename, accelerationX, accelerationY, accelerationZ);
+
+            if(continuousData == null)
+            {
+                return;
+            }
 
             // G Force Event
             double gx = accelerationX / 9.81;
@@ -321,7 +311,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             // ADAS related
             if (null != dasTrafficEnvironment) {
                 DasLaneMarkings dasLaneMarkings = dasTrafficEnvironment.getLaneMarkings();
-                long ldwTimestamp = dasLaneMarkings.getTimestamp();
+//                long ldwTimestamp = dasLaneMarkings.getTimestamp();
 //                continuousData.ldwTimeStamp = new Timestamp(ldwTimestamp).toString();
                 DasLaneMarkings.DasEgoLane dasEgoLane = dasLaneMarkings.getDasEgoLane();
                 leftDis = dasEgoLane.getLeftDis();
@@ -337,7 +327,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
                 }
 
                 DasVehicles dasVehicles = dasTrafficEnvironment.getVehicles();
-                long fdwTimestamp = dasVehicles.getTimestamp();
+//                long fdwTimestamp = dasVehicles.getTimestamp();
 //                continuousData.fcwTimeStamp = new Timestamp(fdwTimestamp).toString();
                 if (dasVehicles.getNums() > 0) {
 
@@ -379,7 +369,6 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
                 needRestartRecord = false;
             }
         }
-
     }
 
     @Override
@@ -471,21 +460,24 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             continuousDataLayout.setVisibility(View.VISIBLE);
             realTimeContinuousDataFragment = (RealTimeContinuousDataFragment) getSupportFragmentManager().findFragmentById(R.id.preview_activity_fragment_real_time_continuous_data);
 
-            jobButton = (Button)findViewById(R.id.preview_activity_job_btn);
-            if(jobButton != null)
-            {
-                jobButton.setVisibility(View.VISIBLE);
-                if(recorder != null && !recorder.isRecording())
-                {
-                    jobButton.setText(getString(R.string.start));
-                }
-                else
-                {
-                    jobButton.setText(getString(R.string.stop));
-                }
-
-                jobButton.setOnClickListener(this);
-            }
+            //NOTE: Disabling start/stop button because we require a sessionID which can only be obtained
+            //      with a valid connection to the server.  Forcing the ADAS/DVR system to start can introduce
+            //      bad data.
+//            jobButton = (Button)findViewById(R.id.preview_activity_job_btn);
+//            if(jobButton != null)
+//            {
+//                jobButton.setVisibility(View.VISIBLE);
+//                if(recorder != null && !recorder.isRecording())
+//                {
+//                    jobButton.setText(getString(R.string.start));
+//                }
+//                else
+//                {
+//                    jobButton.setText(getString(R.string.stop));
+//                }
+//
+//                jobButton.setOnClickListener(this);
+//            }
         }
 
         drawerLayout = (DrawerLayout) findViewById(R.id.preview_activity_drawerlayout);
