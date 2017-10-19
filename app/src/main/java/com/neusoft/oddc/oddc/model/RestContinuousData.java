@@ -43,8 +43,6 @@ public class RestContinuousData implements Serializable
 	{
 	}
 
-	
-
 	public RestContinuousData(UUID id, UUID sessionid, UUID packageid, String vehicleid, double longitude, double latitude, double speed, int speeddetectiontype, double accelerationx, double accelerationy, double accelerationz, boolean gshockevent, double gshockeventthreshold, boolean fcwexistfv,
 			boolean fcwcutin, double fcwdistancetofv, double fcwrelativespeedtofv, boolean fcwevent, double fcwteventthreshold, double ldwdistancetoleftlane, double ldwdistancetorightlane, boolean ldwevent, String mediauri, String timestamp)
 	{
@@ -74,8 +72,6 @@ public class RestContinuousData implements Serializable
 		this.mediauri = mediauri;
 		this.timestamp = timestamp;
 	}
-
-
 
 	public UUID getPackageid()
 	{
@@ -324,36 +320,5 @@ public class RestContinuousData implements Serializable
 				+ ", accelerationy=" + accelerationy + ", accelerationz=" + accelerationz + ", gshockevent=" + gshockevent + ", gshockeventthreshold=" + gshockeventthreshold + ", fcwexistfv=" + fcwexistfv + ", fcwcutin=" + fcwcutin + ", fcwdistancetofv=" + fcwdistancetofv + ", fcwrelativespeedtofv="
 				+ fcwrelativespeedtofv + ", fcwevent=" + fcwevent + ", fcwteventthreshold=" + fcwteventthreshold + ", ldwdistancetoleftlane=" + ldwdistancetoleftlane + ", ldwdistancetorightlane=" + ldwdistancetorightlane + ", ldwevent=" + ldwevent + ", mediauri=" + mediauri + ", timestamp="
 				+ timestamp + "]";
-	}
-	
-	
-	public static RestContinuousData createDummyContinuousData(String vin, UUID session, UUID packet, boolean event)
-	{
-		RestContinuousData data = new RestContinuousData();
-		data.id = UUID.randomUUID();
-		data.vehicleid = vin;
-		data.sessionid= session;
-		data.packageid = packet;
-		data.longitude = Math.random() * Math.PI * 2;
-		data.latitude = Math.acos(Math.random() * 2 - 1);
-		data.speed = (double) (Math.random() * (50)) + 50;
-		data.speeddetectiontype = 4;
-		data.accelerationx = (int) (Math.random() * 10) + 1;
-		data.accelerationy = (int) (Math.random() * 10) + 1;
-		data.accelerationz = (int) (Math.random() * 10) + 1;
-		data.gshockevent = event;
-		data.gshockeventthreshold = (int) (Math.random() * 10) + 1;
-		data.fcwexistfv = Math.random() < 0.5;
-		data.fcwcutin = Math.random() < 0.5;
-		data.fcwdistancetofv = (double) new Random().nextInt(2) + 3;
-		data.fcwrelativespeedtofv = (double) new Random().nextInt(2) + 3;
-		data.fcwevent = event;
-		data.fcwteventthreshold = (double) (Math.random() * (50)) + 50;
-		data.ldwdistancetoleftlane = (double) new Random().nextInt(2) + 3;
-		data.ldwdistancetorightlane = (double) new Random().nextInt(2) + 3;
-		data.ldwevent = event;
-		data.mediauri = "1234_5678.MP4";
-		data.timestamp = Utilities.getTimestamp();
-		return data;
 	}
 }

@@ -7,13 +7,7 @@ package com.neusoft.oddc.oddc.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import com.neusoft.oddc.oddc.neusoft.Constants;
 import com.neusoft.oddc.oddc.utilities.Utilities;
-
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
 import java.util.UUID;
 
 
@@ -25,10 +19,8 @@ public class ContinuousData
     public UUID sessionID = null;
     @JsonProperty("vehicleid")
     public String vehicleID = null;
-
     @JsonProperty("packageid")
     public String packageID = null;
-
     @JsonProperty("timestamp")
     public String timestamp = Utilities.getTimestamp();
 
@@ -36,10 +28,12 @@ public class ContinuousData
     public double longitude = 0.0;
     @JsonProperty("latitude")
     public double latitude = 0.0;
+
     @JsonProperty("speed")
     public double speed = 0.0;
     @JsonProperty("speedDetectionType")
     public int speedDetectionType = 0;
+
 	@JsonProperty("accelerationX")
 	public double accelerationX = 0.0;
     @JsonProperty("accelerationY")
@@ -91,8 +85,6 @@ public class ContinuousData
         else
             return false;
     }
-
-
 
     public UUID getId() {
         return id;
