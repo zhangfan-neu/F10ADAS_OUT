@@ -86,7 +86,7 @@ public class ODDCTask
         this.parameters = parameters;
     }
 
-    public static ODDCTask createMockTask(Envelope envelope)
+    public static ODDCTask createJobRequestTask(Envelope envelope)
     {
         ODDCTask task = new ODDCTask();
         task.type = TaskType.JOB_REQUEST;

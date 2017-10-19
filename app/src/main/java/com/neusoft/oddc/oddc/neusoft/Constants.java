@@ -8,10 +8,9 @@ public class Constants
 {
     public static class ODDCApp
     {
-//        public static final String BASE_URL = "http://13.57.134.47:8080//ODDCServer/";
-        public static final String BASE_URL = "http://13.57.134.47:8080//";
+        public static final String BASE_URL = "http://13.57.134.47:7070/ODDCServer/";
+//        public static final String BASE_URL = "http://13.57.134.47:7070//";
         public static final String VIN = "1B3LC46R38N557181";
-//        public static final String BASE_URL = "http://10.0.2.2:8080//";
         public static final int PING_TIME = 10000;   //10 seconds
         //public static final String dateTimeFormat = "MM-dd-yyyy HH:mm:ss.SSS";
         public static final String dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
@@ -25,6 +24,5 @@ public class Constants
         public static int SAMPLE_FREQ = 30;
         public static int FRAMES_PER_MIN = FRAME_RATE * 60;
         public static int SENDCOUNT = FRAMES_PER_MIN / SAMPLE_FREQ;
-
     }
 }

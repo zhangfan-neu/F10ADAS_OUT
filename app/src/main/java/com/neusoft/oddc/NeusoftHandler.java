@@ -172,15 +172,21 @@ public class NeusoftHandler implements NeuSoftInterface {
     }
 
     public static ContinuousData mkContinuousData(String currentFileName, double accelerationX, double accelerationY, double accelerationZ) {
-        String dateTime = Utilities.getTimestamp();
+        String dateTime = Utilities.getTimestamp();     // from OS not GPS
 
-        // NeuSoft prepares data for transfer somewhere in their code
         ContinuousData cd = new ContinuousData();
-        cd.sessionID = ODDCclass.curSession;
-        cd.vehicleID = Utilities.getVehicleID(); // VIN
-//        cd.vehicleID = ADASHelper.getvin(); // VIN
 
-		cd.timestamp = dateTime; // from OS not GPS
+        if(ODDCclass.curSession != null)
+        {
+            cd.sessionID = ODDCclass.curSession;
+        }
+        else
+        {
+            Log.e("mkContinuousData - ", "Invalid SessionID.");
+            return null;
+        }
+
+        cd.timestamp = dateTime;
 		String vin = Utilities.getVehicleID();
 
 		//VIN cannot be empty.
@@ -192,15 +198,14 @@ public class NeusoftHandler implements NeuSoftInterface {
         {
             Log.e("mkContinuousData", "ERROR: Invalid VIN.");
             return null;
-        }        Location location = ADASHelper.getCoarseLocation();
+        }
+
+        Location location = ADASHelper.getCoarseLocation();
         if (null != location) {
             double mLongitude = location.getLongitude();
             double mLatitude = location.getLatitude();
             cd.longitude = mLongitude;
             cd.latitude = mLatitude;
-//            cd.gpsTimeStamp = dateTime;        } else {
-            cd.longitude = 0;
-            cd.latitude = 0;
         }
 
         cd.speed = ADASHelper.getspd();
@@ -210,11 +215,9 @@ public class NeusoftHandler implements NeuSoftInterface {
         cd.accelerationX = accelerationX;
         cd.accelerationZ = accelerationZ;
 
-cd.gShockEvent = false;
-        //cd.gShockEventThreshold /* default for now */
+        cd.gShockEvent = false;
 
         cd.fcwExistFV = false;
-        //cd.fcwTimeToCollision = 0;
         cd.fcwDistanceToFV = 0;
         cd.fcwRelativeSpeedToFV = 0;
 
@@ -223,7 +226,8 @@ cd.gShockEvent = false;
 
         cd.ldwDistanceToLeftLane = 0;
         cd.ldwDistanceToRightLane = 0;
-        cd.ldwEvent = false;        cd.mediaURI = currentFileName;
+        cd.ldwEvent = false;
+        cd.mediaURI = currentFileName;
 
         return cd;
     }

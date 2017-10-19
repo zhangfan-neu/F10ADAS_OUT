@@ -20,7 +20,9 @@ import com.neusoft.oddc.NeusoftHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -33,7 +35,7 @@ public class JobManager
 {
     private RESTController restController;
     //TODO: Remove fixed VIN information
-    private Envelope envelope = new Envelope(ODDCclass.curSession, ADASHelper.getvin());
+    private Envelope envelope = new Envelope(ODDCclass.curSession, Utilities.getVehicleID());
     private boolean isProcessingJobs = false;
     private Timer pingTimer;
     private Timer singlePingTimer;
@@ -76,46 +78,6 @@ public class JobManager
     {
         return instance;
     }
-
-    //TODO: Consider moving this function into Utilities...
-//    public String getVehicleID()
-//    {
-//        String vin = "";
-//        VehicleProfileEntity entity;
-////        ADASHelper nsfh = new ADASHelper();
-//        VehicleProfileEntityDao vehicleProfileEntityDao= ((MyApplication) MyApplication.currentActivity.getApplication()).getDaoSession().getVehicleProfileEntityDao();
-//        ArrayList<VehicleProfileEntity> list = (ArrayList<VehicleProfileEntity>) vehicleProfileEntityDao.queryBuilder()
-//                .where(VehicleProfileEntityDao.Properties.Key_user.eq("")).list();
-//
-//        //TODO: Modify the following so OBD-2 VIN takes priority...
-//        String obd2Vin = ADASHelper.getvin();
-//
-//        if(!obd2Vin.isEmpty())
-//        {
-//            vin = obd2Vin;
-//        }
-//        else
-//        {
-//            if (null != list && list.size() > 0)
-//            {
-//                entity = list.get(0);
-//                vin = entity.getVin();
-//            }
-//        }
-//
-////        if (null != list && list.size() > 0)
-////        {
-////            entity = list.get(0);
-////            vin = entity.getVin();
-////        }
-////        else
-////        {
-////            // Set vin read from odb2
-////            vin = nsfh.getvin();
-////        }
-//
-//        return vin;
-//    }
 
     private ArrayList<ODDCJob> getJobsFromServer(ODDCTask task)
     {
@@ -184,7 +146,6 @@ public class JobManager
                 processTerminateTask();
                 break;
             case RESUME:
-//                nsh.resume();
                 processResumedTask();
                 break;
             default:
@@ -203,6 +164,8 @@ public class JobManager
             Log.d("processResumedTask", "ODDC is not initialized.");
             return;
         }
+
+//        nsh.resume();
     }
 
     private void processStopTask()
@@ -317,18 +280,18 @@ public class JobManager
                 {
                     envelope = new Envelope(ODDCclass.curSession, vin);
 
+                    ODDCTask task = ODDCTask.createJobRequestTask(envelope);
+                    getJobList(task);
 
-                    ODDCTask task = ODDCTask.createMockTask(envelope);
-                    ArrayList<ODDCJob> jobs = getJobList(task);
-
-                    if(jobs != null)
-                    {
-                        Map<String, Object> parameters = jobs.get(0).getTasks().get(0).getParameters();
-                        ODDCclass.curSession = UUID.fromString((String)parameters.get("session"));
-                        envelope.setSessionID(ODDCclass.curSession);
-
-                        processJobs(jobs);
-                    }
+                    //TODO: Delete this later when functionality has been verified bug free.
+//                    if(jobs != null)
+//                    {
+//                        Map<String, Object> parameters = jobs.get(0).getTasks().get(0).getParameters();
+//                        ODDCclass.curSession = UUID.fromString((String)parameters.get("session"));
+//                        envelope.setSessionID(ODDCclass.curSession);
+//
+//                        processJobs(jobs);
+//                    }
 
                     if(singlePingTimer != null)
                     {
@@ -378,9 +341,47 @@ public class JobManager
                 ArrayList<ODDCTask> tasks = postCommandCheck(envelope); // checking Server for new tasks
                 if (tasks != null && !tasks.isEmpty() && tasks.size() > 0)
                 {
-                    for (ODDCTask task : tasks)
+                    ODDCTask task = tasks.get(0);
+                    if(task != null)
                     {
-                        processTask(task);
+                        try
+                        {
+                            Object obj = task.getParameters();
+                            Map<String,Object> parameters = ((Map<String, Object>)obj);
+                            Map<String,Object> map = (Map<String,Object>)parameters.get("envelope");
+                            String sessionId = map.get("sessionID").toString();
+
+                            ODDCclass.curSession = UUID.fromString(sessionId);
+                            envelope.setSessionID(ODDCclass.curSession);
+
+                            for (ODDCTask taskItem : tasks)
+                            {
+                                processTask(taskItem);
+                            }
+//                            if(taskEnvelope != null)
+//                            {
+//                                ODDCclass.curSession = UUID.fromString(sessionId);
+////                                envelope.setSessionID(ODDCclass.curSession);
+//
+//                                for (ODDCTask taskItem : tasks)
+//                                {
+//                                    processTask(taskItem);
+//                                }
+//                            }
+//                            else
+//                            {
+//                                Log.e("startPingTimer - ","Envelope is NULL.");
+//                            }
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    else
+                    {
+                        Log.e("startPingTimer - ","Parameter is NULL.");
                     }
                 }
             }

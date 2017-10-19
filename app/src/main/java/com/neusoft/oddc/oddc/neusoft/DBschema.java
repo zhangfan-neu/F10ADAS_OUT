@@ -32,6 +32,7 @@ public class DBschema implements BaseColumns {
     public static final String FCW_RSFV = "FCWRelativeSpeedToFV";
     public static final String FCW_E = "FCWEvent";
     public static final String FCW_ET = "FCWTEventThreshold";
+
     public static final String LDW_TS = "LDWTimeStamp";
     public static final String LDW_DLL = "LDWDistanceToLeftLane";
     public static final String LDW_DRL = "LDWDistanceToRightLane";

@@ -21,10 +21,13 @@ public class ContinuousData
 {
     @JsonProperty("id")
     public UUID id = null;
-    @JsonProperty("sessionID")
+    @JsonProperty("sessionid")
     public UUID sessionID = null;
-    @JsonProperty("vehicleID")
+    @JsonProperty("vehicleid")
     public String vehicleID = null;
+
+    @JsonProperty("packageid")
+    public String packageID = null;
 
     @JsonProperty("timestamp")
     public String timestamp = Utilities.getTimestamp();
@@ -66,10 +69,10 @@ public class ContinuousData
     public double ldwDistanceToLeftLane = 0.0;
     @JsonProperty("ldwDistanceToRightLane")
     public double ldwDistanceToRightLane = 0.0;
-    @JsonProperty("ldwEvent")
+    @JsonProperty("ldwevent")
     public boolean ldwEvent = false;
 
-    @JsonProperty("mediaURI")
+    @JsonProperty("mediauri")
     public String mediaURI = " ";
 
     //yz I did not touch them

@@ -22,6 +22,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
+import com.neusoft.oddc.oddc.model.RestContinuousData;
+import com.neusoft.oddc.oddc.model.RestDataPackage;
 import com.neusoft.oddc.oddc.neusoft.DBschema;
 import com.neusoft.oddc.NeusoftHandler;
 import com.neusoft.oddc.adas.ADASHelper;
@@ -208,17 +210,25 @@ public class ODDCclass implements ODDCinterface {
         long fsStat = 0;
 
         Log.d("ODDC","ODDCclass.onContinuousData "+String.valueOf(Constants.ODDCApp.FRAMES_PER_MIN)+" "+loopCount+" CDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCD");
-        insertSQLite(data);
+        try
+        {
+            insertSQLite(data);
 
-        if (currentVideoFile == "NA") currentVideoFile = data.mediaURI;
-        else {
-            if (currentVideoFile != data.mediaURI) {
-                completedVideoFile = currentVideoFile;
-                currentVideoFile = data.mediaURI;
-                SendToFLA fla = new SendToFLA(DataPackageType.CONTINUOUS,curSession,data.mediaURI);
-                fla.start();
+            if (currentVideoFile == "NA") currentVideoFile = data.mediaURI;
+            else {
+                if (!currentVideoFile.equals(data.mediaURI)) {
+                    completedVideoFile = currentVideoFile;
+                    currentVideoFile = data.mediaURI;
+                    SendToFLA fla = new SendToFLA(DataPackageType.CONTINUOUS,curSession,data.mediaURI);
+                    fla.start();
+                }
             }
         }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
         return fsStat == -1 ? false : true;
     }
 
@@ -228,6 +238,7 @@ public class ODDCclass implements ODDCinterface {
                     DBschema.ID       + " CHAR(48)," +
                     DBschema.SID      + " CHAR(48)," +
                     DBschema.VIN      + " CHAR(18)," +
+                    DBschema.TS       + " TIMESTAMP," +
                     DBschema.GPS_LON  + " FLOAT(10,6)," +
                     DBschema.GPS_LAT  + " FLOAT(10,6)," +
                     DBschema.SPEED    + " FLOAT(5,2)," +
@@ -382,7 +393,6 @@ public class ODDCclass implements ODDCinterface {
                     DBschema.LDW_E,
                     DBschema.M_URI,
                     DBschema.M_D,
-                    /*DBschema.M_P,*/
                     DBschema.M_U,
                     DBschema.D_U};
 
@@ -392,56 +402,84 @@ public class ODDCclass implements ODDCinterface {
 
             Log.d("ODDC","ODDCClass.SendtoFLA.runnnnnnnnnnnnnnnnn query="+selection);
 
-                Cursor c = db.rawQuery(selection,selectionArgs);
-
+            Cursor c = db.rawQuery(selection,selectionArgs);
 
             int nrows = c.getCount();
             Log.d("ODDC","ODDCClass.SendtoFLA.runnnnnnnnnnnnnnnnn sessionID="+uuidSID+" nrows="+String.valueOf(nrows));
             if (nrows > 0)
             {
                 int i = 0;
-                ArrayList<ContinuousData> dataCollection = new ArrayList<ContinuousData>();
-                ContinuousData cd = null;
-                while (c.moveToNext()){
-                    cd = new ContinuousData();
+                ArrayList<RestContinuousData> dataCollection = new ArrayList<RestContinuousData>();
+                RestContinuousData cd = null;
+                UUID packageId = UUID.randomUUID();
 
-                    cd.sessionID = UUID.fromString(c.getString( c.getColumnIndex("sessionID") ));
-                    cd.vehicleID = c.getString(c.getColumnIndex("vehicleID"));
-                    cd.timestamp = c.getString(c.getColumnIndex("timestamp"));
-                    cd.longitude = c.getFloat(c.getColumnIndex("longitude"));
-                    cd.latitude = c.getFloat(c.getColumnIndex("latitude"));
-                    cd.speed = c.getFloat(c.getColumnIndex("Speed"));
-                    cd.speedDetectionType = c.getInt(c.getColumnIndex("SpeedDetectionType"));
-                    cd.accelerationX = c.getFloat(c.getColumnIndex("AccelerationX"));
-                    cd.accelerationX = c.getFloat(c.getColumnIndex("AccelerationY"));
-                    cd.accelerationX = c.getFloat(c.getColumnIndex("AccelerationZ"));
-                    cd.gShockEvent = ( c.getInt(c.getColumnIndex("GShockEvent")) != 0 ); if (cd.gShockEvent) cdEvent = true;
-                    cd.fcwExistFV = ( c.getInt(c.getColumnIndex("FCWExistFV")) != 0 );
-                    cd.fcwCutIn = ( c.getInt(c.getColumnIndex("FCWCutIn")) != 0 );
-                    cd.fcwDistanceToFV = c.getFloat(c.getColumnIndex("FCWDistanceToFV"));
-                    cd.fcwRelativeSpeedToFV = c.getFloat(c.getColumnIndex("FCWRelativeSpeedToFV"));
-                    cd.fcwEvent = ( c.getInt(c.getColumnIndex("FCWEvent")) != 0 ); if (cd.fcwEvent) cdEvent = true;
-                    cd.fcwEventThreshold = c.getFloat(c.getColumnIndex("FCWTEventThreshold"));
-                    cd.ldwDistanceToLeftLane = c.getFloat(c.getColumnIndex("LDWDistanceToLeftLane"));
-                    cd.ldwDistanceToRightLane = c.getFloat(c.getColumnIndex("LDWDistanceToRightLane"));
-                    cd.ldwEvent = ( c.getInt(c.getColumnIndex("LDWEvent")) != 0 ); if (cd.ldwEvent) cdEvent = true;
+                while (c.moveToNext())
+                {
+                    cd = new RestContinuousData();
+                    cd.setId(UUID.randomUUID());
+                    cd.setSessionid(UUID.fromString(c.getString( c.getColumnIndex("sessionID") )));
+                    cd.setPackageid(packageId);
+                    cd.setVehicleid(c.getString(c.getColumnIndex("vehicleID")));
+                    cd.setTimestamp(c.getString(c.getColumnIndex("timestamp")));
+                    cd.setLongitude(c.getFloat(c.getColumnIndex("longitude")));
+                    cd.setLatitude(c.getFloat(c.getColumnIndex("latitude")));
+                    cd.setSpeed(c.getFloat(c.getColumnIndex("Speed")));
+                    cd.setSpeeddetectiontype(c.getInt(c.getColumnIndex("SpeedDetectionType")));
+                    cd.setAccelerationx(c.getFloat(c.getColumnIndex("AccelerationX")));
+                    cd.setAccelerationy(c.getFloat(c.getColumnIndex("AccelerationY")));
+                    cd.setAccelerationz(c.getFloat(c.getColumnIndex("AccelerationZ")));
+                    cd.setGshockevent(c.getInt(c.getColumnIndex("GShockEvent")) != 0);
+                    cd.setFcwexistfv(c.getInt(c.getColumnIndex("FCWExistFV")) != 0);
+                    cd.setFcwcutin(c.getInt(c.getColumnIndex("FCWCutIn")) != 0);
+                    cd.setFcwdistancetofv(c.getFloat(c.getColumnIndex("FCWDistanceToFV")));
+                    cd.setFcwrelativespeedtofv(c.getFloat(c.getColumnIndex("FCWRelativeSpeedToFV")));
+                    cd.setFcwevent(c.getInt(c.getColumnIndex("FCWEvent")) != 0);
+                    cd.setFcwteventthreshold(c.getFloat(c.getColumnIndex("FCWTEventThreshold")));
+                    cd.setLdwdistancetoleftlane(c.getFloat(c.getColumnIndex("LDWDistanceToLeftLane")));
+                    cd.setLdwdistancetorightlane(c.getFloat(c.getColumnIndex("LDWDistanceToRightLane")));
+                    cd.setLdwevent(c.getInt(c.getColumnIndex("LDWEvent")) != 0);
+                    cd.setMediauri(c.getString(c.getColumnIndex("MediaURI")));
 
-                    cd.mediaURI = c.getString(c.getColumnIndex("MediaURI"));
-                    cd.mediaDeleted = ( c.getInt(c.getColumnIndex("MediaDeleted")) != 0 );
-                    /*cd.mediaProtected = ( c.getInt(c.getColumnIndex("MediaProtected")) != 0 );*/
-                    cd.mediaUploaded = ( c.getInt(c.getColumnIndex("MediaUploaded")) != 0 );
-                    cd.dataUploaded = ( c.getInt(c.getColumnIndex("DataUploaded")) != 0 );
+//                    cd.sessionID = UUID.fromString(c.getString( c.getColumnIndex("sessionID") ));
+//                    cd.vehicleID = c.getString(c.getColumnIndex("vehicleID"));
+//                    cd.timestamp = c.getString(c.getColumnIndex("timestamp"));
+//                    cd.longitude = c.getFloat(c.getColumnIndex("longitude"));
+//                    cd.latitude = c.getFloat(c.getColumnIndex("latitude"));
+//                    cd.speed = c.getFloat(c.getColumnIndex("Speed"));
+//                    cd.speedDetectionType = c.getInt(c.getColumnIndex("SpeedDetectionType"));
+//                    cd.accelerationX = c.getFloat(c.getColumnIndex("AccelerationX"));
+//                    cd.accelerationX = c.getFloat(c.getColumnIndex("AccelerationY"));
+//                    cd.accelerationX = c.getFloat(c.getColumnIndex("AccelerationZ"));
+//                    cd.gShockEvent = ( c.getInt(c.getColumnIndex("GShockEvent")) != 0 );
+//                    if (cd.gShockEvent) cdEvent = true;
+//                    cd.fcwExistFV = ( c.getInt(c.getColumnIndex("FCWExistFV")) != 0 );
+//                    cd.fcwCutIn = ( c.getInt(c.getColumnIndex("FCWCutIn")) != 0 );
+//                    cd.fcwDistanceToFV = c.getFloat(c.getColumnIndex("FCWDistanceToFV"));
+//                    cd.fcwRelativeSpeedToFV = c.getFloat(c.getColumnIndex("FCWRelativeSpeedToFV"));
+//                    cd.fcwEvent = ( c.getInt(c.getColumnIndex("FCWEvent")) != 0 );
+//                    if (cd.fcwEvent) cdEvent = true;
+//                    cd.fcwEventThreshold = c.getFloat(c.getColumnIndex("FCWTEventThreshold"));
+//                    cd.ldwDistanceToLeftLane = c.getFloat(c.getColumnIndex("LDWDistanceToLeftLane"));
+//                    cd.ldwDistanceToRightLane = c.getFloat(c.getColumnIndex("LDWDistanceToRightLane"));
+//                    cd.ldwEvent = ( c.getInt(c.getColumnIndex("LDWEvent")) != 0 );
+//                    if (cd.ldwEvent) cdEvent = true;
+//                    cd.mediaURI = c.getString(c.getColumnIndex("MediaURI"));
+//                    cd.mediaDeleted = ( c.getInt(c.getColumnIndex("MediaDeleted")) != 0 );
+//                    /*cd.mediaProtected = ( c.getInt(c.getColumnIndex("MediaProtected")) != 0 );*/
+//                    cd.mediaUploaded = ( c.getInt(c.getColumnIndex("MediaUploaded")) != 0 );
+//                    cd.dataUploaded = ( c.getInt(c.getColumnIndex("DataUploaded")) != 0 );
                     dataCollection.add(cd);
                     //Log.d("ODDC SENDTOFLA",cd.sessionID+" "+cd.gpsTimeStamp+" "+cd.gpsTimeStamp+" "+cd.latitude+" "+cd.speed+" "+cd.gShockEvent+" "+cd.fcwEvent+" "+cd.ldwEvent+" "+cd.mediaURI+" "+cd.mediaDeleted+" "+cd.mediaUploaded+" "+cd.dataUploaded);
                    }
                 c.close();
 
-                ptype = cdEvent ? DataPackageType.EVENT : DataPackageType.CONTINUOUS;
+//                ptype = cdEvent ? DataPackageType.EVENT : DataPackageType.CONTINUOUS;
+                ptype = DataPackageType.CONTINUOUS;
 
-                DataPackage dataPackage = new DataPackage(); //yz
+                RestDataPackage dataPackage = new RestDataPackage(); //yz
                 Envelope env = new Envelope();
-                env.setSessionID(curSession);
-                env.setVehicleID(cd.vehicleID);
+                env.setSessionID(cd.getSessionid());
+                env.setVehicleID(cd.getVehicleid());
                 dataPackage.setEnvelope(env);
                 dataPackage.setContinuousData(dataCollection); //yz
                 dataPackage.setPackageType(ptype);
@@ -459,11 +497,6 @@ public class ODDCclass implements ODDCinterface {
                         Log.d("ODDC SENDTOFLA","whereClause="+whereClause);
                         db.update(DBschema.TABLE_NAME,cv,whereClause,selectionArgs);
                 	}
-
-
-
-
-
                 }
                 Log.d("ODDC","ODDCClass.SendToFLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa");
             }
@@ -493,10 +526,11 @@ public class ODDCclass implements ODDCinterface {
             }
         }
 
-        DataPackage dataPackage = new DataPackage(); //yz
+        RestDataPackage dataPackage = new RestDataPackage(); //yz
         dataPackage.setVideos(videos);
         Envelope env = new Envelope(ODDCclass.curSession, Utilities.getVehicleID());
-        //env.setVehicleID(cd.vehicleID);        dataPackage.setEnvelope(env);
+        //env.setVehicleID(cd.vehicleID);
+        dataPackage.setEnvelope(env);
         dataPackage.setPackageType(DataPackageType.SELECTIVE);
 
         HttpStatus status = controller.postDataPackage(dataPackage); //yz
