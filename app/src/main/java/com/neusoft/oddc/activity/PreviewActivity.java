@@ -57,6 +57,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.neusoft.oddc.entity.Constants.TRACE_LIFECYCLE_FOR_CAMERA;
 
@@ -208,8 +210,8 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
     private int leftDis = 0;
     private int rightDis = 0;
     private int yDistance = 0;
-    boolean leftevnet = false;
-    boolean rightevnet = false;
+    boolean leftevent = false;
+    boolean rightevent = false;
     boolean ttcevent = false;
 
     @Override
@@ -261,16 +263,16 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             if (dasEvents.parseEventCode(dasEvents.OFF_ROAD_LEFT_SOLID_EVENT) || dasEvents.parseEventCode(dasEvents.OFF_ROAD_LEFT_DASH_EVENT)) {
                 Log.d(TAG, "ADAS Event OFF_ROAD_LEFT_EVENT");
                 Toast.makeText(context, "OFF_ROAD_LEFT_SOLID_EVENT", Toast.LENGTH_LONG).show();
-                leftevnet = true;
+                leftevent = true;
             } else {
-                leftevnet = false;
+                leftevent = false;
             }
             if (dasEvents.parseEventCode(dasEvents.OFF_ROAD_RIGHT_SOLID_EVENT) || dasEvents.parseEventCode(dasEvents.OFF_ROAD_RIGHT_DASH_EVENT)) {
                 Log.d(TAG, "ADAS Event OFF_ROAD_RIGHT_EVENT");
                 Toast.makeText(context, "OFF_ROAD_RIGHT_EVENT", Toast.LENGTH_LONG).show();
-                rightevnet = true;
+                rightevent = true;
             } else {
-                rightevnet = false;
+                rightevent = false;
             }
             if (dasEvents.parseEventCode(dasEvents.FORWARD_TTC_COLLISION_EVENT) || dasEvents.parseEventCode(dasEvents.FORWARD_HEADWAY_COLLISION_EVENT)) {
                 Log.d(TAG, "ADAS Event FORWARD_TTC_COLLISION_EVENT");
@@ -281,66 +283,49 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             }
         }
 
-        // Test code only
-        /*
-        Random random = new Random();
-        int ranInt = random.nextInt(1000);
-        Log.d(TAG, "ranInt = " + ranInt);
-        if (ranInt < 5) {
-            leftevnet = true;
-        } else if (ranInt < 10) {
-            rightevnet = true;
-        } else if (ranInt < 20) {
-            ttcevent = true;
-        }
-        */
-
         // ODDC
-        if (NeusoftHandler.isOddcOk && JobManager.getInstance().isAdasEnabled()) {
+        if (NeusoftHandler.isOddcOk) {
             String filename = fileOutputPath.substring(fileOutputPath.lastIndexOf("/") + 1, fileOutputPath.length());
             double accelerationX = adasHelper.getAccelerometerX();
             double accelerationY = adasHelper.getAccelerometerY();
             double accelerationZ = adasHelper.getAccelerometerZ();
 
-
             ContinuousData continuousData = nsfh.mkContinuousData(filename, accelerationX, accelerationY, accelerationZ);
+
+            if(continuousData == null)
+            {
+                return;
+            }
 
             // G Force Event
             double gx = accelerationX / 9.81;
             double gy = accelerationY / 9.81;
             double gz = accelerationZ / 9.81;
             double gForce = Math.sqrt((gx * gx) + (gy * gy) + (gz * gz));
+            //continuousData.gShockEventValue = gForce;
             Log.d(TAG, "gForce value = " + gForce);
-            if (gForce > Constants.G_THRESH_VALUE) {
-                continuousData.gShockEvent = true;
-//                continuousData.gShockTimeStamp = new Timestamp(System.currentTimeMillis()).toString();
-                continuousData.gShockEventThreshold = Constants.G_THRESH_VALUE;
-                continuousData.gShockEventValue = gForce;
-            }
+            if (gForce > Constants.G_THRESH_VALUE) { continuousData.gShockEvent = true; }
+            continuousData.gShockEventThreshold = Constants.G_THRESH_VALUE;
 
             // ADAS related
             if (null != dasTrafficEnvironment) {
                 DasLaneMarkings dasLaneMarkings = dasTrafficEnvironment.getLaneMarkings();
-                long ldwTimestamp = dasLaneMarkings.getTimestamp();
-//                continuousData.ldwTimeStamp = new Timestamp(ldwTimestamp).toString();
+//                long ldwTimestamp = dasLaneMarkings.getTimestamp();
                 DasLaneMarkings.DasEgoLane dasEgoLane = dasLaneMarkings.getDasEgoLane();
                 leftDis = dasEgoLane.getLeftDis();
                 continuousData.ldwDistanceToLeftLane = leftDis;
                 rightDis = dasEgoLane.getRightDis();
                 continuousData.ldwDistanceToRightLane = rightDis;
-                if (leftevnet) {
+                if (leftevent || rightevent) continuousData.ldwEvent = true;
+
+                /*if (leftevnet) {
                     continuousData.ldwEventType = 1;
-                    continuousData.ldwEvent = true;
                 } else if (rightevnet) {
                     continuousData.ldwEventType = 2;
-                    continuousData.ldwEvent = true;
-                }
+                }*/
 
                 DasVehicles dasVehicles = dasTrafficEnvironment.getVehicles();
-                long fdwTimestamp = dasVehicles.getTimestamp();
-//                continuousData.fcwTimeStamp = new Timestamp(fdwTimestamp).toString();
                 if (dasVehicles.getNums() > 0) {
-
                     for (int i = 0; i < dasVehicles.getNums(); i++) {
                         DasVehicles.DasVehicle dasVehicle = dasVehicles.getVehicleByIndex(i);
                         if (null != dasVehicle) {
@@ -379,7 +364,12 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
                 needRestartRecord = false;
             }
         }
+    }
 
+    private static String getTimestamp(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss.SSS Z" );
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 
     @Override
@@ -471,21 +461,24 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             continuousDataLayout.setVisibility(View.VISIBLE);
             realTimeContinuousDataFragment = (RealTimeContinuousDataFragment) getSupportFragmentManager().findFragmentById(R.id.preview_activity_fragment_real_time_continuous_data);
 
-            jobButton = (Button)findViewById(R.id.preview_activity_job_btn);
-            if(jobButton != null)
-            {
-                jobButton.setVisibility(View.VISIBLE);
-                if(recorder != null && !recorder.isRecording())
-                {
-                    jobButton.setText(getString(R.string.start));
-                }
-                else
-                {
-                    jobButton.setText(getString(R.string.stop));
-                }
-
-                jobButton.setOnClickListener(this);
-            }
+            //NOTE: Disabling start/stop button because we require a sessionID which can only be obtained
+            //      with a valid connection to the server.  Forcing the ADAS/DVR system to start can introduce
+            //      bad data.
+//            jobButton = (Button)findViewById(R.id.preview_activity_job_btn);
+//            if(jobButton != null)
+//            {
+//                jobButton.setVisibility(View.VISIBLE);
+//                if(recorder != null && !recorder.isRecording())
+//                {
+//                    jobButton.setText(getString(R.string.start));
+//                }
+//                else
+//                {
+//                    jobButton.setText(getString(R.string.stop));
+//                }
+//
+//                jobButton.setOnClickListener(this);
+//            }
         }
 
         drawerLayout = (DrawerLayout) findViewById(R.id.preview_activity_drawerlayout);

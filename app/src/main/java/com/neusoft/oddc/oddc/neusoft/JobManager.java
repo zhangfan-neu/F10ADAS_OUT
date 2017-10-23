@@ -4,6 +4,7 @@ import android.os.Process;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.bumptech.glide.util.Util;
 import com.neusoft.oddc.MyApplication;
 import com.neusoft.oddc.activity.PreviewActivity;
 import com.neusoft.oddc.adas.ADASHelper;
@@ -15,10 +16,13 @@ import com.neusoft.oddc.oddc.model.ODDCTask;
 import com.neusoft.oddc.oddc.model.TaskType;
 import com.neusoft.oddc.oddc.restclient.RESTController;
 import com.neusoft.oddc.oddc.utilities.Utilities;
+import com.neusoft.oddc.NeusoftHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -30,13 +34,15 @@ import java.util.UUID;
 public class JobManager
 {
     private RESTController restController;
-    private Envelope envelope = new Envelope(ODDCclass.session,Constants.ODDCApp.VIN,null,null);
-
+    //TODO: Remove fixed VIN information
+    private Envelope envelope = new Envelope(ODDCclass.curSession, Utilities.getVehicleID());
     private boolean isProcessingJobs = false;
     private Timer pingTimer;
-    Timer singlePingTimer;
+    private Timer singlePingTimer;
     private int pingFrequency = 10000;
+    private int pingSessionFrequency = 5000;
     private ODDCclass oddc;
+    private NeusoftHandler nsh;
 
     public void setAdasEnabled(boolean adasEnabled)
     {
@@ -53,15 +59,8 @@ public class JobManager
         instance = this;
         baseUrl = url;
         restController = new RESTController(url);
-
-        //TODO: Clean this up....
-//        ODDCTask task = ODDCTask.createMockTask(envelope);
-//        ArrayList<ODDCJob> jobs = getJobList(task);
-//        Map<String, Object> parameters = jobs.get(0).getTasks().get(0).getParameters();
-//        String vehicleId = (String)parameters.get("vehicleid");
-//        ODDCclass.session = UUID.fromString((String)parameters.get("session"));
-//        envelope.setSessionID(ODDCclass.session);
     }
+
     public boolean isAdasEnabled()
     {
         return adasEnabled;
@@ -70,6 +69,7 @@ public class JobManager
     {
         this.oddc = oddc;
     }
+    public void setNSH(NeusoftHandler n){this.nsh = n;}
     public void setPingFrequency(int value)
     {
         pingFrequency = value;
@@ -77,58 +77,6 @@ public class JobManager
     public static JobManager getInstance()
     {
         return instance;
-    }
-
-    public static ODDCTask getJobRequestTask()
-    {
-        ODDCTask task = new ODDCTask();
-
-        task.setType(TaskType.JOB_REQUEST);
-        HashMap<String, Object> parameters = new HashMap<String, Object>();
-
-        //TODO: Will need to pull real GPS coordinates...
-        parameters.put("longitude", -118.308784484863);
-        parameters.put("latitude", 33.8489532470703);
-
-        //Use VIN stored on the device.
-        String vin = instance.getVehicleID();
-        if(vin != null && !vin.isEmpty())
-        {
-            parameters.put("vehicleID", vin);
-        }
-        else
-        {
-            //NOTE: Only used for testing purposes.
-            parameters.put("vehicleID", Constants.ODDCApp.VIN);
-
-            //TODO: Uncomment this when we are no longer testing...
-            //return null;
-        }
-
-        task.setVehicleID(vin);
-        return task;
-    }
-
-    private String getVehicleID()
-    {
-        String vin = "";
-        VehicleProfileEntity entity;
-        ADASHelper nsfh = new ADASHelper();
-        VehicleProfileEntityDao vehicleProfileEntityDao= ((MyApplication) MyApplication.currentActivity.getApplication()).getDaoSession().getVehicleProfileEntityDao();
-        ArrayList<VehicleProfileEntity> list = (ArrayList<VehicleProfileEntity>) vehicleProfileEntityDao.queryBuilder()
-                .where(VehicleProfileEntityDao.Properties.Key_user.eq("")).list();
-        if (null != list && list.size() > 0)
-        {
-            entity = list.get(0);
-            vin = entity.getVin();
-        }
-        else
-        {
-            // Set vin read from odb2
-            vin = nsfh.getvin();
-        }
-
-        return vin;
     }
 
     private ArrayList<ODDCJob> getJobsFromServer(ODDCTask task)
@@ -156,8 +104,8 @@ public class JobManager
         if(jobs.size() > 0)
         {
             Map<String, Object> parameters = jobs.get(0).getTasks().get(0).getParameters();
-            ODDCclass.session = UUID.fromString((String)parameters.get("session"));
-            envelope.setSessionID(ODDCclass.session);
+            ODDCclass.curSession = UUID.fromString((String)parameters.get("session"));
+            envelope.setSessionID(ODDCclass.curSession);
 
             for(ODDCJob job: jobs)
             {
@@ -171,7 +119,6 @@ public class JobManager
     private void processJob(ODDCJob job)
     {
         ArrayList <ODDCTask> tasks = job.getTasks();
-        //ODDCclass.session = job.getSessionId();
 
         if(tasks.size() > 0)
         {
@@ -199,7 +146,6 @@ public class JobManager
                 processTerminateTask();
                 break;
             case RESUME:
-//                nsh.resume();
                 processResumedTask();
                 break;
             default:
@@ -218,6 +164,8 @@ public class JobManager
             Log.d("processResumedTask", "ODDC is not initialized.");
             return;
         }
+
+//        nsh.resume();
     }
 
     private void processStopTask()
@@ -255,7 +203,7 @@ public class JobManager
 
         adasEnabled = true;
 
-        //NOTE: In case user is already in the PreviewActivity screen, start recording.
+        //USE CASE: In case user is already in the PreviewActivity screen, start recording.
         PreviewActivity previewActivity = PreviewActivity.getInstance();
         if(previewActivity != null)
         {
@@ -305,47 +253,9 @@ public class JobManager
         oddc.selectiveUpload(task);
     }
 
-    public void getStartUpJobList()
-    {
-        ArrayList<ODDCTask> tasks = postCommandCheck(envelope); // checking Server for new tasks
-        if (tasks != null && !tasks.isEmpty() && tasks.size() > 0)
-        {
-            for (ODDCTask task : tasks)
-            {
-                processTask(task);
-            }
-        }
-
-        if(tasks != null && tasks.size() > 0)
-        {
-            Log.d("ODDC STARTUP","getStartUpJobList REPLY "+tasks.size()+" tasks");
-        }
-
-
-        //TODO: Pull Job List from ODDC Server
-//        ArrayList<ODDCJob> jobs = null;
-//        ODDCTask tempTask = getJobRequestTask();
-//        if(tempTask != null)
-//        {
-//            jobs = getJobsFromServer(tempTask);
-//        }
-//        else
-//        {
-//            Utilities.showToastMessage("Invalid VIN - No job list.");
-//        }
-//
-//        //TODO: Process each Job
-//        if(jobs != null && jobs.size() > 0)
-//        {
-//            Log.d("ODDC PINGTIMER","getJobsFromServer REPLY "+jobs.size()+" jobs");
-//
-//            processJobs(jobs);
-//        }
-    }
-
     private ArrayList<ODDCTask> postCommandCheck(Envelope envelope)
     {
-        // pingTimer.cancel(); //TODO for testting only. Comment it
+        // pingTimer.cancel(); //TODO for testing only. Comment it
         RESTController controller = new RESTController(baseUrl);
         ArrayList<ODDCTask> tasks = controller.postCommandCheck(envelope);
         return tasks;
@@ -363,28 +273,60 @@ public class JobManager
             @Override
             public void run()
             {
-                ODDCTask task = ODDCTask.createMockTask(envelope);
-                ArrayList<ODDCJob> jobs = getJobList(task);
+                //The following retrieves data from VehicleProfileEntityDao and the VIN from OBD-2.
+                String vin = Utilities.getVehicleID();
 
-                if(jobs != null)
+                if(!vin.isEmpty())
                 {
-                    Map<String, Object> parameters = jobs.get(0).getTasks().get(0).getParameters();
-                    ODDCclass.session = UUID.fromString((String)parameters.get("session"));
-                    envelope.setSessionID(ODDCclass.session);
+                    envelope = new Envelope(ODDCclass.curSession, vin);
 
-                    processJobs(jobs);
+                    ODDCTask task = ODDCTask.createJobRequestTask(envelope);
+                    getJobList(task);
+
+                    //TODO: Delete this later when functionality has been verified bug free.
+//                    if(jobs != null)
+//                    {
+//                        Map<String, Object> parameters = jobs.get(0).getTasks().get(0).getParameters();
+//                        ODDCclass.curSession = UUID.fromString((String)parameters.get("session"));
+//                        envelope.setSessionID(ODDCclass.curSession);
+//
+//                        processJobs(jobs);
+//                    }
+
+                    if(singlePingTimer != null)
+                    {
+                        singlePingTimer.cancel();
+                        singlePingTimer.purge();
+                    }
                 }
 
+                //TODO: Delete this later when functionality has been verified bug free.
+//                if(!vin.isEmpty())
+//                {
+//                    ODDCTask task = ODDCTask.createMockTask(envelope);
+//                    ArrayList<ODDCJob> jobs = getJobList(task);
+//
+//                    if(jobs != null)
+//                    {
+//                        Map<String, Object> parameters = jobs.get(0).getTasks().get(0).getParameters();
+//                        ODDCclass.session = UUID.fromString((String)parameters.get("session"));
+//                        envelope.setSessionID(ODDCclass.session);
+//
+//                        processJobs(jobs);
+//                    }
+//
+//                    if(singlePingTimer != null)
+//                    {
+//                        singlePingTimer.cancel();
+//                        singlePingTimer.purge();
+//                    }
+//
+////                    startPingTimer();
+//                }
 
-                if(singlePingTimer != null)
-                {
-                    singlePingTimer.cancel();
-                    singlePingTimer.purge();
-                }
-
-                startPingTimer();
+                //NOTE: Continue to check for VIN from OBD-2 or Vehicle Profile DAO...
             }
-        }, 100, pingFrequency);
+        }, 100, pingSessionFrequency);
     }
 
     public void startPingTimer()
@@ -394,34 +336,53 @@ public class JobManager
             @Override
             public void run()
             {
-                Log.d("ODDC THREAD ","JobManager.PingTimer TID="+String.valueOf(Process.myTid()));
                 Utilities.showToastMessage("Requesting Job List");
 
                 ArrayList<ODDCTask> tasks = postCommandCheck(envelope); // checking Server for new tasks
                 if (tasks != null && !tasks.isEmpty() && tasks.size() > 0)
                 {
-                    for (ODDCTask task : tasks)
+                    ODDCTask task = tasks.get(0);
+                    if(task != null)
                     {
-                        processTask(task);
-                    }
-                }
+                        try
+                        {
+                            Object obj = task.getParameters();
+                            Map<String,Object> parameters = ((Map<String, Object>)obj);
+                            Map<String,Object> map = (Map<String,Object>)parameters.get("envelope");
+                            String sessionId = map.get("sessionID").toString();
 
-                //TODO: Pull Job List from ODDC Server
-//                ArrayList<ODDCJob> jobs = null;
-//                ODDCTask tempTask = getJobRequestTask();
-//                if(tempTask != null)
-//                {
-//                    jobs = getJobsFromServer(tempTask);
-//                }
-//                else
-//                {
-//                    Utilities.showToastMessage("Invalid VIN - No job list.");
-//                }
+                            ODDCclass.curSession = UUID.fromString(sessionId);
+                            envelope.setSessionID(ODDCclass.curSession);
+
+                            for (ODDCTask taskItem : tasks)
+                            {
+                                processTask(taskItem);
+                            }
+//                            if(taskEnvelope != null)
+//                            {
+//                                ODDCclass.curSession = UUID.fromString(sessionId);
+////                                envelope.setSessionID(ODDCclass.curSession);
 //
-//
-                if(tasks != null && tasks.size() > 0)
-                {
-                    Log.d("ODDC PINGTIMER","startPingTimer REPLY "+tasks.size()+" tasks");
+//                                for (ODDCTask taskItem : tasks)
+//                                {
+//                                    processTask(taskItem);
+//                                }
+//                            }
+//                            else
+//                            {
+//                                Log.e("startPingTimer - ","Envelope is NULL.");
+//                            }
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    else
+                    {
+                        Log.e("startPingTimer - ","Parameter is NULL.");
+                    }
                 }
             }
         }, 1000, pingFrequency);

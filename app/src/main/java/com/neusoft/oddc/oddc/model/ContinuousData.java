@@ -6,67 +6,84 @@ package com.neusoft.oddc.oddc.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.neusoft.oddc.oddc.neusoft.Constants;
-import com.neusoft.oddc.oddc.utilities.Utilities;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
+import com.neusoft.oddc.oddc.utilities.Utilities;
 import java.util.UUID;
 
 
 public class ContinuousData
 {
+    @JsonProperty("id")
     public UUID id = null;
+    @JsonProperty("sessionid")
     public UUID sessionID = null;
+    @JsonProperty("vehicleid")
     public String vehicleID = null;
-    public String driverID = null;
-    public String submitterID = null;
-    public int tzOffset = 0;
-    public String timestamp;
-//    public String gpsTimeStamp = null;
+    @JsonProperty("packageid")
+    public String packageID = null;
+    @JsonProperty("timestamp")
+    public String timestamp = Utilities.getTimestamp();
+
+    @JsonProperty("longitude")
     public double longitude = 0.0;
+    @JsonProperty("latitude")
     public double latitude = 0.0;
-    public double speed;
+
+    @JsonProperty("speed")
+    public double speed = 0.0;
+    @JsonProperty("speedDetectionType")
     public int speedDetectionType = 0;
-//    public String accelerationTimeStamp = null;
-    public double accelerationX = 0.0;
+
+	@JsonProperty("accelerationX")
+	public double accelerationX = 0.0;
+    @JsonProperty("accelerationY")
     public double accelerationY = 0.0;
+    @JsonProperty("accelerationZ")
     public double accelerationZ = 0.0;
 
-//    public String gShockTimeStamp = null;
+    @JsonProperty("gShockEvent")
     public boolean gShockEvent = false;
-    public double gShockEventValue = 0.0;
-    public double gShockEventThreshold = 0.0;
+    @JsonProperty("gShockEventThreshold")
+    public double gShockEventThreshold = 2.0;
 
-//    public String fcwTimeStamp = null;
+    @JsonProperty("fcwExistFV")
     public boolean fcwExistFV = false;
+    @JsonProperty("fcwCutIn")
     public boolean fcwCutIn = false;
+    @JsonProperty("fcwDistanceToFV")
     public double fcwDistanceToFV = 0.0;
+    @JsonProperty("fcwRelativeSpeedToFV")
     public double fcwRelativeSpeedToFV = 0.0;
+    @JsonProperty("fcwEvent")
     public boolean fcwEvent = false;
+    @JsonProperty("fcwEventThreshold")
     public double fcwEventThreshold = 0.0;
 
-//    public String ldwTimeStamp = null;
+    @JsonProperty("ldwDistanceToLeftLane")
     public double ldwDistanceToLeftLane = 0.0;
+    @JsonProperty("ldwDistanceToRightLane")
     public double ldwDistanceToRightLane = 0.0;
-    public Boolean ldwEvent = false;
-    public int ldwEventType = 0;
-    public String mediaURI = null;
+    @JsonProperty("ldwevent")
+    public boolean ldwEvent = false;
 
+    @JsonProperty("mediauri")
+    public String mediaURI = " ";
+
+    //yz I did not touch them
+    @JsonIgnore
     public boolean mediaDeleted = false;
+    /*@JsonIgnore
+    public boolean mediaProtected = false;*/
+    @JsonIgnore
     public boolean mediaUploaded = false;
+    @JsonIgnore
     public boolean dataUploaded = false;
 
-    public void ContinuousData()
-    {
-        //TODO: Initialize with default values...
-    }
-
     public boolean isEvent(){
-        if (gShockEvent || fcwEvent || ldwEvent) return true;
-        else                                           return false;
+        if (gShockEvent || fcwEvent || ldwEvent)
+            return true;
+        else
+            return false;
     }
 
     public UUID getId() {
@@ -76,9 +93,6 @@ public class ContinuousData
     public void setId(UUID id) {
         this.id = id;
     }
-
-    //public Timestamp getGpsTimeStamp() {return gpsTimeStamp;}
-    //public void setGpsTimeStamp(Timestamp gpsTimeStamp) {this.gpsTimeStamp = gpsTimeStamp;}
 
     public double getLongitude() {
         return longitude;
@@ -112,9 +126,6 @@ public class ContinuousData
         this.speedDetectionType = speedDetectionType;
     }
 
-    //public Timestamp getAccelerationTimeStamp() {return accelerationTimeStamp;}
-    //public void setAccelerationTimeStamp(Timestamp accelerationTimeStamp) {this.accelerationTimeStamp = accelerationTimeStamp;}
-
     public double getAccelerationX() {
         return accelerationX;
     }
@@ -139,9 +150,6 @@ public class ContinuousData
         this.accelerationZ = accelerationZ;
     }
 
-    //public Timestamp getgShockTimeStamp() {return gShockTimeStamp;}
-    //public void setgShockTimeStamp(Timestamp gShockTimeStamp) {this.gShockTimeStamp = gShockTimeStamp;}
-
     public boolean isgShockEvent() {
         return gShockEvent;
     }
@@ -157,9 +165,6 @@ public class ContinuousData
     public void setgShockEventThreshold(double gShockEventThreshold) {
         this.gShockEventThreshold = gShockEventThreshold;
     }
-
-    //public Timestamp getFcwTimeStamp() {return fcwTimeStamp;}
-    //public void setFcwTimeStamp(Timestamp fcwTimeStamp) {this.fcwTimeStamp = fcwTimeStamp;}
 
     public boolean isFcwExistFV() {
         return fcwExistFV;
@@ -209,9 +214,6 @@ public class ContinuousData
         this.fcwEventThreshold = fcwEventThreshold;
     }
 
-    //public Timestamp getLdwTimeStamp() {return ldwTimeStamp;}
-    //public void setLdwTimeStamp(Timestamp ldwTimeStamp) {this.ldwTimeStamp = ldwTimeStamp;}
-
     public double getLdwDistanceToLeftLane() {
         return ldwDistanceToLeftLane;
     }
@@ -228,11 +230,11 @@ public class ContinuousData
         this.ldwDistanceToRightLane = ldwDistanceToRightLane;
     }
 
-    public Boolean isLdwEvent() {
+    public boolean isLdwEvent() {
         return ldwEvent;
     }
 
-    public void setLdwEvent(Boolean ldwEvent) {
+    public void setLdwEvent(boolean ldwEvent) {
         this.ldwEvent = ldwEvent;
     }
 
@@ -242,11 +244,5 @@ public class ContinuousData
 
     public void setMediaURI(String mediaURI) {
         this.mediaURI = mediaURI;
-    }
-
-    public static String getTimestamp(){
-        SimpleDateFormat dateFormat = new SimpleDateFormat( Constants.ODDCApp.dateTimeFormat );
-        Date date = new Date();
-        return dateFormat.format(date);
     }
 }

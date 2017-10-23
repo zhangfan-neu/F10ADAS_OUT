@@ -7,8 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
 import com.neusoft.oddc.BuildConfig;
 import com.neusoft.oddc.R;
@@ -20,7 +18,7 @@ import com.neusoft.oddc.widget.recycler.DefaultDividerDecoration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingActivity extends BaseActivity implements View.OnClickListener {
+public class SettingActivity extends BaseActivity {
 
     private static final String TAG = SettingActivity.class.getSimpleName();
 
@@ -54,16 +52,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
     };
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.custom_title_left_button:
-                finish();
-                break;
-            default:
-                break;
-        }
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,13 +61,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         setCustomTitle(R.string.title_setting);
 
         initViews();
-
-        Button button = (Button) findViewById(R.id.custom_title_left_button);
-        if (null != button) {
-            button.setVisibility(View.VISIBLE);
-            button.setText(R.string.back);
-            button.setOnClickListener(this);
-        }
     }
 
     private void initViews() {

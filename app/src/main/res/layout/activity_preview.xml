@@ -74,7 +74,17 @@
             android:background="@drawable/custom_title_layout_button"
             android:text="@string/startStop"
             android:textColor="@android:color/white"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/activity_preview_force_event_buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_toEndOf="@+id/camera_loading_view"
+            android:visibility="gone"/>
 
 
     </RelativeLayout>

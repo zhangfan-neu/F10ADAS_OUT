@@ -1,7 +1,6 @@
 package com.neusoft.oddc.oddc.restclient;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -11,20 +10,13 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 import com.neusoft.oddc.oddc.model.DataPackage;
-import com.neusoft.oddc.oddc.model.Envelope;
-import com.neusoft.oddc.oddc.model.ODDCTask;
-import com.neusoft.oddc.oddc.model.TaskType;
-import com.neusoft.oddc.oddc.utilities.Utilities;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import com.neusoft.oddc.oddc.model.RestDataPackage;
 
 /**
  * Created by yzharchuk on 8/29/2017.
  */
 
-class PostDataPackageTask extends AsyncTask<DataPackage, Void, HttpStatus>
+class PostDataPackageTask extends AsyncTask<RestDataPackage, Void, HttpStatus>
 {
     private String url;
     private HttpStatus returnStatus;
@@ -35,14 +27,20 @@ class PostDataPackageTask extends AsyncTask<DataPackage, Void, HttpStatus>
     }
 
     @Override
-    protected HttpStatus doInBackground(DataPackage... data)
+    protected HttpStatus doInBackground(RestDataPackage... data)
     {
+        //TODO: Remove these out when verified...
+//        Envelope envelope = data[0].getEnvelope();
+//        String vin = envelope.getVehicleID();
+//        UUID sessionId = envelope.getSessionID();
+//        data[0] = RestDataPackage.createDummyDataPackage(vin, sessionId, DataPackageType.CONTINUOUS, 60);
+
         RestTemplate restTemplate = new RestTemplate();
         try
         {
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             //HttpHeaders headers = new HttpHeaders();
-            HttpEntity<DataPackage> request = new HttpEntity<>(data[0]);
+            HttpEntity<RestDataPackage> request = new HttpEntity<>(data[0]);
             ResponseEntity<DataPackage> result = restTemplate.exchange(url, HttpMethod.POST, request, DataPackage.class);
             returnStatus = result.getStatusCode();
         }

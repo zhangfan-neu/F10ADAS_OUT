@@ -13,6 +13,7 @@ import com.neusoft.oddc.oddc.model.Envelope;
 import com.neusoft.oddc.oddc.model.Notification;
 import com.neusoft.oddc.oddc.model.ODDCJob;
 import com.neusoft.oddc.oddc.model.ODDCTask;
+import com.neusoft.oddc.oddc.model.RestDataPackage;
 import com.neusoft.oddc.oddc.model.TaskType;
 
 /**
@@ -57,16 +58,16 @@ public class RESTController
         new PostNotificationTask(base_url + "notification/general").execute(notification);
     }
 
-    public HttpStatus postDataPackage(DataPackage dataPackage)
+    public HttpStatus postDataPackage(RestDataPackage dataPackage)
     {
-        String dataUrl = null;
+        String dataUrl = "data";
 
-        if(dataPackage.getPackageType() == DataPackageType.CONTINUOUS)
-            dataUrl = "data/continuous";
-        else if(dataPackage.getPackageType() == DataPackageType.EVENT)
-            dataUrl = "data/event";
-        if(dataPackage.getPackageType() == DataPackageType.SELECTIVE)
-            dataUrl = "data/selective";
+//        if(dataPackage.getPackageType() == DataPackageType.CONTINUOUS)
+//            dataUrl = "data/continuous";
+//        else if(dataPackage.getPackageType() == DataPackageType.EVENT)
+//            dataUrl = "data/event";
+//        if(dataPackage.getPackageType() == DataPackageType.SELECTIVE)
+//            dataUrl = "data/selective";
 
         HttpStatus status = null;
         try

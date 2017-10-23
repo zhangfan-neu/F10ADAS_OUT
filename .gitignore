@@ -43,3 +43,5 @@ captures/
 
 # Mac files
 .DS_Store
+/*.ERROR
+/*.files
