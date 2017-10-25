@@ -188,4 +188,19 @@ public class Utilities
 
         return vin;
     }
+
+    //TODO: Need to develop a MediaManager class to handle these types of functionality.
+    public static int getMediaSize(File folder, String filename)
+    {
+        int size = 0;
+
+        File mediaFile = new File(folder,filename);
+        if(mediaFile != null)
+        {
+            size = (int)mediaFile.length();
+        }
+
+        Log.i("**** ODDC::Utilities - ", "getMediaSize = " + size);
+        return size;
+    }
 }

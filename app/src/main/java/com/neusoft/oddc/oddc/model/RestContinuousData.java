@@ -38,13 +38,25 @@ public class RestContinuousData implements Serializable
 	private boolean ldwevent;
 	private String mediauri;
 	private String timestamp;
+	private int mediasize;
+	private boolean mediauploaded;
+
+	public boolean isMediauploaded()
+	{
+		return mediauploaded;
+	}
+
+	public void setMediauploaded(boolean mediauploaded)
+	{
+		this.mediauploaded = mediauploaded;
+	}
 
 	public RestContinuousData()
 	{
 	}
 
 	public RestContinuousData(UUID id, UUID sessionid, UUID packageid, String vehicleid, double longitude, double latitude, double speed, int speeddetectiontype, double accelerationx, double accelerationy, double accelerationz, boolean gshockevent, double gshockeventthreshold, boolean fcwexistfv,
-			boolean fcwcutin, double fcwdistancetofv, double fcwrelativespeedtofv, boolean fcwevent, double fcwteventthreshold, double ldwdistancetoleftlane, double ldwdistancetorightlane, boolean ldwevent, String mediauri, String timestamp)
+			boolean fcwcutin, double fcwdistancetofv, double fcwrelativespeedtofv, boolean fcwevent, double fcwteventthreshold, double ldwdistancetoleftlane, double ldwdistancetorightlane, boolean ldwevent, String mediauri, String timestamp, int mediasize)
 	{
 		super();
 		this.id = id;
@@ -71,6 +83,8 @@ public class RestContinuousData implements Serializable
 		this.ldwevent = ldwevent;
 		this.mediauri = mediauri;
 		this.timestamp = timestamp;
+		this.mediasize = mediasize;
+		this.mediauploaded = false;
 	}
 
 	public UUID getPackageid()
@@ -311,6 +325,16 @@ public class RestContinuousData implements Serializable
 	public void setTimestamp(String timestamp)
 	{
 		this.timestamp = timestamp;
+	}
+
+	public int getMediasize()
+	{
+		return mediasize;
+	}
+
+	public void setMediasize(int mediasize)
+	{
+		this.mediasize = mediasize;
 	}
 
 	@Override

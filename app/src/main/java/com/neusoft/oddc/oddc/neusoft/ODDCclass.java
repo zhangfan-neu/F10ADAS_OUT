@@ -413,6 +413,7 @@ public class ODDCclass implements ODDCinterface {
                 RestContinuousData cd = null;
                 UUID packageId = UUID.randomUUID();
 
+                int filesize = -1;
                 while (c.moveToNext())
                 {
                     cd = new RestContinuousData();
@@ -439,35 +440,27 @@ public class ODDCclass implements ODDCinterface {
                     cd.setLdwdistancetorightlane(c.getFloat(c.getColumnIndex("LDWDistanceToRightLane")));
                     cd.setLdwevent(c.getInt(c.getColumnIndex("LDWEvent")) != 0);
                     cd.setMediauri(c.getString(c.getColumnIndex("MediaURI")));
+                    cd.setMediauploaded(false);
 
-//                    cd.sessionID = UUID.fromString(c.getString( c.getColumnIndex("sessionID") ));
-//                    cd.vehicleID = c.getString(c.getColumnIndex("vehicleID"));
-//                    cd.timestamp = c.getString(c.getColumnIndex("timestamp"));
-//                    cd.longitude = c.getFloat(c.getColumnIndex("longitude"));
-//                    cd.latitude = c.getFloat(c.getColumnIndex("latitude"));
-//                    cd.speed = c.getFloat(c.getColumnIndex("Speed"));
-//                    cd.speedDetectionType = c.getInt(c.getColumnIndex("SpeedDetectionType"));
-//                    cd.accelerationX = c.getFloat(c.getColumnIndex("AccelerationX"));
-//                    cd.accelerationX = c.getFloat(c.getColumnIndex("AccelerationY"));
-//                    cd.accelerationX = c.getFloat(c.getColumnIndex("AccelerationZ"));
-//                    cd.gShockEvent = ( c.getInt(c.getColumnIndex("GShockEvent")) != 0 );
-//                    if (cd.gShockEvent) cdEvent = true;
-//                    cd.fcwExistFV = ( c.getInt(c.getColumnIndex("FCWExistFV")) != 0 );
-//                    cd.fcwCutIn = ( c.getInt(c.getColumnIndex("FCWCutIn")) != 0 );
-//                    cd.fcwDistanceToFV = c.getFloat(c.getColumnIndex("FCWDistanceToFV"));
-//                    cd.fcwRelativeSpeedToFV = c.getFloat(c.getColumnIndex("FCWRelativeSpeedToFV"));
-//                    cd.fcwEvent = ( c.getInt(c.getColumnIndex("FCWEvent")) != 0 );
-//                    if (cd.fcwEvent) cdEvent = true;
-//                    cd.fcwEventThreshold = c.getFloat(c.getColumnIndex("FCWTEventThreshold"));
-//                    cd.ldwDistanceToLeftLane = c.getFloat(c.getColumnIndex("LDWDistanceToLeftLane"));
-//                    cd.ldwDistanceToRightLane = c.getFloat(c.getColumnIndex("LDWDistanceToRightLane"));
-//                    cd.ldwEvent = ( c.getInt(c.getColumnIndex("LDWEvent")) != 0 );
-//                    if (cd.ldwEvent) cdEvent = true;
-//                    cd.mediaURI = c.getString(c.getColumnIndex("MediaURI"));
-//                    cd.mediaDeleted = ( c.getInt(c.getColumnIndex("MediaDeleted")) != 0 );
-//                    /*cd.mediaProtected = ( c.getInt(c.getColumnIndex("MediaProtected")) != 0 );*/
-//                    cd.mediaUploaded = ( c.getInt(c.getColumnIndex("MediaUploaded")) != 0 );
-//                    cd.dataUploaded = ( c.getInt(c.getColumnIndex("DataUploaded")) != 0 );
+                    //Get the filesize for the video file.
+                    String filename = cd.getMediauri();
+                    if(!filename.isEmpty() && mVideoFolder != null)
+                    {
+                        //NOTE: Quick hack to only retrieve the filesize once.  Perhaps figure out a better
+                        //      implementation later.
+                        if(filesize == -1)
+                        {
+                            filesize = Utilities.getMediaSize(mVideoFolder, filename);
+                        }
+
+                        cd.setMediasize(filesize);
+                    }
+                    else
+                    {
+                        cd.setMediasize(-1);
+                        Log.e("**** ODDC::SendToFLA-", "Invalid filename or folder.");
+                    }
+
                     dataCollection.add(cd);
                     //Log.d("ODDC SENDTOFLA",cd.sessionID+" "+cd.gpsTimeStamp+" "+cd.gpsTimeStamp+" "+cd.latitude+" "+cd.speed+" "+cd.gShockEvent+" "+cd.fcwEvent+" "+cd.ldwEvent+" "+cd.mediaURI+" "+cd.mediaDeleted+" "+cd.mediaUploaded+" "+cd.dataUploaded);
                    }
