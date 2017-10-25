@@ -298,6 +298,8 @@ public class JobManager
                         singlePingTimer.cancel();
                         singlePingTimer.purge();
                     }
+
+                    startPingTimer();
                 }
 
                 //TODO: Delete this later when functionality has been verified bug free.
