@@ -3,6 +3,7 @@ package com.neusoft.oddc.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.neusoft.oddc.R;
 
@@ -23,6 +24,7 @@ public class SettingDvrSettingActivity extends BaseEdittableActivity {
     protected void onResume() {
         super.onResume();
         hideAllTitleButtons();
+        showTitleLeftButtons();
     }
 
     private void initViews() {
@@ -38,4 +40,14 @@ public class SettingDvrSettingActivity extends BaseEdittableActivity {
 
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.custom_title_left_button:
+                finish();
+                break;
+            default:
+                break;
+        }
+    }
 }

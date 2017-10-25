@@ -167,16 +167,16 @@ public class ODDCclass implements ODDCinterface {
 
         switch(t){
             case CONTINUOUS:
-                selectSTR = "select sessionID,GShockEvent,FCWEvent,LDWEvent,GPStimeStamp,MediaURI,MediaDeleted,MediaUploaded,DataUploaded from oddc where dataUploaded = 1";
+                selectSTR = "select sessionID,GShockEvent,FCWEvent,LDWEvent,timeStamp,MediaURI,MediaDeleted,MediaUploaded,DataUploaded from oddc where dataUploaded = 1";
                 break;
             case EVENT:
-                selectSTR = "select sessionID,GShockEvent,FCWEvent,LDWEvent,GPStimeStamp,MediaURI,MediaDeleted,MediaUploaded,DataUploaded from oddc where GShockEvent = 1 or FCWEvent = 1 or LDWEvent = 1";
+                selectSTR = "select sessionID,GShockEvent,FCWEvent,LDWEvent,timeStamp,MediaURI,MediaDeleted,MediaUploaded,DataUploaded from oddc where GShockEvent = 1 or FCWEvent = 1 or LDWEvent = 1";
                 break;
             case SELECTIVE:
-                selectSTR = "select sessionID,GShockEvent,FCWEvent,LDWEvent,GPStimeStamp,MediaURI,MediaDeleted,MediaUploaded,DataUploaded from oddc where MediaUploaded = 1";
+                selectSTR = "select sessionID,GShockEvent,FCWEvent,LDWEvent,timeStamp,MediaURI,MediaDeleted,MediaUploaded,DataUploaded from oddc where MediaUploaded = 1";
                 break;
             case ALL:
-                selectSTR = "select sessionID,GShockEvent,FCWEvent,LDWEvent,GPStimeStamp,MediaURI,MediaDeleted,MediaUploaded,DataUploaded from oddc";
+                selectSTR = "select sessionID,GShockEvent,FCWEvent,LDWEvent,timeStamp,MediaURI,MediaDeleted,MediaUploaded,DataUploaded from oddc";
                 break;
         }
 

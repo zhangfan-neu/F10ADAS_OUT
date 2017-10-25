@@ -65,14 +65,14 @@ public abstract class BaseEdittableActivity extends BaseActivity implements View
     }
 
 
-    private void showTitleLeftButtons() {
+    protected void showTitleLeftButtons() {
         Button button = (Button) findViewById(R.id.custom_title_left_button);
         if (null != button) {
             button.setVisibility(View.VISIBLE);
         }
     }
 
-    private void showTitleRightButtons() {
+    protected void showTitleRightButtons() {
         Button button = (Button) findViewById(R.id.custom_title_right_button);
         if (null != button) {
             button.setVisibility(View.VISIBLE);
