@@ -610,10 +610,21 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             }
         }
 
-        if(recordingIcon != null)
-        {
-            recordingIcon.setVisibility(View.VISIBLE);
-        }
+        showRecordingIcon();
+    }
+
+    private void showRecordingIcon()
+    {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // This code will always run on the UI thread, therefore is safe to modify UI elements.
+                if(recordingIcon != null)
+                {
+                    recordingIcon.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     public void endRecording()
