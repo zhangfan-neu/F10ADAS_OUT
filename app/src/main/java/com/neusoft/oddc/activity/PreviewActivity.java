@@ -590,11 +590,6 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             return;
         }
 
-        if(jobButton != null)
-        {
-            jobButton.setText(getString(R.string.stop));
-        }
-
         if(recorder != null && !recorder.isRecording())
         {
             needRestartRecord = true;
@@ -619,6 +614,11 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             @Override
             public void run() {
                 // This code will always run on the UI thread, therefore is safe to modify UI elements.
+                if(jobButton != null)
+                {
+                    jobButton.setText(getString(R.string.stop));
+                }
+                
                 if(recordingIcon != null)
                 {
                     recordingIcon.setVisibility(View.VISIBLE);
