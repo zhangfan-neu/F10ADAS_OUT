@@ -166,13 +166,15 @@ public class Utilities
 
         //OBD-2 VIN takes priority.  Uses stored VIN as a back up if there is no connection to the server.
         //ADASHelper.getvin() will only return empty if the app is not connected to the OBD-2.
-        String obd2Vin = ADASHelper.getvin();
-
-        if(!obd2Vin.isEmpty())
-        {
-            vin = obd2Vin;
-        }
-        else
+        
+        //NOTE: Temporarily commented out per FLA's request.  Will only need to use manually entered VIN for development.
+//        String obd2Vin = ADASHelper.getvin();
+//
+//        if(!obd2Vin.isEmpty())
+//        {
+//            vin = obd2Vin;
+//        }
+//        else
         {
             VehicleProfileEntity entity;
             VehicleProfileEntityDao vehicleProfileEntityDao= ((MyApplication) MyApplication.currentActivity.getApplication()).getDaoSession().getVehicleProfileEntityDao();
@@ -182,7 +184,10 @@ public class Utilities
             if (null != list && list.size() > 0)
             {
                 entity = list.get(0);
-                vin = entity.getVin();
+                if(entity != null)
+                {
+                    vin = entity.getVin();
+                }
             }
         }
 
