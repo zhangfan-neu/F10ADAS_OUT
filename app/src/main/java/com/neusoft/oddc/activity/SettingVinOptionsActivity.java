@@ -58,13 +58,12 @@ public class SettingVinOptionsActivity extends BaseActivity implements View.OnCl
         }
     }
 
-    private void updateSpinner(@NonNull final VinOptionEntity entity)
+    private void updateOptionAndText(@NonNull final int position)
     {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 // This code will always run on the UI thread, therefore is safe to modify UI elements.
-                int position = entity.getVinOption();
                 spinner.setSelection(position);
 
                 switch (position)
@@ -129,7 +128,6 @@ public class SettingVinOptionsActivity extends BaseActivity implements View.OnCl
         spinner = (Spinner)findViewById(R.id.optionSpinner);
         textView = (TextView)findViewById(R.id.optionText);
 
-        //TODO: Load spinner value...
         entity = Utilities.getVinOption();
         if(entity == null)
         {
@@ -148,23 +146,8 @@ public class SettingVinOptionsActivity extends BaseActivity implements View.OnCl
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
                 {
-                    switch (position)
-                    {
-                        case 0:
-                            setOptionText(getString(R.string.vin_option_default_txt));
-                            break;
-                        case 1:
-                            setOptionText(getString(R.string.vin_option_obd2_txt));
-                            break;
-                        case 2:
-                            setOptionText(getString(R.string.vin_option_vehicle_profile_txt));
-                            break;
-                        default:
-                            break;
-                    }
-
-                    //TODO: Save option...
                     vinOption = position;
+                    updateOptionAndText(position);
                     saveToDb();
                 }
 
@@ -178,7 +161,7 @@ public class SettingVinOptionsActivity extends BaseActivity implements View.OnCl
             VinOptionEntity optionEntity = Utilities.getVinOption();
             if(optionEntity != null)
             {
-                updateSpinner(optionEntity);
+                updateOptionAndText(optionEntity.getVinOption());
             }
         }
     }
