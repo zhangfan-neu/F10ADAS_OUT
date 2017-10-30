@@ -34,6 +34,7 @@
     <string name="title_on_demand_upload">On demand upload</string>
     <string name="title_property">Property</string>
     <string name="title_dvr_playback">DVR Playback</string>
+    <string name="title_vin_options">VIN Options</string>
 
     <!-- Main -->
     <string name="main_status">Status</string>
@@ -63,6 +64,7 @@
     <string name="setting_group_item3">ADAS calibration</string>
     <string name="setting_group_item4">ADAS parameters</string>
     <string name="setting_group_item5">DVR Setting</string>
+    <string name="setting_group_item6">VIN Options</string>
 
     <!-- Oddc agent group title -->
     <string name="oddc_agent_item1">Continuous upload log</string>
@@ -114,6 +116,11 @@
     <!-- DVR Settings -->
     <string name="ds_movie_clip_path">Movie Clip Path</string>
     <string name="ds_movie_clip_path_default">/sdcard/oddc/</string>
+
+    <!-- VIN Options -->
+    <string name="vin_option_default_txt">Client will used VIN from OBD-2 or Vehicle Profile settings.  OBD-2 VIN takes priority.</string>
+    <string name="vin_option_obd2_txt">Client will used VIN only from OBD-2.  Vehcile Profile VIN will be ignored.</string>
+    <string name="vin_option_vehicle_profile_txt">Client will used VIN only from Vehicle Profile settings.  OBD-2 VIN will be ignored.</string>
 
     <!-- Real time data -->
     <string name="real_time_data_param1">Date</string>
