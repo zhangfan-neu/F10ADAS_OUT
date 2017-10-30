@@ -138,7 +138,7 @@ public class SettingVinOptionsActivity extends BaseActivity implements View.OnCl
 
         if(spinner != null)
         {
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.vin_options, android.R.layout.simple_spinner_item);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.vin_options, R.layout.spinner_item_simple_string);
             adapter.setDropDownViewResource(R.layout.spinner_item_simple_string);
             spinner.getBackground().setColorFilter(ContextCompat.getColor(this, android.R.color.white), PorterDuff.Mode.SRC_ATOP);
             spinner.setAdapter(adapter);
