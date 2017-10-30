@@ -4,7 +4,6 @@ package com.neusoft.oddc.oddc.utilities;
  * Created by yzharchuk on 8/15/2017.
  */
 
-import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -24,9 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.neusoft.oddc.MyApplication;
 import com.neusoft.oddc.adas.ADASHelper;
 import com.neusoft.oddc.db.dbentity.VehicleProfileEntity;
-import com.neusoft.oddc.db.dbentity.VinOptionEntity;
 import com.neusoft.oddc.db.gen.VehicleProfileEntityDao;
-import com.neusoft.oddc.db.gen.VinOptionEntityDao;
 import com.neusoft.oddc.oddc.model.Video;
 
 //import static com.google.android.gms.internal.zzid.runOnUiThread;
@@ -163,102 +160,38 @@ public class Utilities
         return dateFormat.format(date);
     }
 
-    private static String getObd2Vin()
-    {
-        String vin = "";
-        String obd2Vin = ADASHelper.getvin();
-        if(!obd2Vin.isEmpty())
-        {
-            vin = obd2Vin;
-        }
-
-        return vin;
-    }
-
-    private static String getVehicleProfileVin()
-    {
-        String vin = "";
-
-        VehicleProfileEntity entity;
-        VehicleProfileEntityDao vehicleProfileEntityDao = ((MyApplication) MyApplication.currentActivity.getApplication()).getDaoSession().getVehicleProfileEntityDao();
-        ArrayList<VehicleProfileEntity> list = (ArrayList<VehicleProfileEntity>) vehicleProfileEntityDao.queryBuilder()
-                .where(VehicleProfileEntityDao.Properties.Key_user.eq("")).list();
-
-        if (null != list && list.size() > 0)
-        {
-            entity = list.get(0);
-            if(entity != null)
-            {
-                vin = entity.getVin();
-            }
-        }
-
-        return vin;
-    }
-
     public static String getVehicleID()
     {
         String vin = "";
-        VinOptionEntity vinOptionEntity = Utilities.getVinOption();
 
-        if(vinOptionEntity != null)
+        //OBD-2 VIN takes priority.  Uses stored VIN as a back up if there is no connection to the server.
+        //ADASHelper.getvin() will only return empty if the app is not connected to the OBD-2.
+        
+        //NOTE: Temporarily commented out per FLA's request.  Will only need to use manually entered VIN for development.
+//        String obd2Vin = ADASHelper.getvin();
+//
+//        if(!obd2Vin.isEmpty())
+//        {
+//            vin = obd2Vin;
+//        }
+//        else
         {
-            int vinOption = vinOptionEntity.getVinOption();
-            String obd2Vin = getObd2Vin();
+            VehicleProfileEntity entity;
+            VehicleProfileEntityDao vehicleProfileEntityDao= ((MyApplication) MyApplication.currentActivity.getApplication()).getDaoSession().getVehicleProfileEntityDao();
+            ArrayList<VehicleProfileEntity> list = (ArrayList<VehicleProfileEntity>) vehicleProfileEntityDao.queryBuilder()
+                    .where(VehicleProfileEntityDao.Properties.Key_user.eq("")).list();
 
-            switch (vinOption)
+            if (null != list && list.size() > 0)
             {
-                case 0:     //Both with OBD2 taking priority
-                    if(!obd2Vin.isEmpty())
-                    {
-                        vin = obd2Vin;
-                    }
-                    else
-                    {
-                        vin = getVehicleProfileVin();
-                    }
-                    break;
-                case 1:     //Only OBD2 VIN
-                    if(!obd2Vin.isEmpty())
-                    {
-                        vin = obd2Vin;
-                    }
-                    break;
-                case 2:     //Only Vehicle Profile VIN
-                    vin = getVehicleProfileVin();
-                    break;
-                default:
-                    if(!obd2Vin.isEmpty())
-                    {
-                        vin = obd2Vin;
-                    }
-                    else
-                    {
-                        vin = getVehicleProfileVin();
-                    }
-                    break;
+                entity = list.get(0);
+                if(entity != null)
+                {
+                    vin = entity.getVin();
+                }
             }
         }
 
         return vin;
-    }
-
-    public static VinOptionEntity getVinOption()
-    {
-        VinOptionEntityDao vinOptionEntityDao = ((MyApplication) MyApplication.currentActivity.getApplication()).getDaoSession().getVinOptionEntityDao();
-        VinOptionEntity vinOptionEntity =  null;
-        if(vinOptionEntityDao != null)
-        {
-            ArrayList<VinOptionEntity> list = (ArrayList<VinOptionEntity>) vinOptionEntityDao.queryBuilder()
-                    .where(VinOptionEntityDao.Properties.Key_user.eq("")).list();
-            if (null != list && list.size() > 0) {
-                vinOptionEntity = list.get(0);
-            } else {
-                vinOptionEntity = null;
-            }
-        }
-
-        return vinOptionEntity;
     }
 
     //TODO: Need to develop a MediaManager class to handle these types of functionality.

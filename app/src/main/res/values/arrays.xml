@@ -5,10 +5,4 @@
         <item>Medium</item>
         <item>High</item>
     </string-array>
-
-    <string-array name="vin_options">
-        <item>OBD-2 or Vehcile Profile VIN</item>
-        <item>OBD-2 VIN Only</item>
-        <item>Vehcile Profile VIN Only</item>
-    </string-array>
 </resources>

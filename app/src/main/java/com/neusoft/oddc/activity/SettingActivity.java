@@ -109,7 +109,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         // settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item3), SettingAdasCalibrationActivity.class, childList));
         settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item4), SettingAdasParametersActivity.class, childList));
         settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item5), SettingDvrSettingActivity.class, childList));
-        settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item6), SettingVinOptionsActivity.class, childList));
         return settingGroup;
     }
 }
