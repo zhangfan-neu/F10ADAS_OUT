@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.neusoft.oddc.BuildConfig;
 import com.neusoft.oddc.R;
@@ -18,7 +20,7 @@ import com.neusoft.oddc.widget.recycler.DefaultDividerDecoration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingActivity extends BaseActivity {
+public class SettingActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = SettingActivity.class.getSimpleName();
 
@@ -61,6 +63,18 @@ public class SettingActivity extends BaseActivity {
         setCustomTitle(R.string.title_setting);
 
         initViews();
+        initBackButton();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.custom_title_left_button:
+                finish();
+                break;
+            default:
+                break;
+        }
     }
 
     private void initViews() {
@@ -74,6 +88,16 @@ public class SettingActivity extends BaseActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    private void initBackButton()
+    {
+        Button button = (Button) findViewById(R.id.custom_title_left_button);
+        if (null != button) {
+            button.setVisibility(View.VISIBLE);
+            button.setText(R.string.back);
+            button.setOnClickListener(this);
+        }
+    }
+
     private List<EntitySettingGroup> getSettingGroup() {
         List<EntitySettingGroup> settingGroup = new ArrayList<>();
         List<String> childList = new ArrayList<>();
@@ -85,6 +109,7 @@ public class SettingActivity extends BaseActivity {
         // settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item3), SettingAdasCalibrationActivity.class, childList));
         settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item4), SettingAdasParametersActivity.class, childList));
         settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item5), SettingDvrSettingActivity.class, childList));
+        settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item6), SettingVinOptionsActivity.class, childList));
         return settingGroup;
     }
 }

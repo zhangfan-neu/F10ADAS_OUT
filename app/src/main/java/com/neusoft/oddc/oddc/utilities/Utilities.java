@@ -4,58 +4,28 @@ package com.neusoft.oddc.oddc.utilities;
  * Created by yzharchuk on 8/15/2017.
  */
 
+
 import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 import com.neusoft.oddc.MyApplication;
 import com.neusoft.oddc.adas.ADASHelper;
 import com.neusoft.oddc.db.dbentity.VehicleProfileEntity;
+import com.neusoft.oddc.db.dbentity.VinOptionEntity;
 import com.neusoft.oddc.db.gen.VehicleProfileEntityDao;
-import com.neusoft.oddc.oddc.model.Video;
+import com.neusoft.oddc.db.gen.VinOptionEntityDao;
 
-//import static com.google.android.gms.internal.zzid.runOnUiThread;
 
 public class Utilities
 {
-//    public static String generateUUIDString()
-//    {
-//        return UUID.randomUUID().toString();
-//    }
-//
-//    public static boolean saveVideoFile(Video video, String path)
-//    {
-//        boolean success = false;
-//        String fileName = path + File.separator + video.getFileName();
-//
-//        try
-//        {
-//            FileOutputStream out = new FileOutputStream(fileName);
-//            byte[] bytes = video.getVideoBytes();
-//            out.write(bytes);
-//            out.close();
-//            success = true;
-//        }
-//        catch (Exception e)
-//        {
-//            Log.d("saveVideoFile()", "File '" + fileName + "' saved.");
-//        }
-//
-//        return success;
-//    }
-
     public static byte [] downloadFile(String fileURL)
     {
         byte[] bytes = null;
@@ -112,30 +82,6 @@ public class Utilities
         return bytes;
     }
 
-//    public static String getAlphaNumericString(int length)
-//    {
-//        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-//        StringBuilder salt = new StringBuilder();
-//        Random random = new Random();
-//        while (salt.length() < length)
-//            salt.append(SALTCHARS.charAt((int) (random.nextFloat() * SALTCHARS.length())));
-//
-//        return salt.toString();
-//    }
-
-//    public static int getRandomInteger(int min, int max)
-//    {
-//        return ThreadLocalRandom.current().nextInt(min, max + 1);
-//    }
-//    public static double getRandomDouble(double min, double max)
-//    {
-//        return ThreadLocalRandom.current().nextDouble(min, max + 1);
-//    }
-//    public static String getRandomFileName(String extension)
-//    {
-//        return Utilities.getAlphaNumericString(5) + " " + new SimpleDateFormat("MM-dd-yyyy HH:mm:ss.SSSZ").format(Calendar.getInstance().getTime()).toString() + extension;
-//    }
-
     public static void showToastMessage(final String msg)
     {
         MyApplication.currentActivity.runOnUiThread(new Runnable() {
@@ -160,32 +106,116 @@ public class Utilities
         return dateFormat.format(date);
     }
 
-    public static String getVehicleID()
+    private static String getObd2Vin()
     {
         String vin = "";
-
-        //OBD-2 VIN takes priority.  Uses stored VIN as a back up if there is no connection to the server.
-        //ADASHelper.getvin() will only return empty if the app is not connected to the OBD-2.
         String obd2Vin = ADASHelper.getvin();
-
         if(!obd2Vin.isEmpty())
         {
             vin = obd2Vin;
         }
-        else
-        {
-            VehicleProfileEntity entity;
-            VehicleProfileEntityDao vehicleProfileEntityDao= ((MyApplication) MyApplication.currentActivity.getApplication()).getDaoSession().getVehicleProfileEntityDao();
-            ArrayList<VehicleProfileEntity> list = (ArrayList<VehicleProfileEntity>) vehicleProfileEntityDao.queryBuilder()
-                    .where(VehicleProfileEntityDao.Properties.Key_user.eq("")).list();
 
-            if (null != list && list.size() > 0)
+        return vin;
+    }
+
+    private static String getVehicleProfileVin()
+    {
+        String vin = "";
+
+        VehicleProfileEntity entity;
+        VehicleProfileEntityDao vehicleProfileEntityDao = ((MyApplication) MyApplication.currentActivity.getApplication()).getDaoSession().getVehicleProfileEntityDao();
+        ArrayList<VehicleProfileEntity> list = (ArrayList<VehicleProfileEntity>) vehicleProfileEntityDao.queryBuilder()
+                .where(VehicleProfileEntityDao.Properties.Key_user.eq("")).list();
+
+        if (null != list && list.size() > 0)
+        {
+            entity = list.get(0);
+            if(entity != null)
             {
-                entity = list.get(0);
                 vin = entity.getVin();
             }
         }
 
         return vin;
+    }
+
+    public static String getVehicleID()
+    {
+        String vin = "";
+        VinOptionEntity vinOptionEntity = Utilities.getVinOption();
+
+        if(vinOptionEntity != null)
+        {
+            int vinOption = vinOptionEntity.getVinOption();
+            String obd2Vin = getObd2Vin();
+
+            switch (vinOption)
+            {
+                case 0:     //Both with OBD2 taking priority
+                    if(!obd2Vin.isEmpty())
+                    {
+                        vin = obd2Vin;
+                    }
+                    else
+                    {
+                        vin = getVehicleProfileVin();
+                    }
+                    break;
+                case 1:     //Only OBD2 VIN
+                    if(!obd2Vin.isEmpty())
+                    {
+                        vin = obd2Vin;
+                    }
+                    break;
+                case 2:     //Only Vehicle Profile VIN
+                    vin = getVehicleProfileVin();
+                    break;
+                default:
+                    if(!obd2Vin.isEmpty())
+                    {
+                        vin = obd2Vin;
+                    }
+                    else
+                    {
+                        vin = getVehicleProfileVin();
+                    }
+                    break;
+            }
+        }
+
+        return vin;
+    }
+
+    public static VinOptionEntity getVinOption()
+    {
+        VinOptionEntityDao vinOptionEntityDao = ((MyApplication) MyApplication.currentActivity.getApplication()).getDaoSession().getVinOptionEntityDao();
+        VinOptionEntity vinOptionEntity =  null;
+        if(vinOptionEntityDao != null)
+        {
+            ArrayList<VinOptionEntity> list = (ArrayList<VinOptionEntity>) vinOptionEntityDao.queryBuilder()
+                    .where(VinOptionEntityDao.Properties.Key_user.eq("")).list();
+            if (null != list && list.size() > 0) {
+                vinOptionEntity = list.get(0);
+            } else {
+                vinOptionEntity = null;
+            }
+        }
+
+        return vinOptionEntity;
+    }
+
+    //TODO: Need to develop a MediaManager class to handle these types of functionality.
+    public static int getMediaSize(File folder, String filename)
+    {
+        int size = 0;
+
+        File mediaFile = new File(folder,filename);
+        if(mediaFile != null)
+        {
+            size = (int)mediaFile.length();
+        }
+
+        Log.i("**** ODDC::Utilities - ", "getMediaSize = " + size);
+        return size;
     }
 }

@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.neusoft.oddc.BuildConfig;
 import com.neusoft.oddc.R;
@@ -18,7 +20,7 @@ import com.neusoft.oddc.widget.recycler.DefaultDividerDecoration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ODDCAgentActivity extends BaseActivity {
+public class ODDCAgentActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = ODDCAgentActivity.class.getSimpleName();
 
@@ -60,6 +62,18 @@ public class ODDCAgentActivity extends BaseActivity {
         setCustomTitle(R.string.title_oddc_agent);
 
         initViews();
+        initBackButton();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.custom_title_left_button:
+                finish();
+                break;
+            default:
+                break;
+        }
     }
 
     private void initViews() {
@@ -71,6 +85,16 @@ public class ODDCAgentActivity extends BaseActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         adapter.setOnGroupClickListener(onGroupClickListener);
+    }
+
+    private void initBackButton()
+    {
+        Button button = (Button) findViewById(R.id.custom_title_left_button);
+        if (null != button) {
+            button.setVisibility(View.VISIBLE);
+            button.setText(R.string.back);
+            button.setOnClickListener(this);
+        }
     }
 
     private List<EntitySettingGroup> getSettingGroup() {

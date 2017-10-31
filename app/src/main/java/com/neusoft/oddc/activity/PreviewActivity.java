@@ -590,11 +590,6 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             return;
         }
 
-        if(jobButton != null)
-        {
-            jobButton.setText(getString(R.string.stop));
-        }
-
         if(recorder != null && !recorder.isRecording())
         {
             needRestartRecord = true;
@@ -610,10 +605,45 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             }
         }
 
-        if(recordingIcon != null)
-        {
-            recordingIcon.setVisibility(View.VISIBLE);
-        }
+        showRecordingIcon();
+    }
+
+    private void showRecordingIcon()
+    {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // This code will always run on the UI thread, therefore is safe to modify UI elements.
+                if(jobButton != null)
+                {
+                    jobButton.setText(getString(R.string.stop));
+                }
+
+                if(recordingIcon != null)
+                {
+                    recordingIcon.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    private void hideRecordingIcon()
+    {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // This code will always run on the UI thread, therefore is safe to modify UI elements.
+                if(jobButton != null)
+                {
+                    jobButton.setText(getString(R.string.start));
+                }
+
+                if(recordingIcon != null)
+                {
+                    recordingIcon.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     public void endRecording()
@@ -623,19 +653,9 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             return;
         }
 
-        if(jobButton != null)
-        {
-            jobButton.setText(getString(R.string.start));
-        }
-
-        if(recordingIcon != null)
-        {
-            recordingIcon.setVisibility(View.GONE);
-        }
-
-        //this.onRecorderStopped(-1);
         needRestartRecord = true;
         stopRecording();
+        hideRecordingIcon();
     }
 
     private void handleRecorderStart() {
