@@ -114,6 +114,7 @@
     <string name="ac_other_component">Other Component</string>
 
     <!-- DVR Settings -->
+    <string name="ds_render_mode">Record ADAS Overlay</string>
     <string name="ds_movie_clip_path">Movie Clip Path</string>
     <string name="ds_movie_clip_path_default">/sdcard/oddc/</string>
 
@@ -170,6 +171,21 @@
     <string name="dvr_playback_event3">Lane Departure(R)</string>
     <string name="dvr_playback_event4">Sudden braking</string>
     <string name="dvr_playback_event5">Cut in</string>
+
+    <!-- For RealTimeDataDrawer -->
+    <string name="rtdd_date_str1">Date:</string>
+    <string name="rtdd_date_str2">Time:</string>
+    <string name="rtdd_date_str3">Speed:</string>
+    <string name="rtdd_date_str4">Vehicle ID:</string>
+    <string name="rtdd_date_str5">Latitude:</string>
+    <string name="rtdd_date_str6">Longitude:</string>
+    <string name="rtdd_date_str7">Accel(X):</string>
+    <string name="rtdd_date_str8">Accel(Y):</string>
+    <string name="rtdd_date_str9">Accel(Z):</string>
+    <string name="rtdd_date_event1">LDW(L) - Event Time:</string>
+    <string name="rtdd_date_event2">LDW(R) - Event Time:</string>
+    <string name="rtdd_date_event3">FCW - Event Time:</string>
+    <string name="rtdd_date_event4">G Shock - Event Time:</string>
 
     <!-- Error Messages -->
     <string name="error_message1">Unable to connect to server(Download/Upload)</string>

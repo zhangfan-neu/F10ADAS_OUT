@@ -9,6 +9,12 @@
     <!-- common -->
     <color name="transparent">#00000000</color>
 
+    <!-- For RealTimeDataDrawer -->
+    <color name="rtdd_event_rect_paint_color">#77000000</color>
+    <color name="rtdd_event_text_paint_color">#ffee7621</color>
+    <color name="rtdd_lane_paint_color">#ff99cc00</color>
+    <color name="rtdd_car_rect_paint_color">#ffff4444</color>
+
     <!-- custom ripple button -->
     <color name="custom_ripple_bg_transparent">#33808080</color>
 
