@@ -284,7 +284,8 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
         }
 
         // ODDC
-        if (NeusoftHandler.isOddcOk) {
+        if (NeusoftHandler.isOddcOk && JobManager.getInstance().isAdasEnabled())
+        {
             String filename = fileOutputPath.substring(fileOutputPath.lastIndexOf("/") + 1, fileOutputPath.length());
             double accelerationX = adasHelper.getAccelerometerX();
             double accelerationY = adasHelper.getAccelerometerY();
@@ -653,7 +654,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             return;
         }
 
-        needRestartRecord = true;
+        needRestartRecord = false;
         stopRecording();
         hideRecordingIcon();
     }
