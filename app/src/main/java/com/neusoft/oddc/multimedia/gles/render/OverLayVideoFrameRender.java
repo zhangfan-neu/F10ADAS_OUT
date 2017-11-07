@@ -42,7 +42,7 @@ public class OverLayVideoFrameRender extends VideoFrameRender {
         }
         overlayComposeFrameBuffer = new FrameBufferWrapper(0f, 0f, 0f, 0f);
 
-        overlayComposeFrameBuffer.create(overlayFrameWidth, overlayFrameHeight, true);
+        overlayComposeFrameBuffer.create(overlayFrameWidth, overlayFrameHeight, false);
 
         if (null != overlayOutputFrame) {
             overlayOutputFrame.release();
