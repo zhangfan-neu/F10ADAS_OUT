@@ -316,7 +316,12 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             double gForce = Math.sqrt((gx * gx) + (gy * gy) + (gz * gz));
             //continuousData.gShockEventValue = gForce;
             Log.d(TAG, "gForce value = " + gForce);
-            if (gForce > Constants.G_THRESH_VALUE) { continuousData.gShockEvent = true; }
+            if (gForce > Constants.G_THRESH_VALUE) {
+                continuousData.gShockEvent = true;
+                gShockEvent = true;
+            } else {
+                gShockEvent = false;
+            }
             continuousData.gShockEventThreshold = Constants.G_THRESH_VALUE;
 
             // ADAS related
@@ -407,7 +412,6 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
                 realTimeDataDrawer.addEvents(getString(R.string.rtdd_date_event2) + recTimeStr);
             }
             if (gShockEvent) {
-                Log.d(TAG, "add gshock event");
                 realTimeDataDrawer.addEvents(getString(R.string.rtdd_date_event4) + recTimeStr);
             }
         }
