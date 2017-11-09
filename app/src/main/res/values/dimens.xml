@@ -10,6 +10,18 @@
     <dimen name="dp_two">2dp</dimen>
     <dimen name="dp_one">1dp</dimen>
 
+    <!-- For RealTimeDataDrawer -->
+    <dimen name="rtdd_top_rect_left_right_margin">10dp</dimen>
+    <dimen name="rtdd_top_text_size">12sp</dimen>
+    <dimen name="rtdd_accel_margin">3dp</dimen>
+    <dimen name="rtdd_event_rect_margin_top">5dp</dimen>
+    <dimen name="rtdd_event_rect_margin_left">5dp</dimen>
+    <dimen name="rtdd_event_text_size">15sp</dimen>
+    <dimen name="rtdd_event_text_padding_left_right">25dp</dimen>
+    <dimen name="rtdd_event_text_padding_top_bottom">15dp</dimen>
+    <dimen name="rtdd_adas_text_size">15dp</dimen>
+    <dimen name="rtdd_car_fwd_text_size">15dp</dimen>
+
     <!-- recycler divider -->
     <dimen name="list_divider_thickness">1dp</dimen>
 

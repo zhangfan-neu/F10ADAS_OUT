@@ -38,6 +38,9 @@ import com.neusoft.oddc.adas.ADASHelper;
 import com.neusoft.oddc.entity.Constants;
 import com.neusoft.oddc.fragment.RealTimeContinuousDataFragment;
 import com.neusoft.oddc.fragment.RealTimeDataFragment;
+import com.neusoft.oddc.multimedia.gles.node.FrameAnimationAdapterImpl;
+import com.neusoft.oddc.multimedia.gles.node.FrameAnimationNode;
+import com.neusoft.oddc.multimedia.gles.render.OverLayVideoFrameRender;
 import com.neusoft.oddc.multimedia.gles.render.VideoFrameRender;
 import com.neusoft.oddc.multimedia.recorder.CameraHolder;
 import com.neusoft.oddc.multimedia.recorder.CameraProperty;
@@ -48,8 +51,12 @@ import com.neusoft.oddc.multimedia.recorder.base.RecorderSession;
 import com.neusoft.oddc.oddc.model.ContinuousData;
 import com.neusoft.oddc.oddc.neusoft.JobManager;
 import com.neusoft.oddc.ui.CustomTrailView;
+import com.neusoft.oddc.widget.DateHelper;
+import com.neusoft.oddc.widget.PreferencesUtils;
+import com.neusoft.oddc.widget.Utils;
 import com.neusoft.oddc.widget.WeakHandler;
 import com.neusoft.oddc.widget.eventbus.EventStopDataCollection;
+import com.neusoft.oddc.widget.realtimedata.RealTimeDataDrawer;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -74,6 +81,10 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
     private View continuousDataLayout;
     private RealTimeContinuousDataFragment realTimeContinuousDataFragment;
 
+    private ImageView custom_real_data_view;
+    private RealTimeDataDrawer realTimeDataDrawer;
+    private FrameAnimationAdapterImpl animationAdapter;
+    private boolean renderMode = true;
 
     // For camera
     public PreviewActivityHandler handler = new PreviewActivityHandler(this);
@@ -128,14 +139,14 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
         nsfh = new NeusoftHandler();
         adasHelper = new ADASHelper();
 
-        initViews();
-
         WindowManager windowManager = getWindowManager();
         Display display = windowManager.getDefaultDisplay();
         screenWidth = display.getWidth();
         screenHeight = display.getHeight();
         screenWidth = 2220;
         Log.d(TAG + "Jiehunt", "screenWidth is " + screenWidth + "screenHeight is " + screenHeight);
+
+        initViews();
     }
 
     @Override
@@ -213,6 +224,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
     boolean leftevent = false;
     boolean rightevent = false;
     boolean ttcevent = false;
+    boolean gShockEvent = false;
 
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
@@ -365,6 +377,65 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
                 needRestartRecord = false;
             }
         }
+
+        if (null != realTimeDataDrawer) {
+            String spdStr = "" + adasHelper.getspd();
+            String vechicleIDStr = ADASHelper.getvin();
+            String latitudeStr = "";
+            String longitudeStr = "";
+            Location location = adasHelper.getCoarseLocation();
+            if (null != location) {
+                latitudeStr = Utils.formatValueToStr(location.getLatitude());
+                longitudeStr = Utils.formatValueToStr(location.getLongitude());
+            }
+            String accelXStr = Utils.formatValueToStr(adasHelper.getAccelerometerX());
+            String accelYStr = Utils.formatValueToStr(adasHelper.getAccelerometerY());
+            String accelZStr = Utils.formatValueToStr(adasHelper.getAccelerometerZ());
+            realTimeDataDrawer.setTopInfoStrings(spdStr, vechicleIDStr, latitudeStr, longitudeStr,
+                    accelXStr, accelYStr, accelZStr);
+            realTimeDataDrawer.setDasTrafficEnvironment(dasTrafficEnvironment);
+
+
+            String recTimeStr = DateHelper.getEventTime(startRecordTime);
+            Log.d(TAG, "recTimeStr = " + recTimeStr);
+            if (ttcevent) {
+                realTimeDataDrawer.addEvents(getString(R.string.rtdd_date_event3) + recTimeStr);
+            }
+            if (leftevent) {
+                realTimeDataDrawer.addEvents(getString(R.string.rtdd_date_event1) + recTimeStr);
+            }
+            if (rightevent) {
+                realTimeDataDrawer.addEvents(getString(R.string.rtdd_date_event2) + recTimeStr);
+            }
+            if (gShockEvent) {
+                Log.d(TAG, "add gshock event");
+                realTimeDataDrawer.addEvents(getString(R.string.rtdd_date_event4) + recTimeStr);
+            }
+        }
+
+
+        if (renderMode) {
+            if (null != custom_real_data_view) {
+                custom_real_data_view.setImageBitmap(null);
+                custom_real_data_view.setVisibility(View.GONE);
+            }
+            if (null != animationAdapter) {
+                animationAdapter.setRenderADAS(true);
+                animationAdapter.setRealTimeDataDrawer(realTimeDataDrawer);
+            }
+        } else {
+            if (null != custom_real_data_view) {
+                custom_real_data_view.setVisibility(View.VISIBLE);
+                Bitmap realTimeDataBitmap = realTimeDataDrawer.drawDataView();
+                if (null != realTimeDataBitmap && !realTimeDataBitmap.isRecycled()) {
+                    custom_real_data_view.setImageBitmap(realTimeDataBitmap);
+                }
+            }
+            if (null != animationAdapter) {
+                animationAdapter.setRenderADAS(false);
+            }
+        }
+
     }
 
     private static String getTimestamp(){
@@ -434,6 +505,10 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
     }
 
     private void initViews() {
+        renderMode =  PreferencesUtils.getBoolean(this, SettingDvrSettingActivity.KEY_PREF_RENDER_OVERLAY, true);
+        realTimeDataDrawer = new RealTimeDataDrawer(PreviewActivity.this, screenWidth, screenHeight);
+        custom_real_data_view = (ImageView) findViewById(R.id.custom_real_data_view);
+
         realTimeDataFragment = (RealTimeDataFragment) getSupportFragmentManager().findFragmentById(R.id.preview_activity_fragment_real_time_data);
 
         // For camera
@@ -528,9 +603,13 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
         fileOutputPath = recorderSession.getOutputPath();
         recorderSession.setOutputVideoSize(RecorderSession.VIDEO_WIDTH_720P, RecorderSession.VIDEO_HEIGHT_720P);
 
-
         cameraHolder = new CameraHolder(CameraHolder.RUN_IN_UI_THREAD);
-        recorder = new AndroidRecorder(recorderSession, new VideoFrameRender(), new RecorderStateListenerImpl(this), cameraHolder);
+        OverLayVideoFrameRender render = new OverLayVideoFrameRender();
+        animationAdapter = new FrameAnimationAdapterImpl(this, screenWidth, screenHeight);
+        FrameAnimationNode animationNode = new FrameAnimationNode();
+        animationNode.setFrameAnimationAdapter(animationAdapter);
+        render.addOverlay(animationNode);
+        recorder = new AndroidRecorder(recorderSession, render, new RecorderStateListenerImpl(this), cameraHolder);
 
         cameraStateChangedListener = new CameraStateChangedListenerImpl(this);
         cameraHolder.setCameraStateChangedListener(cameraStateChangedListener);

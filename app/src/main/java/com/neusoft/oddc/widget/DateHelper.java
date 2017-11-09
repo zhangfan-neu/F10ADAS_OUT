@@ -1,6 +1,8 @@
 package com.neusoft.oddc.widget;
 
 
+import android.text.format.DateUtils;
+
 import com.neusoft.oddc.BuildConfig;
 
 import java.text.SimpleDateFormat;
@@ -95,6 +97,32 @@ public class DateHelper {
             }
         }
         return timeStr;
+    }
+
+    public static final String getCurrentTime3() {
+        String timeStr = "";
+        try {
+            long time = System.currentTimeMillis(); //long now = android.os.SystemClock.uptimeMillis();
+            SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
+            Date date = new Date(time);
+            timeStr = format.format(date);
+        } catch (Exception e) {
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace();
+            }
+        }
+        return timeStr;
+    }
+
+    public static final String getEventTime(long startRecordTime) {
+        String eventTime = "";
+        if (startRecordTime < 0) {
+            eventTime = getCurrentTime2();
+        } else {
+            long duration = System.currentTimeMillis() - startRecordTime;
+            eventTime = DateUtils.formatElapsedTime((duration / 1000));
+        }
+        return eventTime;
     }
 
 }

@@ -17,13 +17,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-
         <com.neusoft.oddc.ui.CustomTrailView
             android:id="@+id/custom_trail_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
+            android:visibility="gone"
             />
+
+        <ImageView
+            android:id="@+id/custom_real_data_view"
+            android:layout_width="match_parent"
+            android:scaleType="fitXY"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent" />
 
         <View
             android:id="@+id/camera_loading_view"

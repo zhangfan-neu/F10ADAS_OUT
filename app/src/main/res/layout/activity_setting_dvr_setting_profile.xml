@@ -26,6 +26,23 @@
 
                 <TextView
                     style="@style/EdittableTitleTextViewStyle"
+                    android:text="@string/ds_render_mode"
+                    android:textColor="@android:color/white"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/ds_render_mode_switch"
+                    android:checked="true"
+                    android:textOff="disable"
+                    android:textOn="enable" />
+
+            </TableRow>
+
+            <include layout="@layout/custom_horizontal_divider" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/EdittableTitleTextViewStyle"
                     android:text="@string/ds_movie_clip_path"
                     android:textColor="@android:color/white"/>
 
