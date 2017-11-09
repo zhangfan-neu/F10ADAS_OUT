@@ -50,6 +50,7 @@ import com.neusoft.oddc.multimedia.recorder.base.AndroidRecorder;
 import com.neusoft.oddc.multimedia.recorder.base.RecorderSession;
 import com.neusoft.oddc.oddc.model.ContinuousData;
 import com.neusoft.oddc.oddc.neusoft.JobManager;
+import com.neusoft.oddc.oddc.utilities.Utilities;
 import com.neusoft.oddc.ui.CustomTrailView;
 import com.neusoft.oddc.widget.DateHelper;
 import com.neusoft.oddc.widget.PreferencesUtils;
@@ -379,8 +380,8 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
         }
 
         if (null != realTimeDataDrawer) {
-            String spdStr = "" + adasHelper.getspd();
-            String vechicleIDStr = ADASHelper.getvin();
+            String spdStr = "" + adasHelper.getspd() + " km/h";
+            String vechicleIDStr = Utilities.getVehicleID();
             String latitudeStr = "";
             String longitudeStr = "";
             Location location = adasHelper.getCoarseLocation();
@@ -413,7 +414,6 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             }
         }
 
-
         if (renderMode) {
             if (null != custom_real_data_view) {
                 custom_real_data_view.setImageBitmap(null);
@@ -435,7 +435,6 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
                 animationAdapter.setRenderADAS(false);
             }
         }
-
     }
 
     private static String getTimestamp(){
