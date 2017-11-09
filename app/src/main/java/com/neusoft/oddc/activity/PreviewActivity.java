@@ -304,36 +304,32 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
 
             ContinuousData continuousData = nsfh.mkContinuousData(filename, accelerationX, accelerationY, accelerationZ);
 
-            if(continuousData == null)
-            {
-                return;
-            }
+            if(null != continuousData) {
+                // G Force Event
+                double gx = accelerationX / 9.81;
+                double gy = accelerationY / 9.81;
+                double gz = accelerationZ / 9.81;
+                double gForce = Math.sqrt((gx * gx) + (gy * gy) + (gz * gz));
+                //continuousData.gShockEventValue = gForce;
+                Log.d(TAG, "gForce value = " + gForce);
+                if (gForce > Constants.G_THRESH_VALUE) {
+                    continuousData.gShockEvent = true;
+                    gShockEvent = true;
+                } else {
+                    gShockEvent = false;
+                }
+                continuousData.gShockEventThreshold = Constants.G_THRESH_VALUE;
 
-            // G Force Event
-            double gx = accelerationX / 9.81;
-            double gy = accelerationY / 9.81;
-            double gz = accelerationZ / 9.81;
-            double gForce = Math.sqrt((gx * gx) + (gy * gy) + (gz * gz));
-            //continuousData.gShockEventValue = gForce;
-            Log.d(TAG, "gForce value = " + gForce);
-            if (gForce > Constants.G_THRESH_VALUE) {
-                continuousData.gShockEvent = true;
-                gShockEvent = true;
-            } else {
-                gShockEvent = false;
-            }
-            continuousData.gShockEventThreshold = Constants.G_THRESH_VALUE;
-
-            // ADAS related
-            if (null != dasTrafficEnvironment) {
-                DasLaneMarkings dasLaneMarkings = dasTrafficEnvironment.getLaneMarkings();
+                // ADAS related
+                if (null != dasTrafficEnvironment) {
+                    DasLaneMarkings dasLaneMarkings = dasTrafficEnvironment.getLaneMarkings();
 //                long ldwTimestamp = dasLaneMarkings.getTimestamp();
-                DasLaneMarkings.DasEgoLane dasEgoLane = dasLaneMarkings.getDasEgoLane();
-                leftDis = dasEgoLane.getLeftDis();
-                continuousData.ldwDistanceToLeftLane = leftDis;
-                rightDis = dasEgoLane.getRightDis();
-                continuousData.ldwDistanceToRightLane = rightDis;
-                if (leftevent || rightevent) continuousData.ldwEvent = true;
+                    DasLaneMarkings.DasEgoLane dasEgoLane = dasLaneMarkings.getDasEgoLane();
+                    leftDis = dasEgoLane.getLeftDis();
+                    continuousData.ldwDistanceToLeftLane = leftDis;
+                    rightDis = dasEgoLane.getRightDis();
+                    continuousData.ldwDistanceToRightLane = rightDis;
+                    if (leftevent || rightevent) continuousData.ldwEvent = true;
 
                 /*if (leftevnet) {
                     continuousData.ldwEventType = 1;
@@ -341,44 +337,46 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
                     continuousData.ldwEventType = 2;
                 }*/
 
-                DasVehicles dasVehicles = dasTrafficEnvironment.getVehicles();
-                if (dasVehicles.getNums() > 0) {
-                    for (int i = 0; i < dasVehicles.getNums(); i++) {
-                        DasVehicles.DasVehicle dasVehicle = dasVehicles.getVehicleByIndex(i);
-                        if (null != dasVehicle) {
-                            int x = dasVehicle.getXDistance();
-                            if (Math.abs(x) < 1700) {
-                                yDistance = dasVehicle.getYDistance();
-                                if (yDistance < 120 * 1000) {
-                                    continuousData.fcwDistanceToFV = yDistance;
-                                    continuousData.fcwExistFV = true;
-                                    continuousData.fcwRelativeSpeedToFV = dasVehicle.getLongVelocity();
-                                    break;
-                                } else {
-                                    yDistance = 0;
-                                    continuousData.fcwDistanceToFV = yDistance;
+                    DasVehicles dasVehicles = dasTrafficEnvironment.getVehicles();
+                    if (dasVehicles.getNums() > 0) {
+                        for (int i = 0; i < dasVehicles.getNums(); i++) {
+                            DasVehicles.DasVehicle dasVehicle = dasVehicles.getVehicleByIndex(i);
+                            if (null != dasVehicle) {
+                                int x = dasVehicle.getXDistance();
+                                if (Math.abs(x) < 1700) {
+                                    yDistance = dasVehicle.getYDistance();
+                                    if (yDistance < 120 * 1000) {
+                                        continuousData.fcwDistanceToFV = yDistance;
+                                        continuousData.fcwExistFV = true;
+                                        continuousData.fcwRelativeSpeedToFV = dasVehicle.getLongVelocity();
+                                        break;
+                                    } else {
+                                        yDistance = 0;
+                                        continuousData.fcwDistanceToFV = yDistance;
+                                    }
                                 }
                             }
                         }
                     }
+                    if (ttcevent) {
+                        continuousData.fcwCutIn = true;
+                        continuousData.fcwEvent = true;
+                    }
                 }
-                if (ttcevent) {
-                    continuousData.fcwCutIn = true;
-                    continuousData.fcwEvent = true;
-                }
-            }
 
-            if (BuildConfig.DEBUG) {
-                if (null != realTimeContinuousDataFragment) {
-                    realTimeContinuousDataFragment.updateUI(continuousData);
-                }
-            }
 
-            boolean continueRecording = nsfh.postContinuousData(continuousData);
-            // Log.d(TAG, "oddc trace -> continueRecording = " + continueRecording);
-            if (!continueRecording) {
-                stopRecording();
-                needRestartRecord = false;
+                if (BuildConfig.DEBUG) {
+                    if (null != realTimeContinuousDataFragment) {
+                        realTimeContinuousDataFragment.updateUI(continuousData);
+                    }
+                }
+
+                boolean continueRecording = nsfh.postContinuousData(continuousData);
+                // Log.d(TAG, "oddc trace -> continueRecording = " + continueRecording);
+                if (!continueRecording) {
+                    stopRecording();
+                    needRestartRecord = false;
+                }
             }
         }
 
