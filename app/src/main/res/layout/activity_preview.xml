@@ -43,41 +43,37 @@
             android:id="@+id/recordingIcon"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_alignBottom="@+id/preview_activity_back_btn"
-            android:layout_alignParentLeft="true"
-            android:layout_marginStart="14dp"
-            android:layout_toEndOf="@+id/preview_activity_debug_btn"
             android:adjustViewBounds="true"
             android:visibility="visible"
-            app:srcCompat="@android:drawable/presence_video_busy"/>
+            app:srcCompat="@android:drawable/presence_video_busy"
+            android:layout_alignBottom="@+id/preview_activity_back_btn"
+            android:layout_toEndOf="@+id/preview_activity_job_btn"/>
 
         <Button
             android:id="@+id/preview_activity_back_btn"
             style="@style/CustomEditModeBottomButtonStyle"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
             android:background="@drawable/custom_title_layout_button"
             android:text="@string/title_main"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:layout_alignBaseline="@+id/preview_activity_debug_btn"
+            android:layout_alignBottom="@+id/preview_activity_debug_btn"
+            android:layout_toStartOf="@+id/preview_activity_debug_btn"/>
 
         <Button
             android:id="@+id/preview_activity_debug_btn"
             style="@style/CustomEditModeBottomButtonStyle"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/preview_activity_back_btn"
             android:background="@drawable/custom_title_layout_button"
             android:text="@string/debug"
             android:textColor="@android:color/white"
-            android:visibility="visible"/>
+            android:visibility="visible"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"/>
 
         <Button
             android:id="@+id/preview_activity_job_btn"
             style="@style/CustomEditModeBottomButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/preview_activity_debug_btn"
-            android:layout_below="@+id/preview_activity_debug_btn"
-            android:layout_marginTop="56dp"
             android:background="@drawable/custom_title_layout_button"
             android:text="@string/startStop"
             android:textColor="@android:color/white"
@@ -122,7 +118,7 @@
             android:id="@+id/preview_activity_fragment_real_time_continuous_data"
             android:name="com.neusoft.oddc.fragment.RealTimeContinuousDataFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
     </FrameLayout>
 
