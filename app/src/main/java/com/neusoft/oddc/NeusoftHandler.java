@@ -211,7 +211,7 @@ public class NeusoftHandler implements NeuSoftInterface {
         cd.speedDetectionType = 0; // always be ZERO
 
         cd.accelerationX = accelerationX;
-        cd.accelerationX = accelerationX;
+        cd.accelerationY = accelerationY;
         cd.accelerationZ = accelerationZ;
 
         cd.gShockEvent = false;
