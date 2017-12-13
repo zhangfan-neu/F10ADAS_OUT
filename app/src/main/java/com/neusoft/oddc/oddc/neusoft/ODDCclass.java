@@ -498,7 +498,10 @@ public class ODDCclass implements ODDCinterface {
 
     int selectiveUpload(ODDCTask task){
         HashMap<String, Object> parameters = task.getParameters();
-        if (parameters.size() == 0) return -1;
+        if (parameters.size() == 0)
+        {
+            return -1;
+        }
 
         ArrayList<String> fnames = new ArrayList<String>();
         ArrayList<Video> videos = new ArrayList<Video>();
@@ -519,27 +522,37 @@ public class ODDCclass implements ODDCinterface {
             }
         }
 
-        RestDataPackage dataPackage = new RestDataPackage(); //yz
-        dataPackage.setVideos(videos);
-        Envelope env = new Envelope(ODDCclass.curSession, Utilities.getVehicleID());
-        //env.setVehicleID(cd.vehicleID);
-        dataPackage.setEnvelope(env);
-        dataPackage.setPackageType(DataPackageType.SELECTIVE);
+        //NOTE: We're not even checking the SQLite database to see if the requested videos have been uploaded.
+        if(videos.size() > 0)
+        {
+            RestDataPackage dataPackage = new RestDataPackage(); //yz
+            dataPackage.setVideos(videos);
+            Envelope env = new Envelope(ODDCclass.curSession, Utilities.getVehicleID());
+            //env.setVehicleID(cd.vehicleID);
+            dataPackage.setEnvelope(env);
+            dataPackage.setPackageType(DataPackageType.SELECTIVE);
 
-        HttpStatus status = controller.postDataPackage(dataPackage); //yz
-        if (status == null) listener.sentToFLA(-1);
-        else {
-            if (status != HttpStatus.OK) {
+            HttpStatus status = controller.postDataPackage(dataPackage); //yz
+            if (status == null)
+            {
                 listener.sentToFLA(-1);
-                Log.e("ODDC ERR","SendToFLA HttpStatus NOT OK");
+                return -1;
             }
             else {
-                for (String s : fnames) {
-                    String sqlStmt = "update oddc set mediaUploaded = 1 where mediaURI = " + s;
-                    db.execSQL(sqlStmt);
+                if (status != HttpStatus.OK) {
+                    listener.sentToFLA(-1);
+                    Log.e("ODDC ERR","SendToFLA HttpStatus NOT OK");
+                }
+                else {
+                    for (String s : fnames) {
+                        String sqlStmt = "update oddc set mediaUploaded = 1 where mediaURI = " + s;
+                        db.execSQL(sqlStmt);
+                    }
                 }
             }
+            return status.value();
         }
-        return status.value();
+
+        return -1;
     }
 }
