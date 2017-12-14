@@ -41,13 +41,33 @@
 
         <ImageView
             android:id="@+id/recordingIcon"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:adjustViewBounds="true"
+            android:layout_width="50dp"
+            android:layout_height="75dp"
             android:visibility="visible"
-            app:srcCompat="@android:drawable/presence_video_busy"
             android:layout_alignBottom="@+id/preview_activity_back_btn"
             android:layout_toEndOf="@+id/preview_activity_job_btn"/>
+        <ImageView
+            android:id="@+id/ivJM"
+            android:layout_toRightOf="@+id/recordingIcon"
+            android:layout_alignBottom="@+id/recordingIcon"
+            android:layout_width="50dp"
+            android:layout_height="75dp" />
+        <ImageView
+            android:id="@+id/ivUL"
+            android:layout_toRightOf="@+id/ivJM"
+            android:layout_alignBottom="@+id/recordingIcon"
+            android:layout_width="50dp"
+            android:layout_height="75dp" />
+        <ImageView
+            android:id="@+id/ivSEL"
+            android:layout_toRightOf="@+id/ivUL"
+            android:layout_alignBottom="@+id/recordingIcon"
+            android:layout_width="50dp"
+            android:layout_height="75dp" />
+
+
+
+
 
         <Button
             android:id="@+id/preview_activity_back_btn"

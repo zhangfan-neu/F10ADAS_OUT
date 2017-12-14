@@ -85,8 +85,9 @@ public class NeusoftHandler implements NeuSoftInterface {
         jobManager.setODDC(oddCclass);
         jobManager.setNSH(this);
         oddCclass.setJobManager(jobManager);
-
+Log.w("ODDC","NeusoftHandler.init CALLing jobManager.requestInitialSessionId");
         jobManager.requestInitialSessionId();
+        Log.w("ODDC","NeusoftHandler.init RETURN from jobManager.requestInitialSessionId");
     }
 
     public boolean startupOddcClass() {

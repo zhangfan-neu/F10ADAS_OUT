@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -17,6 +18,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 
 import com.neusoft.adas.DasEngine;
 import com.neusoft.oddc.BuildConfig;
@@ -71,6 +79,49 @@ public class MainActivity extends BaseActivity {
 
     private NeusoftHandler nsfh;
     private ADASHelper adasHelper;
+
+    int onCopyCnt = 0;
+
+    public void onCopy(View view){
+        if (onCopyCnt < 5) {
+            onCopyCnt++;
+            return;
+        }
+        File currentDB = getApplicationContext().getDatabasePath("oddc.db");
+        Log.d("ODDC ONCOPY","currentDB="+currentDB.toString());
+
+        boolean copyIN =  false;
+
+        File md = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+        Log.d("ODDC ONCOPY","MainActivity getExternalStoragePublicDirectory.DIRECTORY_MOVIES="+md.toString()+" canWrite="+md.canWrite());
+
+        File backupDB = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES),"oddcCopy.db");
+
+        try {
+            FileChannel src;
+            FileChannel dst;
+            if (copyIN){
+                src = new FileInputStream(backupDB).getChannel();
+                dst = new FileOutputStream(currentDB).getChannel();
+            }
+            else {
+                src = new FileInputStream(currentDB).getChannel();
+                dst = new FileOutputStream(backupDB).getChannel();
+            }
+            dst.transferFrom(src, 0, src.size());
+            src.close();
+            dst.close();
+            Log.d("ODDC ONCOPY","transferFrom ");
+            Toast.makeText(this, "onCopy", Toast.LENGTH_LONG).show();
+        }
+        catch (FileNotFoundException fnfe){
+            Log.e("ODDC ERR","FileNotFoundException"+fnfe.toString());
+        }
+        catch (IOException ioe){
+            Log.e("ODDC ERR","IOException"+ioe.toString());
+        }
+    }
+
 
     private MainButtonsAdapter.OnRecyclerViewItemClickListener mainButtonClickListener = new MainButtonsAdapter.OnRecyclerViewItemClickListener() {
         @Override
@@ -132,6 +183,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        onCopyCnt = 0;
         if (!needCheckPermission) {
             initData();
         }

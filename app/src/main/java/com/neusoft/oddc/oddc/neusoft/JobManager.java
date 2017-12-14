@@ -39,7 +39,7 @@ public class JobManager
     private boolean isProcessingJobs = false;
     private Timer pingTimer;
     private Timer singlePingTimer;
-    private int pingFrequency = 10000;
+    private int pingFrequency = 8000; // 10000
     private int pingSessionFrequency = 5000;
     private ODDCclass oddc;
     private NeusoftHandler nsh;
@@ -81,7 +81,7 @@ public class JobManager
 
     private ArrayList<ODDCJob> getJobsFromServer(ODDCTask task)
     {
-        Utilities.showToastMessage("Reqesting Job List");
+        //Utilities.showToastMessage("Reqesting Job List");
 
         ArrayList<ODDCJob>jobs = restController.getJobList(task);
         return jobs;
@@ -131,6 +131,7 @@ public class JobManager
 
     public void processTask(ODDCTask task)
     {
+        Log.w("ODDC","JobManager.processTask "+task.getType());
         switch (task.getType())
         {
             case SELECTIVE_UPLOAD:
@@ -200,6 +201,8 @@ public class JobManager
         Log.d("JobManager", "processUploadTask");
 
         Utilities.showToastMessage("Process Task: Upload");
+        PreviewActivity pa = PreviewActivity.getInstance();
+        if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_UL, PreviewActivity.IconState.IS_SND_OK);
 
         adasEnabled = true;
 
@@ -250,6 +253,9 @@ public class JobManager
     {
         Utilities.showToastMessage("Process Task: Selective");
 
+        PreviewActivity pa = PreviewActivity.getInstance();
+        if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_SEL, PreviewActivity.IconState.IS_SND_OK);
+
         oddc.selectiveUpload(task);
     }
 
@@ -266,6 +272,8 @@ public class JobManager
         return envelope;
     }
 
+
+
     public void requestInitialSessionId()
     {
         singlePingTimer = new Timer();
@@ -275,6 +283,9 @@ public class JobManager
             {
                 //The following retrieves data from VehicleProfileEntityDao and the VIN from OBD-2.
                 String vin = Utilities.getVehicleID();
+
+                String csStr = ODDCclass.curSession == null ? "null" : ODDCclass.curSession.toString();
+                Log.w("ODDC","JobManager.requestInitialSessionId.run curSession=" + csStr + " vin="+vin);
 
                 if(!vin.isEmpty())
                 {
@@ -331,18 +342,30 @@ public class JobManager
         }, 100, pingSessionFrequency);
     }
 
+
+
     public void startPingTimer()
     {
+        Log.w("ODDC","JobManager.startPingTimer BoM");
+
         pingTimer = new Timer();
         pingTimer.schedule(new TimerTask() {
+
             @Override
             public void run()
             {
-                Utilities.showToastMessage("Requesting Job List");
+                //Utilities.showToastMessage("Requesting Job List");
 
+                PreviewActivity pa = PreviewActivity.getInstance();
+                if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_JM, PreviewActivity.IconState.IS_SND_OK);
+Log.w("ODDC","JobManager.PingTimer.run CALLing postCommandCheck");
                 ArrayList<ODDCTask> tasks = postCommandCheck(envelope); // checking Server for new tasks
+Log.w("ODDC","JobManager.PingTimer.run postCommandCheck tasks="+tasks);
                 if (tasks != null && !tasks.isEmpty() && tasks.size() > 0)
                 {
+                    pa = PreviewActivity.getInstance();
+                    if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_JM, PreviewActivity.IconState.IS_RCV);
+
                     ODDCTask task = tasks.get(0);
                     if(task != null)
                     {
@@ -352,7 +375,7 @@ public class JobManager
                             Map<String,Object> parameters = ((Map<String, Object>)obj);
                             Map<String,Object> map = (Map<String,Object>)parameters.get("envelope");
                             String sessionId = map.get("sessionID").toString();
-
+Log.w("ODDC","JobManager.PingTimer.run sessionID="+sessionId);
                             ODDCclass.curSession = UUID.fromString(sessionId);
                             envelope.setSessionID(ODDCclass.curSession);
 

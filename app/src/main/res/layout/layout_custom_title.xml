@@ -32,6 +32,7 @@
         android:background="@drawable/layout_custom_title_headerbg"
         android:gravity="center"
         android:textColor="@color/colorPrimary"
+        android:onClick="onCopy"
         android:textSize="18sp"/>
 
 </RelativeLayout>

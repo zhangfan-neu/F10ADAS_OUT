@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
+import com.neusoft.oddc.activity.PreviewActivity;
 import com.neusoft.oddc.oddc.model.RestContinuousData;
 import com.neusoft.oddc.oddc.model.RestDataPackage;
 import com.neusoft.oddc.oddc.neusoft.DBschema;
@@ -221,6 +222,7 @@ public class ODDCclass implements ODDCinterface {
                     currentVideoFile = data.mediaURI;
                     SendToFLA fla = new SendToFLA(DataPackageType.CONTINUOUS,curSession,data.mediaURI);
                     fla.start();
+                    fsStat = checkFileSpace();
                 }
             }
         }
@@ -400,12 +402,12 @@ public class ODDCclass implements ODDCinterface {
 
             selection = new String("select distinct * from oddc where ( sessionID = ? and MediaURI = ? and rowid % ? = 0 ) or ( sessionID = ? and MediaURI = ? and ( GShockEvent = 1 or FCWEvent = 1 or LDWEvent = 1 ) ) ");
 
-            Log.d("ODDC","ODDCClass.SendtoFLA.runnnnnnnnnnnnnnnnn query="+selection);
+            Log.d("ODDC","ODDCClass.SendtoFLA.run query="+selection);
 
             Cursor c = db.rawQuery(selection,selectionArgs);
 
             int nrows = c.getCount();
-            Log.d("ODDC","ODDCClass.SendtoFLA.runnnnnnnnnnnnnnnnn sessionID="+uuidSID+" nrows="+String.valueOf(nrows));
+            Log.w("ODDC","ODDCClass.SendtoFLA.run sessionID="+uuidSID+" nrows="+String.valueOf(nrows));
             if (nrows > 0)
             {
                 int i = 0;
@@ -476,14 +478,24 @@ public class ODDCclass implements ODDCinterface {
                 dataPackage.setEnvelope(env);
                 dataPackage.setContinuousData(dataCollection); //yz
                 dataPackage.setPackageType(ptype);
+
+                PreviewActivity pa = PreviewActivity.getInstance();
+
+                Log.w("ODDC","ODDCClass.SendToFLA.postDataPackage BEG");
                 status = controller.postDataPackage(dataPackage); //yz
-                if (status == null) listener.sentToFLA(-1);
+                Log.w("ODDC","ODDCClass.SendToFLA.postDataPackage BEG");
+                if (status == null){
+                    if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_UL, PreviewActivity.IconState.IS_SND_ERR);
+                    listener.sentToFLA(-1);
+                }
                 else {
                     if (status != HttpStatus.OK) {
+                        if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_UL, PreviewActivity.IconState.IS_SND_ERR);
                         listener.sentToFLA(-1);
                         Log.e("ODDC ERR","SendToFLA HttpStatus NOT OK");
                     }
                     else {
+                        if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_UL, PreviewActivity.IconState.IS_SND_OK);
                         ContentValues cv = new ContentValues();
                         cv.put(DBschema.D_U,true);
                         String whereClause = new String("( sessionID = ? and MediaURI = ? and rowid % ? = 0 ) or ( sessionID = ? and MediaURI = ? and ( GShockEvent = 1 or FCWEvent = 1 or LDWEvent = 1 ) ) ");
@@ -491,7 +503,7 @@ public class ODDCclass implements ODDCinterface {
                         db.update(DBschema.TABLE_NAME,cv,whereClause,selectionArgs);
                 	}
                 }
-                Log.d("ODDC","ODDCClass.SendToFLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa");
+                Log.w("ODDC","ODDCClass.SendToFLA");
             }
         }
     }
@@ -527,7 +539,10 @@ public class ODDCclass implements ODDCinterface {
         dataPackage.setPackageType(DataPackageType.SELECTIVE);
 
         HttpStatus status = controller.postDataPackage(dataPackage); //yz
-        if (status == null) listener.sentToFLA(-1);
+        if (status == null){
+            listener.sentToFLA(-1);
+            return -1;
+        }
         else {
             if (status != HttpStatus.OK) {
                 listener.sentToFLA(-1);

@@ -58,7 +58,7 @@ import com.neusoft.oddc.widget.Utils;
 import com.neusoft.oddc.widget.WeakHandler;
 import com.neusoft.oddc.widget.eventbus.EventStopDataCollection;
 import com.neusoft.oddc.widget.realtimedata.RealTimeDataDrawer;
-
+import com.neusoft.oddc.oddc.model.BitmapAnimation;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -116,6 +116,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
 
     private int screenWidth;
     private int screenHeight;
+    Context context;
 
     public static PreviewActivity getInstance()
     {
@@ -123,6 +124,25 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
     }
 
     private static PreviewActivity instance;
+
+
+    ImageView ivDVR;
+    ImageView ivJM;
+    ImageView ivUL;
+    ImageView ivSEL;
+    BitmapAnimation baDVR;
+    BitmapAnimation baJM;
+    BitmapAnimation baUL;
+    BitmapAnimation baSEL;
+
+
+    public enum IconType {IT_NONE, IT_DVR, IT_JM, IT_UL, IT_SEL}
+    public enum IconState {
+        IS_DISABLED(0), IS_SND_OK(1), IS_SND_ERR(6), IS_RCV(11);
+        private int _value;
+        IconState(int v){this._value = v;}
+        public int id(){return _value;}
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -136,7 +156,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setContentView(R.layout.activity_preview);
-        Context context = getApplicationContext();
+        context = getApplicationContext();
         nsfh = new NeusoftHandler();
         adasHelper = new ADASHelper();
 
@@ -503,7 +523,22 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
         super.onBackPressed();
     }
 
+
+//public enum IconType {IT_NONE, IT_DVR, IT_JM, IT_UL, IT_SEL}
+    public void onAnimate(IconType it,IconState is) {
+        switch(it){
+            case IT_JM: baJM.animateIcon(IconState.IS_SND_OK); break;
+            case IT_UL: baUL.animateIcon(IconState.IS_SND_OK); break;
+            case IT_SEL: baSEL.animateIcon(IconState.IS_SND_OK); break;
+        }
+    }
+
+
+
+
     private void initViews() {
+        Log.w("ODDC","PreviewActivity.initViews BoF");
+
         renderMode =  PreferencesUtils.getBoolean(this, SettingDvrSettingActivity.KEY_PREF_RENDER_OVERLAY, true);
         realTimeDataDrawer = new RealTimeDataDrawer(PreviewActivity.this, screenWidth, screenHeight);
         custom_real_data_view = (ImageView) findViewById(R.id.custom_real_data_view);
@@ -518,10 +553,24 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
         mainBtn.setOnClickListener(this);
 
         recordingIcon = (ImageView) findViewById(R.id.recordingIcon);
-        if(recordingIcon != null)
-        {
-            recordingIcon.setVisibility(View.GONE);
-        }
+        //if(recordingIcon != null) {recordingIcon.setVisibility(View.GONE);}
+
+        ivDVR = (ImageView)findViewById(R.id.recordingIcon);
+        baDVR = new BitmapAnimation(context,ivDVR,IconType.IT_DVR);
+
+        ivJM = (ImageView)findViewById(R.id.ivJM);
+        baJM = new BitmapAnimation(context,ivJM,IconType.IT_JM);
+
+        ivUL = (ImageView)findViewById(R.id.ivUL);
+        baUL = new BitmapAnimation(context,ivUL,IconType.IT_UL);
+
+        ivSEL = (ImageView)findViewById(R.id.ivSEL);
+        baSEL = new BitmapAnimation(context,ivSEL,IconType.IT_SEL);
+
+        //baDVR.animateIcon(IconState.IS_SND_OK); // FIXME testing, take out
+        //baJM.animateIcon(IconState.IS_SND_OK); // FIXME testing, take out
+
+
 
         initRecorder();
         setDefaultOrientation();
@@ -689,6 +738,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
 
     private void showRecordingIcon()
     {
+        baDVR.animateIcon(IconState.IS_SND_OK);
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -698,16 +748,14 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
                     jobButton.setText(getString(R.string.stop));
                 }
 
-                if(recordingIcon != null)
-                {
-                    recordingIcon.setVisibility(View.VISIBLE);
-                }
+                //if(recordingIcon != null) {recordingIcon.setVisibility(View.VISIBLE);}
             }
         });
     }
 
     private void hideRecordingIcon()
     {
+        baDVR.animateIcon(IconState.IS_DISABLED);
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -717,10 +765,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
                     jobButton.setText(getString(R.string.start));
                 }
 
-                if(recordingIcon != null)
-                {
-                    recordingIcon.setVisibility(View.GONE);
-                }
+                //if(recordingIcon != null) {recordingIcon.setVisibility(View.GONE);}
             }
         });
     }
@@ -1118,5 +1163,12 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
     public void onEvent(EventStopDataCollection eventStopDataCollection) {
         finish();
     }
+
+     /*@Subscribe(threadMode = ThreadMode.MAIN)
+    public void onJobRequest(EventJobRequest ejr) {
+        baJM.animateIcon(IconState.IS_SND_OK);
+        Log.d("EVENTBUS","onJobRequestttttttttttttttttttttttttttttttt  ttttttttt  tttttttt");
+    }*/
+
 
 }
