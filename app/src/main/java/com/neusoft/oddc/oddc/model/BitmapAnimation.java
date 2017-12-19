@@ -42,7 +42,11 @@ public class BitmapAnimation  {
 
         dName = iconPrefix + String.valueOf(_iconState.id());
         _did = _context.getResources().getIdentifier("com.neusoft.oddc:drawable/" + dName, null, null);
-        _imageView.setImageResource(_did);
+        _imageView.post(new Runnable() {
+            public void run() {
+                _imageView.setImageResource(_did);
+            }
+        });
         Log.w("ODDC","BitmapAnimation::BitmapAnimation EoM");
     }
 
@@ -60,7 +64,11 @@ public class BitmapAnimation  {
         stopAnimation();
         _iconState = s;
         if (s == PreviewActivity.IconState.IS_DISABLED){
-            _imageView.setImageResource(_did);
+            _imageView.post(new Runnable() {
+                public void run() {
+                    _imageView.setImageResource(_did);
+                }
+            });
             running = false;
             return;
         }

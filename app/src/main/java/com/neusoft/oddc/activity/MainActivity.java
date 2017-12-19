@@ -87,6 +87,7 @@ public class MainActivity extends BaseActivity {
             onCopyCnt++;
             return;
         }
+        onCopyCnt = 0;
         File currentDB = getApplicationContext().getDatabasePath("oddc.db");
         Log.d("ODDC ONCOPY","currentDB="+currentDB.toString());
 
