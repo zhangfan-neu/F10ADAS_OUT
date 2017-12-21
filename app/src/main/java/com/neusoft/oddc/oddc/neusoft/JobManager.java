@@ -82,13 +82,15 @@ public class JobManager
     private ArrayList<ODDCJob> getJobsFromServer(ODDCTask task)
     {
         //Utilities.showToastMessage("Reqesting Job List");
-
+        Log.w("ODDC","JobManager.getJobsFromServer");
         ArrayList<ODDCJob>jobs = restController.getJobList(task);
+
         return jobs;
     }
 
     public ArrayList<ODDCJob> getJobList(ODDCTask task)
     {
+        Log.w("ODDC","JobManager.getJobList");
         return getJobsFromServer(task);
     }
 
@@ -285,7 +287,7 @@ public class JobManager
                 String vin = Utilities.getVehicleID();
 
                 String csStr = ODDCclass.curSession == null ? "null" : ODDCclass.curSession.toString();
-                Log.w("ODDC","JobManager.requestInitialSessionId.run curSession=" + csStr + " vin="+vin);
+                Log.w("ODDC","JobManager.requestInitialSessionId.run BoM curSession=" + csStr + " vin="+vin);
 
                 if(!vin.isEmpty())
                 {
@@ -309,7 +311,7 @@ public class JobManager
                         singlePingTimer.cancel();
                         singlePingTimer.purge();
                     }
-
+                    Log.w("ODDC","JobManager.requestInitialSessionId.run CALLing startPingTimer");
                     startPingTimer();
                 }
 
@@ -354,13 +356,11 @@ public class JobManager
             @Override
             public void run()
             {
-                //Utilities.showToastMessage("Requesting Job List");
+                Utilities.showToastMessage("Requesting Job List");
 
                 PreviewActivity pa = PreviewActivity.getInstance();
-                if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_JM, PreviewActivity.IconState.IS_SND_OK);
-Log.w("ODDC","JobManager.PingTimer.run CALLing postCommandCheck");
+
                 ArrayList<ODDCTask> tasks = postCommandCheck(envelope); // checking Server for new tasks
-Log.w("ODDC","JobManager.PingTimer.run postCommandCheck tasks="+tasks);
                 if (tasks != null && !tasks.isEmpty() && tasks.size() > 0)
                 {
                     pa = PreviewActivity.getInstance();
@@ -369,20 +369,31 @@ Log.w("ODDC","JobManager.PingTimer.run postCommandCheck tasks="+tasks);
                     ODDCTask task = tasks.get(0);
                     if(task != null)
                     {
-                        try
-                        {
+                        try {
+                            String sessionId;
                             Object obj = task.getParameters();
-                            Map<String,Object> parameters = ((Map<String, Object>)obj);
-                            Map<String,Object> map = (Map<String,Object>)parameters.get("envelope");
-                            String sessionId = map.get("sessionID").toString();
-Log.w("ODDC","JobManager.PingTimer.run sessionID="+sessionId);
-                            ODDCclass.curSession = UUID.fromString(sessionId);
-                            envelope.setSessionID(ODDCclass.curSession);
+                            Map<String, Object> parameters = ((Map<String, Object>) obj);
 
-                            for (ODDCTask taskItem : tasks)
-                            {
-                                processTask(taskItem);
-                            }
+                            String taskERR = parameters.get("taskERR").toString();
+                            Log.w("ODDC", "JobManager.PingTimer.run taskERR=" + taskERR);
+                            Log.w("ODDC", "JobManager.PingTimer.run taskERR.compareTo2="+taskERR.compareTo("2"));
+
+                            if (taskERR.compareTo("1") == 0 || taskERR.compareTo("2") == 0) {
+                                if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_JM, PreviewActivity.IconState.IS_SND_ERR);
+                            } else {
+                                if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_JM, PreviewActivity.IconState.IS_SND_OK);
+                                Map<String, Object> map = (Map<String, Object>) parameters.get("envelope");
+                                if (map != null) {
+                                    sessionId = map.get("sessionID").toString();
+                                    ODDCclass.curSession = UUID.fromString(sessionId);
+                                    envelope.setSessionID(ODDCclass.curSession);
+                                    Log.w("ODDC", "JobManager.PingTimer.run sessionID=" + sessionId);
+                                }
+
+
+                                for (ODDCTask taskItem : tasks) {
+                                    processTask(taskItem);
+                                }
 //                            if(taskEnvelope != null)
 //                            {
 //                                ODDCclass.curSession = UUID.fromString(sessionId);
@@ -397,6 +408,7 @@ Log.w("ODDC","JobManager.PingTimer.run sessionID="+sessionId);
 //                            {
 //                                Log.e("startPingTimer - ","Envelope is NULL.");
 //                            }
+                            }
                         }
                         catch (Exception e)
                         {

@@ -41,6 +41,7 @@ public class RESTController
 
     public ArrayList<ODDCJob> getJobList(ODDCTask task)
     {
+        Log.w("ODDC","RESTController.getJobList BoM");
         ArrayList<ODDCJob> jobs = null;
         try
         {

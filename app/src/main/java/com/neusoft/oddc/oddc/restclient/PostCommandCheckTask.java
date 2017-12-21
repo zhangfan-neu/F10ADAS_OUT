@@ -46,6 +46,8 @@ class PostCommandCheckTask extends AsyncTask<Envelope, Void, ArrayList<ODDCTask>
             ResponseEntity<Object> result = restTemplate.exchange(url, HttpMethod.POST, request, Object.class);
             returnStatus = result.getStatusCode();
 
+            Log.w("ODDC","PostCommandCheckTask.doInBackground returnStatus="+returnStatus.toString());
+
             if (result != null && (ArrayList<LinkedHashMap>)result.getBody() != null)
             {
                 ArrayList<LinkedHashMap> tmp = (ArrayList<LinkedHashMap>)result.getBody();
@@ -56,14 +58,31 @@ class PostCommandCheckTask extends AsyncTask<Envelope, Void, ArrayList<ODDCTask>
                     if(map != null)
                     {
                         ODDCTask task = convertToTask(map);
+                        HashMap<String, Object> hmap = task.getParameters();
+                        hmap.put("taskERR",0);
+                        task.setParameters(hmap);
                         ret.add(task);
                     }
                 }
             }
+            else {
+                ret = new ArrayList<ODDCTask>();
+                ODDCTask task = new ODDCTask();
+                HashMap<String, Object>	hmap = new HashMap<String, Object>();
+                hmap.put("taskERR",1);
+                task.setParameters(hmap);
+                ret.add(task);
+            }
         }
         catch (Exception e)
         {
-            Log.e("PostCommandCheckTask", "Error retrieving comands." + e.getMessage());
+            Log.e("PostCommandCheckTask", "EXCEPTION retrieving commands. " + e.getMessage() );
+            ret = new ArrayList<ODDCTask>();
+            ODDCTask task = new ODDCTask();
+            HashMap<String, Object>	hmap = new HashMap<String, Object>();
+            hmap.put("taskERR",2);
+            task.setParameters(hmap);
+            ret.add(task);
         }
         return ret;
     }

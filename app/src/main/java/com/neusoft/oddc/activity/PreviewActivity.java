@@ -524,12 +524,11 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
     }
 
 
-//public enum IconType {IT_NONE, IT_DVR, IT_JM, IT_UL, IT_SEL}
     public void onAnimate(IconType it,IconState is) {
         switch(it){
-            case IT_JM: baJM.animateIcon(IconState.IS_SND_OK); break;
-            case IT_UL: baUL.animateIcon(IconState.IS_SND_OK); break;
-            case IT_SEL: baSEL.animateIcon(IconState.IS_SND_OK); break;
+            case IT_JM:  baJM.animateIcon(is); break;
+            case IT_UL:  baUL.animateIcon(is); break;
+            case IT_SEL: baSEL.animateIcon(is); break;
         }
     }
 

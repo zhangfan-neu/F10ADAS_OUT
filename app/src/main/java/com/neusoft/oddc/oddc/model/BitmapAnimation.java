@@ -81,7 +81,7 @@ public class BitmapAnimation  {
             @Override
             public void run()
             {
-                //Log.w("ODDC","BitmapAnimation.animateIcon.run BoM");
+                Log.w("ODDC","BitmapAnimation.animateIcon.run BoM");
                 dName = iconPrefix + String.valueOf(sCur);
                 if (sCur == 0) sCur = _iconState.id();
                 else {

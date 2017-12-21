@@ -44,6 +44,7 @@
             android:layout_width="50dp"
             android:layout_height="75dp"
             android:visibility="visible"
+            android:layout_marginLeft="15dp"
             android:layout_alignBottom="@+id/preview_activity_back_btn"
             android:layout_toEndOf="@+id/preview_activity_job_btn"/>
         <ImageView
@@ -122,7 +123,8 @@
             android:id="@+id/preview_activity_fragment_real_time_data"
             android:name="com.neusoft.oddc.fragment.RealTimeDataFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_real_time_data" />
 
     </FrameLayout>
 
@@ -138,7 +140,8 @@
             android:id="@+id/preview_activity_fragment_real_time_continuous_data"
             android:name="com.neusoft.oddc.fragment.RealTimeContinuousDataFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_real_time_continuous_data" />
 
     </FrameLayout>
 
