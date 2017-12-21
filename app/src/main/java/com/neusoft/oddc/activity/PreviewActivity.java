@@ -138,7 +138,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
 
     public enum IconType {IT_NONE, IT_DVR, IT_JM, IT_UL, IT_SEL}
     public enum IconState {
-        IS_DISABLED(0), IS_SND_OK(1), IS_SND_ERR(6), IS_RCV(11);
+        IS_INACT(0), IS_SND_OK(1), IS_SND_ERR(6), IS_RCV(11);
         private int _value;
         IconState(int v){this._value = v;}
         public int id(){return _value;}
@@ -754,7 +754,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
 
     private void hideRecordingIcon()
     {
-        baDVR.animateIcon(IconState.IS_DISABLED);
+        baDVR.animateIcon(IconState.IS_INACT);
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {

@@ -356,7 +356,7 @@ public class JobManager
             @Override
             public void run()
             {
-                Utilities.showToastMessage("Requesting Job List");
+                //Utilities.showToastMessage("Requesting Job List");
 
                 PreviewActivity pa = PreviewActivity.getInstance();
 
@@ -364,7 +364,6 @@ public class JobManager
                 if (tasks != null && !tasks.isEmpty() && tasks.size() > 0)
                 {
                     pa = PreviewActivity.getInstance();
-                    if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_JM, PreviewActivity.IconState.IS_RCV);
 
                     ODDCTask task = tasks.get(0);
                     if(task != null)
@@ -375,8 +374,6 @@ public class JobManager
                             Map<String, Object> parameters = ((Map<String, Object>) obj);
 
                             String taskERR = parameters.get("taskERR").toString();
-                            Log.w("ODDC", "JobManager.PingTimer.run taskERR=" + taskERR);
-                            Log.w("ODDC", "JobManager.PingTimer.run taskERR.compareTo2="+taskERR.compareTo("2"));
 
                             if (taskERR.compareTo("1") == 0 || taskERR.compareTo("2") == 0) {
                                 if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_JM, PreviewActivity.IconState.IS_SND_ERR);
