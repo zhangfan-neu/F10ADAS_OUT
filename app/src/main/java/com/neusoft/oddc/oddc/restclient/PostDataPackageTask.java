@@ -1,6 +1,7 @@
 package com.neusoft.oddc.oddc.restclient;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -43,10 +44,12 @@ class PostDataPackageTask extends AsyncTask<RestDataPackage, Void, HttpStatus>
             HttpEntity<RestDataPackage> request = new HttpEntity<>(data[0]);
             ResponseEntity<DataPackage> result = restTemplate.exchange(url, HttpMethod.POST, request, DataPackage.class);
             returnStatus = result.getStatusCode();
+            Log.w("ODDC","PostDataPackageTask.doInBackground returnStatus="+returnStatus);
         }
         catch (Exception e)
         {
             String message = e.getMessage();
+            Log.w("ODDC","PostDataPackageTask.doInBackground EXCEPTION returnStatus="+returnStatus+ " "+message);
             return returnStatus;
         }
         return returnStatus;

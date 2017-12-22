@@ -74,7 +74,7 @@ public class RESTController
         try
         {
             status = new PostDataPackageTask(base_url + dataUrl).execute(dataPackage).get();
-            int i = 0;
+            Log.w("ODDC","RESTController.postDataPackage status="+status);
         }
         catch (InterruptedException e)
         {

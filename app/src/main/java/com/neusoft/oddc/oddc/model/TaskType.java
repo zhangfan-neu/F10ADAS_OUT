@@ -14,7 +14,8 @@ public enum TaskType
     RESUME(2),
     TERMINATE(3),
     SELECTIVE_UPLOAD(4),
-    JOB_REQUEST(5);
+    JOB_REQUEST(5),
+    TASK_ERROR(9);
 
 
     private int value;

@@ -12,6 +12,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -34,11 +36,19 @@ class PostCommandCheckTask extends AsyncTask<Envelope, Void, ArrayList<ODDCTask>
         this.url = url;
     }
 
+    private ClientHttpRequestFactory getClientHttpRequestFactory() {
+        int timeout = 5000;
+        HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+        clientHttpRequestFactory.setConnectTimeout(timeout);
+        return clientHttpRequestFactory;
+    }
+
     @Override
     protected ArrayList<ODDCTask> doInBackground(Envelope... data)
     {
+        boolean hasMap = false;
         ArrayList<ODDCTask> ret = null;
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
         try
         {
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
@@ -46,30 +56,50 @@ class PostCommandCheckTask extends AsyncTask<Envelope, Void, ArrayList<ODDCTask>
             ResponseEntity<Object> result = restTemplate.exchange(url, HttpMethod.POST, request, Object.class);
             returnStatus = result.getStatusCode();
 
-            Log.w("ODDC","PostCommandCheckTask.doInBackground returnStatus="+returnStatus.toString());
+            Log.w("ODDC","PostCommandCheckTask.doInBackground returnStatus="+returnStatus.toString()+ " result="+result.hasBody());
 
-            if (result != null && (ArrayList<LinkedHashMap>)result.getBody() != null)
-            {
-                ArrayList<LinkedHashMap> tmp = (ArrayList<LinkedHashMap>)result.getBody();
-                ret = new ArrayList<ODDCTask>();
+            //if (result != null && (ArrayList<LinkedHashMap>)result.getBody() != null)
+            if (result != null) {
+                Log.w("ODDC","PostCommandCheckTask.doInBackground result !NULL");
 
-                for (LinkedHashMap map: tmp)
-                {
-                    if(map != null)
-                    {
-                        ODDCTask task = convertToTask(map);
-                        HashMap<String, Object> hmap = task.getParameters();
+                ArrayList<LinkedHashMap> tmp = (ArrayList<LinkedHashMap>) result.getBody();
+                if (tmp != null) {
+                    Log.w("ODDC","PostCommandCheckTask.doInBackground getBody !NULL");
+                    ret = new ArrayList<ODDCTask>();
+                    for (LinkedHashMap map : tmp) {
+                        if (map != null) {
+                            hasMap =  true;
+                            Log.w("ODDC","PostCommandCheckTask.doInBackground map !NULL");
+                            ODDCTask task = convertToTask(map);
+                            HashMap<String, Object> hmap = task.getParameters();
+                            hmap.put("taskERR", 0);
+                            task.setParameters(hmap);
+                            ret.add(task);
+                        }
+                    }
+                    if (! hasMap){
+                        ret = new ArrayList<ODDCTask>();
+                        ODDCTask task = new ODDCTask();
+                        task.setType(TaskType.TASK_ERROR);
+                        HashMap<String, Object>	hmap = new HashMap<String, Object>();
                         hmap.put("taskERR",0);
                         task.setParameters(hmap);
                         ret.add(task);
                     }
+                } else {
+                    ret = new ArrayList<ODDCTask>();
+                    ODDCTask task = new ODDCTask();
+                    HashMap<String, Object>	hmap = new HashMap<String, Object>();
+                    hmap.put("taskERR",8);
+                    task.setParameters(hmap);
+                    ret.add(task);
                 }
             }
             else {
                 ret = new ArrayList<ODDCTask>();
                 ODDCTask task = new ODDCTask();
                 HashMap<String, Object>	hmap = new HashMap<String, Object>();
-                hmap.put("taskERR",1);
+                hmap.put("taskERR",9);
                 task.setParameters(hmap);
                 ret.add(task);
             }
@@ -80,10 +110,13 @@ class PostCommandCheckTask extends AsyncTask<Envelope, Void, ArrayList<ODDCTask>
             ret = new ArrayList<ODDCTask>();
             ODDCTask task = new ODDCTask();
             HashMap<String, Object>	hmap = new HashMap<String, Object>();
-            hmap.put("taskERR",2);
+            hmap.put("taskERR",9);
             task.setParameters(hmap);
             ret.add(task);
         }
+
+        //ODDCTask task = ret.get(0);
+        //Log.w("ODDC","PostCommandCheckTask.doInBackground FINAL RETURN task0="+task);
         return ret;
     }
 

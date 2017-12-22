@@ -63,13 +63,18 @@ public class BitmapAnimation  {
 
             //Log.w("ODDC","BitmapAnimation.Runnable.mTask.run  maxIter="+maxIter+" curIter="+curIter+" sMax=" + sMax+ " sCur="+sCur+" "+dName);
 
-            if (sCur == 0 && curIter < maxIter){
-                sCur = _iconState.id();
+            if (_iconType == PreviewActivity.IconType.IT_DVR)
+            {
+                if (_iconState == PreviewActivity.IconState.IS_INACT) return;
+                if (sCur < 5) sCur++;
+                else sCur = 1;
             }
             else {
-                if (sCur < sMax) sCur++;
-                else {
-                    if (_iconType != PreviewActivity.IconType.IT_DVR){
+                if (sCur == 0 && curIter < maxIter) {
+                    sCur = _iconState.id();
+                } else {
+                    if (sCur < sMax) sCur++;
+                    else {
                         sCur = 0;
                         curIter++;
                         //Log.w("ODDC","BitmapAnimation.Runnable.mTask.run !DVR maxIter="+maxIter+" curIter="+curIter+" sMax=" + sMax+ " sCur="+sCur+" "+dName);
@@ -77,7 +82,6 @@ public class BitmapAnimation  {
                         did = _context.getResources().getIdentifier("com.neusoft.oddc:drawable/" + dName, null, null);
                         _imageView.setImageResource(did);
                     }
-                    else sCur = _iconState.id();
                 }
             }
             if (curIter < maxIter){
@@ -93,7 +97,7 @@ public class BitmapAnimation  {
         sMax = _iconState.id() + 5;
         sCur = _iconState.id();
         curIter = 0;
-        //Log.w("ODDC","BitmapAnimation.animateIcon "+ _iconType.name()+ " _iconState="+_iconState.name()+" sMax="+sMax+" sCur="+sCur);
+        Log.w("ODDC","BitmapAnimation.animateIcon "+ _iconType.name()+ " _iconState="+_iconState.name()+" sMax="+sMax+" sCur="+sCur);
 
         aHandler.postDelayed(mTask, _tPeriod);
     }

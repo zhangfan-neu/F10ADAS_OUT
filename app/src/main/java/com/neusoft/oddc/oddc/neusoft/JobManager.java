@@ -39,7 +39,7 @@ public class JobManager
     private boolean isProcessingJobs = false;
     private Timer pingTimer;
     private Timer singlePingTimer;
-    private int pingFrequency = 8000; // 10000
+    private int pingFrequency = 10000; // 10000
     private int pingSessionFrequency = 5000;
     private ODDCclass oddc;
     private NeusoftHandler nsh;
@@ -133,26 +133,27 @@ public class JobManager
 
     public void processTask(ODDCTask task)
     {
-        Log.w("ODDC","JobManager.processTask "+task.getType());
-        switch (task.getType())
-        {
-            case SELECTIVE_UPLOAD:
-                processSelectiveUploadTask(task);
-                break;
-            case UPLOAD:
-                processUploadTask();
-                break;
-            case STOP:
-                processStopTask();
-                break;
-            case TERMINATE:
-                processTerminateTask();
-                break;
-            case RESUME:
-                processResumedTask();
-                break;
-            default:
-                Log.d("processTask", "No tasks from Server.");
+        Log.w("ODDC","JobManager.processTask "+task);
+        if (task != null) {
+            switch (task.getType()) {
+                case SELECTIVE_UPLOAD:
+                    processSelectiveUploadTask(task);
+                    break;
+                case UPLOAD:
+                    processUploadTask();
+                    break;
+                case STOP:
+                    processStopTask();
+                    break;
+                case TERMINATE:
+                    processTerminateTask();
+                    break;
+                case RESUME:
+                    processResumedTask();
+                    break;
+                default:
+                    Log.d("processTask", "No tasks from Server.");
+            }
         }
     }
 
@@ -182,6 +183,10 @@ public class JobManager
         if(previewActivity != null)
         {
             previewActivity.endRecording();
+            previewActivity.onAnimate(PreviewActivity.IconType.IT_DVR, PreviewActivity.IconState.IS_INACT);
+            Log.w("ODDC", "JobManager.processStopTask");
+
+
         }
     }
 
@@ -356,26 +361,32 @@ public class JobManager
             @Override
             public void run()
             {
-                //Utilities.showToastMessage("Requesting Job List");
+                Utilities.showToastMessage("PingTimer Requesting Job List");
 
-                PreviewActivity pa = PreviewActivity.getInstance();
+                PreviewActivity pa;
 
+                Log.w("ODDC"," _ ");
+                Log.w("ODDC"," _ ");
+                Log.w("ODDC","JobManager.PingTimer.run BoM");
                 ArrayList<ODDCTask> tasks = postCommandCheck(envelope); // checking Server for new tasks
+
+                Log.w("ODDC","JobManager.PingTimer postCommandCheck tasks="+tasks);
                 if (tasks != null && !tasks.isEmpty() && tasks.size() > 0)
                 {
                     pa = PreviewActivity.getInstance();
-
+                    Log.w("ODDC","JobManager.PingTimer !NULL !isEmpty SIZE");
                     ODDCTask task = tasks.get(0);
                     if(task != null)
                     {
+                        Log.w("ODDC","JobManager.PingTimer task != null");
                         try {
                             String sessionId;
                             Object obj = task.getParameters();
                             Map<String, Object> parameters = ((Map<String, Object>) obj);
 
                             String taskERR = parameters.get("taskERR").toString();
-
-                            if (taskERR.compareTo("1") == 0 || taskERR.compareTo("2") == 0) {
+Log.w("ODDC","JobManager.PingTimer taskERR="+taskERR);
+                            if (taskERR.compareTo("9") == 0 || taskERR.compareTo("8") == 0) {
                                 if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_JM, PreviewActivity.IconState.IS_SND_ERR);
                             } else {
                                 if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_JM, PreviewActivity.IconState.IS_SND_OK);

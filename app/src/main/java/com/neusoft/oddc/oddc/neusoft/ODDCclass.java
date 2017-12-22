@@ -482,8 +482,9 @@ public class ODDCclass implements ODDCinterface {
                 PreviewActivity pa = PreviewActivity.getInstance();
 
                 Log.w("ODDC","ODDCClass.SendToFLA.postDataPackage BEG");
+                Utilities.showToastMessage("SendToFLA.postDataPackage");
                 status = controller.postDataPackage(dataPackage); //yz
-                Log.w("ODDC","ODDCClass.SendToFLA.postDataPackage BEG");
+                Log.w("ODDC","ODDCClass.SendToFLA.postDataPackagee END status="+status);
                 if (status == null){
                     if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_UL, PreviewActivity.IconState.IS_SND_ERR);
                     listener.sentToFLA(-1);
