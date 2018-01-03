@@ -509,7 +509,7 @@ public class ODDCclass implements ODDCinterface {
         }
     }
 
-    int selectiveUpload(ODDCTask task){
+    int selectiveUpload(ODDCTask task) {
         HashMap<String, Object> parameters = task.getParameters();
         if (parameters.size() == 0) return -1;
 
@@ -517,13 +517,13 @@ public class ODDCclass implements ODDCinterface {
         ArrayList<Video> videos = new ArrayList<Video>();
         for (HashMap.Entry<String, Object> entry : parameters.entrySet()) {
             String key = entry.getKey();
-            if (key.contains("mp4")){
+            if (key.contains("mp4")) {
                 if (key.compareTo(currentVideoFile) < 0) {
                     fnames.add(key);
-                    File evFile = new File(mVideoFolder,key);
+                    File evFile = new File(mVideoFolder, key);
                     try {
                         byte[] vData = FileUtils.readFileToByteArray(evFile);
-                        videos.add(Video.createDummyVideo(key,vData));
+                        videos.add(Video.createDummyVideo(key, vData));
                     } catch (IOException ioe) {
                         Log.e("ODDC", "IOException FileUtils.readFileToByteArray " + key);
                         return -2;
@@ -531,31 +531,32 @@ public class ODDCclass implements ODDCinterface {
                 }
             }
         }
+        if (videos.size() > 0) {
 
-        RestDataPackage dataPackage = new RestDataPackage(); //yz
-        dataPackage.setVideos(videos);
-        Envelope env = new Envelope(ODDCclass.curSession, Utilities.getVehicleID());
-        //env.setVehicleID(cd.vehicleID);
-        dataPackage.setEnvelope(env);
-        dataPackage.setPackageType(DataPackageType.SELECTIVE);
+            RestDataPackage dataPackage = new RestDataPackage(); //yz
+            dataPackage.setVideos(videos);
+            Envelope env = new Envelope(ODDCclass.curSession, Utilities.getVehicleID());
+            //env.setVehicleID(cd.vehicleID);
+            dataPackage.setEnvelope(env);
+            dataPackage.setPackageType(DataPackageType.SELECTIVE);
 
-        HttpStatus status = controller.postDataPackage(dataPackage); //yz
-        if (status == null){
-            listener.sentToFLA(-1);
-            return -1;
-        }
-        else {
-            if (status != HttpStatus.OK) {
+            HttpStatus status = controller.postDataPackage(dataPackage); //yz
+            if (status == null) {
                 listener.sentToFLA(-1);
-                Log.e("ODDC ERR","SendToFLA HttpStatus NOT OK");
-            }
-            else {
-                for (String s : fnames) {
-                    String sqlStmt = "update oddc set mediaUploaded = 1 where mediaURI = " + s;
-                    db.execSQL(sqlStmt);
+                return -1;
+            } else {
+                if (status != HttpStatus.OK) {
+                    listener.sentToFLA(-1);
+                    Log.e("ODDC ERR", "SendToFLA HttpStatus NOT OK");
+                } else {
+                    for (String s : fnames) {
+                        String sqlStmt = "update oddc set mediaUploaded = 1 where mediaURI = " + s;
+                        db.execSQL(sqlStmt);
+                    }
                 }
             }
+            return status.value();
         }
-        return status.value();
+        return -1;
     }
 }
