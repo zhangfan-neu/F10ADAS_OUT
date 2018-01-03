@@ -1,5 +1,9 @@
 package com.neusoft.oddc.activity;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.PackageInfo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.neusoft.oddc.BuildConfig;
 import com.neusoft.oddc.R;
@@ -54,13 +59,26 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
     };
 
+    static Context mContext;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_settings);
-        setCustomTitle(R.string.title_setting);
+
+        mContext = getApplicationContext();
+        String tVer = "";
+        try {
+            PackageInfo pinfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
+            tVer = pinfo.versionName;
+        }
+        catch (NameNotFoundException e){}
+
+        //setCustomTitle(R.string.title_setting);
+        TextView textView = (TextView) findViewById(R.id.custom_title_textview);
+        if (null != textView) {
+            textView.setText(getString(R.string.title_setting) + "    " + tVer);
+        }
 
         initViews();
         initBackButton();
