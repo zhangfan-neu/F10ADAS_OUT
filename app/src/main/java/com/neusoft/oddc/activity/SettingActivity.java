@@ -59,31 +59,17 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
     };
 
-    static Context mContext;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        mContext = getApplicationContext();
-        String tVer = "";
-        try {
-            PackageInfo pinfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
-            tVer = pinfo.versionName;
-        }
-        catch (NameNotFoundException e){}
-
-        //setCustomTitle(R.string.title_setting);
-        TextView textView = (TextView) findViewById(R.id.custom_title_textview);
-        if (null != textView) {
-            textView.setText(getString(R.string.title_setting) + "  " + tVer + "  ");
-            textView.setGravity(0x15);
-        }
+        setCustomTitle(R.string.title_setting);
 
         initViews();
         initBackButton();
     }
+
 
     @Override
     public void onClick(View v) {
@@ -129,6 +115,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item4), SettingAdasParametersActivity.class, childList));
         settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item5), SettingDvrSettingActivity.class, childList));
         settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item6), SettingVinOptionsActivity.class, childList));
+        settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item7), SettingVersionActivity.class, childList));
         return settingGroup;
     }
 }

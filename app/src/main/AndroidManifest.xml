@@ -111,8 +111,8 @@
         <activity
             android:name=".activity.WelcomeActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"/>
-        <activity android:name=".activity.SettingVinOptionsActivity">
-        </activity>
+        <activity android:name=".activity.SettingVinOptionsActivity" />
+        <activity android:name=".activity.SettingVersionActivity" />
     </application>
 
 </manifest>
