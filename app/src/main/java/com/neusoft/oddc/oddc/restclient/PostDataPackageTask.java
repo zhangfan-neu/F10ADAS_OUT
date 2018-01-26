@@ -7,6 +7,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,6 +29,13 @@ class PostDataPackageTask extends AsyncTask<RestDataPackage, Void, HttpStatus>
         this.url = url;
     }
 
+    private ClientHttpRequestFactory getClientHttpRequestFactory() {
+        int timeout = 5000;
+        HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+        clientHttpRequestFactory.setConnectTimeout(timeout);
+        return clientHttpRequestFactory;
+    }
+
     @Override
     protected HttpStatus doInBackground(RestDataPackage... data)
     {
@@ -36,7 +45,7 @@ class PostDataPackageTask extends AsyncTask<RestDataPackage, Void, HttpStatus>
 //        UUID sessionId = envelope.getSessionID();
 //        data[0] = RestDataPackage.createDummyDataPackage(vin, sessionId, DataPackageType.CONTINUOUS, 60);
 
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
         try
         {
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());

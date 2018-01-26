@@ -61,6 +61,12 @@ public class JobManager
         restController = new RESTController(url);
     }
 
+    public void reset(String url){
+        restController = null;
+        baseUrl = url;
+        restController = new RESTController(url);
+    }
+
     public boolean isAdasEnabled()
     {
         return adasEnabled;
@@ -208,8 +214,8 @@ public class JobManager
         Log.d("JobManager", "processUploadTask");
 
         Utilities.showToastMessage("Process Task: Upload");
-        PreviewActivity pa = PreviewActivity.getInstance();
-        if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_UL, PreviewActivity.IconState.IS_SND_OK);
+        //PreviewActivity pa = PreviewActivity.getInstance();
+        //if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_UL, PreviewActivity.IconState.IS_SND_OK);
 
         adasEnabled = true;
 
@@ -259,16 +265,20 @@ public class JobManager
     private void processSelectiveUploadTask(ODDCTask task)
     {
         Utilities.showToastMessage("Process Task: Selective");
-
         PreviewActivity pa = PreviewActivity.getInstance();
-        if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_SEL, PreviewActivity.IconState.IS_SND_OK);
 
-        oddc.selectiveUpload(task);
+        int ulStatus = oddc.selectiveUpload(task);
+        if (ulStatus < 0) {
+            if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_SEL, PreviewActivity.IconState.IS_SND_ERR);
+            return;
+        }
+        if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_SEL, PreviewActivity.IconState.IS_SND_OK);
     }
 
     private ArrayList<ODDCTask> postCommandCheck(Envelope envelope)
     {
         // pingTimer.cancel(); //TODO for testing only. Comment it
+        Log.w("ODDC","JobManager.postCommandCheck baseUrl="+baseUrl);
         RESTController controller = new RESTController(baseUrl);
         ArrayList<ODDCTask> tasks = controller.postCommandCheck(envelope);
         return tasks;
@@ -361,7 +371,7 @@ public class JobManager
             @Override
             public void run()
             {
-                Utilities.showToastMessage("PingTimer Requesting Job List");
+                //Utilities.showToastMessage("PingTimer Requesting Job List");
 
                 PreviewActivity pa;
 
@@ -373,8 +383,8 @@ public class JobManager
                 Log.w("ODDC","JobManager.PingTimer postCommandCheck tasks="+tasks);
                 if (tasks != null && !tasks.isEmpty() && tasks.size() > 0)
                 {
-                    pa = PreviewActivity.getInstance();
                     Log.w("ODDC","JobManager.PingTimer !NULL !isEmpty SIZE");
+                    pa = PreviewActivity.getInstance();
                     ODDCTask task = tasks.get(0);
                     if(task != null)
                     {
@@ -397,8 +407,6 @@ Log.w("ODDC","JobManager.PingTimer taskERR="+taskERR);
                                     envelope.setSessionID(ODDCclass.curSession);
                                     Log.w("ODDC", "JobManager.PingTimer.run sessionID=" + sessionId);
                                 }
-
-
                                 for (ODDCTask taskItem : tasks) {
                                     processTask(taskItem);
                                 }

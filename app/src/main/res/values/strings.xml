@@ -36,6 +36,7 @@
     <string name="title_dvr_playback">DVR Playback</string>
     <string name="title_vin_options">VIN Options</string>
     <string name="title_version">Version</string>
+    <string name="title_ipaddr">Server IP Addr</string>
 
     <!-- Main -->
     <string name="main_status">Status</string>
@@ -67,6 +68,7 @@
     <string name="setting_group_item5">DVR Setting</string>
     <string name="setting_group_item6">VIN Options</string>
     <string name="setting_group_item7">Version</string>
+    <string name="setting_group_item8">Server IP Address</string>
 
     <!-- Oddc agent group title -->
     <string name="oddc_agent_item1">Continuous upload log</string>

@@ -41,7 +41,7 @@ public class PostContinuousDataTask  extends AsyncTask<ContinuousDataCollection,
 
     @Override
     protected HttpStatus doInBackground(ContinuousDataCollection... dataCollection) {
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
         try
         {
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());

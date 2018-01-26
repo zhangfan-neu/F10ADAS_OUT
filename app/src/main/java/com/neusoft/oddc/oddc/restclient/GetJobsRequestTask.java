@@ -42,7 +42,6 @@ public class GetJobsRequestTask extends AsyncTask<ODDCTask, Void, ArrayList<ODDC
     @Override
     protected ArrayList<ODDCJob> doInBackground(ODDCTask... data)
     {
-        //RestTemplate restTemplate = new RestTemplate();
         RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
         ArrayList<ODDCJob> jobs = null;
         ResponseEntity<Object> result = null;

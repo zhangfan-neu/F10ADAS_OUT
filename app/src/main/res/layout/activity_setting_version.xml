@@ -7,8 +7,6 @@
 
     <include layout="@layout/layout_custom_title" />
 
-
-
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,21 +16,21 @@
         android:shrinkColumns="0"
         android:stretchColumns="1">
 
-    <include layout="@layout/custom_horizontal_divider" />
+        <include layout="@layout/custom_horizontal_divider" />
 
         <TableRow>
 
-        <TextView
-            android:id="@+id/settingVersion"
-            android:text="Version"
-            style="@style/EdittableTitleTextViewStyle"
-            android:textColor="@android:color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/settingVersion"
+                android:text="Version"
+                style="@style/EdittableTitleTextViewStyle"
+                android:textColor="@android:color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </TableRow>
 
-    <include layout="@layout/custom_horizontal_divider" />
+        <include layout="@layout/custom_horizontal_divider" />
 
     </TableLayout>
 

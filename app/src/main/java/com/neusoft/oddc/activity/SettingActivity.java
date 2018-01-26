@@ -1,9 +1,5 @@
 package com.neusoft.oddc.activity;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.pm.PackageInfo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.neusoft.oddc.BuildConfig;
 import com.neusoft.oddc.R;
@@ -63,8 +58,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
 
+        setContentView(R.layout.activity_settings);
         setCustomTitle(R.string.title_setting);
 
         initViews();
@@ -115,7 +110,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item4), SettingAdasParametersActivity.class, childList));
         settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item5), SettingDvrSettingActivity.class, childList));
         settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item6), SettingVinOptionsActivity.class, childList));
+        settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item8), SettingIPaddrActivity.class, childList));
         settingGroup.add(new EntitySettingGroup(getString(R.string.setting_group_item7), SettingVersionActivity.class, childList));
+
+
         return settingGroup;
     }
 }

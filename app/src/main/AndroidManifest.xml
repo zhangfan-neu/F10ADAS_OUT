@@ -113,6 +113,7 @@
             android:configChanges="screenSize|orientation|keyboardHidden"/>
         <activity android:name=".activity.SettingVinOptionsActivity"/>
         <activity android:name=".activity.SettingVersionActivity"/>
+        <activity android:name=".activity.SettingIPaddrActivity"/>
     </application>
 
 </manifest>

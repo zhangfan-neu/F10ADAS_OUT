@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/blue_background">
+
+    <include layout="@layout/layout_custom_title" />
+
+    <include layout="@layout/custom_horizontal_divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_ten"
+        android:orientation="horizontal" >
+
+
+        <TextView
+            style="@style/EdittableTitleTextViewStyle"
+            android:text="ServerIP"
+            android:textColor="@android:color/white"/>
+        <TextView
+            style="@style/EdittableTitleTextViewStyle"
+            android:text="http://"
+            android:textColor="@android:color/white"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/ipaddr_edittext"
+            android:inputType="number"
+            android:digits="0123456789."
+            android:textColor="@color/colorPrimary" />
+        <TextView
+            style="@style/EdittableTitleTextViewStyle"
+            android:text="/"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+
+    <include layout="@layout/custom_horizontal_divider" />
+
+    <include layout="@layout/layout_custom_bottom_buttons" />
+
+</LinearLayout>

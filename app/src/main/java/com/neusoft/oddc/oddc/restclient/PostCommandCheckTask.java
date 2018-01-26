@@ -56,37 +56,39 @@ class PostCommandCheckTask extends AsyncTask<Envelope, Void, ArrayList<ODDCTask>
             ResponseEntity<Object> result = restTemplate.exchange(url, HttpMethod.POST, request, Object.class);
             returnStatus = result.getStatusCode();
 
-            Log.w("ODDC","PostCommandCheckTask.doInBackground returnStatus="+returnStatus.toString()+ " result="+result.hasBody());
+            Log.w("ODDC","PostCommandCheckTask.doInBackground returnStatus="+returnStatus.toString());
 
             //if (result != null && (ArrayList<LinkedHashMap>)result.getBody() != null)
             if (result != null) {
                 Log.w("ODDC","PostCommandCheckTask.doInBackground result !NULL");
 
-                ArrayList<LinkedHashMap> tmp = (ArrayList<LinkedHashMap>) result.getBody();
+                ArrayList<LinkedHashMap> tmp = (ArrayList<LinkedHashMap>)result.getBody();
                 if (tmp != null) {
                     Log.w("ODDC","PostCommandCheckTask.doInBackground getBody !NULL");
                     ret = new ArrayList<ODDCTask>();
                     for (LinkedHashMap map : tmp) {
                         if (map != null) {
                             hasMap =  true;
-                            Log.w("ODDC","PostCommandCheckTask.doInBackground map !NULL");
+                            Log.w("ODDC","PostCommandCheckTask.doInBackground hasMap=TRUE");
                             ODDCTask task = convertToTask(map);
                             HashMap<String, Object> hmap = task.getParameters();
-                            hmap.put("taskERR", 0);
+                            hmap.put("taskERR", returnStatus);
                             task.setParameters(hmap);
                             ret.add(task);
                         }
                     }
                     if (! hasMap){
+                        Log.w("ODDC","PostCommandCheckTask.doInBackground hasMap=FALSE");
                         ret = new ArrayList<ODDCTask>();
                         ODDCTask task = new ODDCTask();
                         task.setType(TaskType.TASK_ERROR);
                         HashMap<String, Object>	hmap = new HashMap<String, Object>();
-                        hmap.put("taskERR",0);
+                        hmap.put("taskERR",returnStatus);
                         task.setParameters(hmap);
                         ret.add(task);
                     }
                 } else {
+                    Log.w("ODDC","PostCommandCheckTask.doInBackground getBody=NULL");
                     ret = new ArrayList<ODDCTask>();
                     ODDCTask task = new ODDCTask();
                     HashMap<String, Object>	hmap = new HashMap<String, Object>();
@@ -96,6 +98,7 @@ class PostCommandCheckTask extends AsyncTask<Envelope, Void, ArrayList<ODDCTask>
                 }
             }
             else {
+                Log.w("ODDC","PostCommandCheckTask.doInBackground RestTemplate.result=NULL");
                 ret = new ArrayList<ODDCTask>();
                 ODDCTask task = new ODDCTask();
                 HashMap<String, Object>	hmap = new HashMap<String, Object>();
