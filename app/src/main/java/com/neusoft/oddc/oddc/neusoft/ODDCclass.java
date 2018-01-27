@@ -484,7 +484,8 @@ public class ODDCclass implements ODDCinterface {
                 Log.w("ODDC","ODDCClass.SendToFLA.postDataPackage BEG");
                 Utilities.showToastMessage("SendToFLA.postDataPackage");
                 status = controller.postDataPackage(dataPackage); //yz
-                Log.w("ODDC","ODDCClass.SendToFLA.postDataPackagee END status="+status);
+
+                Log.w("ODDC","ODDCClass.SendToFLA.postDataPackagee STATUSSSSSSSSSSSSSs status="+status);
                 if (status == null){
                     if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_UL, PreviewActivity.IconState.IS_SND_ERR);
                     listener.sentToFLA(-1);
@@ -541,6 +542,7 @@ public class ODDCclass implements ODDCinterface {
             dataPackage.setPackageType(DataPackageType.SELECTIVE);
 
             HttpStatus status = controller.postDataPackage(dataPackage); //yz
+
             if (status == null) {
                 listener.sentToFLA(-1);
                 return -1;

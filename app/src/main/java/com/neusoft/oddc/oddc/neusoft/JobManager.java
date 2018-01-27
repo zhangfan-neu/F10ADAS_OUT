@@ -269,7 +269,7 @@ public class JobManager
 
         int ulStatus = oddc.selectiveUpload(task);
         if (ulStatus < 0) {
-            if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_SEL, PreviewActivity.IconState.IS_SND_ERR);
+            //if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_SEL, PreviewActivity.IconState.IS_SND_ERR);
             return;
         }
         if (pa != null) pa.onAnimate(PreviewActivity.IconType.IT_SEL, PreviewActivity.IconState.IS_SND_OK);

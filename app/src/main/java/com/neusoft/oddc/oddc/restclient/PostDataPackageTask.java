@@ -45,7 +45,8 @@ class PostDataPackageTask extends AsyncTask<RestDataPackage, Void, HttpStatus>
 //        UUID sessionId = envelope.getSessionID();
 //        data[0] = RestDataPackage.createDummyDataPackage(vin, sessionId, DataPackageType.CONTINUOUS, 60);
 
-        RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
+        //RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
+        RestTemplate restTemplate = new RestTemplate();
         try
         {
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
@@ -53,7 +54,7 @@ class PostDataPackageTask extends AsyncTask<RestDataPackage, Void, HttpStatus>
             HttpEntity<RestDataPackage> request = new HttpEntity<>(data[0]);
             ResponseEntity<DataPackage> result = restTemplate.exchange(url, HttpMethod.POST, request, DataPackage.class);
             returnStatus = result.getStatusCode();
-            Log.w("ODDC","PostDataPackageTask.doInBackground returnStatus="+returnStatus);
+            Log.w("ODDC","PostDataPackageTask.doInBackground RRRRRRRRRRRRRRRRRRRRRRRRRreturnStatus="+returnStatus);
         }
         catch (Exception e)
         {
