@@ -12,6 +12,7 @@ import com.neusoft.oddc.oddc.neusoft.JobManager;
 import com.neusoft.oddc.oddc.neusoft.LogData;
 import com.neusoft.oddc.oddc.neusoft.NeuSoftInterface;
 import com.neusoft.oddc.oddc.neusoft.ODDCclass;
+import com.neusoft.oddc.oddc.neusoft.OBDManager;
 import com.neusoft.oddc.oddc.neusoft.PlaybackList;
 import com.neusoft.oddc.oddc.utilities.Utilities;import com.neusoft.oddc.widget.eventbus.EventStartDataCollection;
 import com.neusoft.oddc.widget.eventbus.EventStopDataCollection;
@@ -23,12 +24,13 @@ import java.text.SimpleDateFormat;import java.util.ArrayList;
 
 public class NeusoftHandler implements NeuSoftInterface {
 
-    private static final String TAG = ADASHelper.class.getSimpleName();
+    private static final String TAG = "NEUSOFTHANDLER";
 
     private static Context mContext;
     private static ODDCclass oddCclass;
     private static JobManager jobManager;
     public static boolean isOddcOk = false;
+    private OBDManager obd;
 
     private ADASHelper adasHelper;
 
@@ -38,9 +40,11 @@ public class NeusoftHandler implements NeuSoftInterface {
 
     public NeusoftHandler(Context context) {
         mContext = context;
+        obd = OBDManager.getInstance();
     }
 
     public NeusoftHandler() {
+        obd = OBDManager.getInstance();
     }
 
     public static Context getContext() {
@@ -57,15 +61,15 @@ public class NeusoftHandler implements NeuSoftInterface {
 
     @Override
     public String getVIN() {
-        return ADASHelper.getvin(); // VIN
+        return obd.getVIN(); // VIN
     }
 
     @Override
     public Location getLatLong() {
-        if (null == adasHelper) {
+        if (null == obd) {
             return null;
         }
-        return adasHelper.getCoarseLocation();
+        return obd.getLocation();
     }
 
     public void stop() {
@@ -79,6 +83,8 @@ public class NeusoftHandler implements NeuSoftInterface {
         oddCclass = new ODDCclass(url, context, videodir);
         oddCclass.setListener(this);
         adasHelper = new ADASHelper(context);
+        obd = OBDManager.getInstance();
+
 
         //Initialize Job Manager
         jobManager = new JobManager(com.neusoft.oddc.oddc.neusoft.Constants.ODDCApp.BASE_URL);
@@ -186,7 +192,7 @@ public class NeusoftHandler implements NeuSoftInterface {
         }
 
         cd.timestamp = dateTime;
-		String vin = Utilities.getVehicleID();
+		String vin = OBDManager.getInstance().getVIN();
 
 		//VIN cannot be empty.
         if(!vin.isEmpty())
@@ -199,7 +205,7 @@ public class NeusoftHandler implements NeuSoftInterface {
             return null;
         }
 
-        Location location = ADASHelper.getCoarseLocation();
+        Location location = OBDManager.getInstance().getLocation();
         if (null != location) {
             double mLongitude = location.getLongitude();
             double mLatitude = location.getLatitude();
@@ -207,7 +213,7 @@ public class NeusoftHandler implements NeuSoftInterface {
             cd.latitude = mLatitude;
         }
 
-        cd.speed = ADASHelper.getspd();
+        cd.speed = OBDManager.getInstance().getSPD();
         cd.speedDetectionType = 0; // always be ZERO
 
         cd.accelerationX = accelerationX;

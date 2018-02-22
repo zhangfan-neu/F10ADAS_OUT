@@ -50,6 +50,7 @@ import com.neusoft.oddc.multimedia.recorder.base.AndroidRecorder;
 import com.neusoft.oddc.multimedia.recorder.base.RecorderSession;
 import com.neusoft.oddc.oddc.model.ContinuousData;
 import com.neusoft.oddc.oddc.neusoft.JobManager;
+import com.neusoft.oddc.oddc.neusoft.OBDManager;
 import com.neusoft.oddc.oddc.utilities.Utilities;
 import com.neusoft.oddc.ui.CustomTrailView;
 import com.neusoft.oddc.widget.DateHelper;
@@ -106,7 +107,9 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
     private CustomTrailView customTrailView;
     private String fileOutputPath = "";
     private NeusoftHandler nsfh;
-    private ADASHelper adasHelper;
+    //private ADASHelper adasHelper;
+    private OBDManager obd;
+
 
     Paint paint;
     Canvas canvas;
@@ -138,7 +141,8 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
         setContentView(R.layout.activity_preview);
         Context context = getApplicationContext();
         nsfh = new NeusoftHandler();
-        adasHelper = new ADASHelper();
+        //adasHelper = new ADASHelper();
+        obd = OBDManager.getInstance();
 
         WindowManager windowManager = getWindowManager();
         Display display = windowManager.getDefaultDisplay();
@@ -165,7 +169,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
         super.onResume();
         Log.d(TAG, TRACE_LIFECYCLE_FOR_CAMERA + "PreviewActivity onResume");
 
-        adasHelper.restartobd2thread();
+        //adasHelper.restartobd2thread();
         isActivityPresent = true;
         cameraHolder.openCamera(this);
         if (needReset) {
@@ -187,7 +191,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
         if (recorder.isRecording()) {
             needRestartRecord = true;
             stopRecording();
-            adasHelper.stopobd2thread();
+            //adasHelper.stopobd2thread();
         }
         cameraHolder.closeCamera();
         recorder.onHostActivityPaused();
@@ -202,7 +206,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
 
     @Override
     protected void onStop() {
-        adasHelper.stopobd2thread();
+        //adasHelper.stopobd2thread();
 
         // Unregister EventBus
         EventBus.getDefault().unregister(this);
@@ -214,7 +218,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
 
     @Override
     protected void onDestroy() {
-        adasHelper.stopobd2thread();
+        //adasHelper.stopobd2thread();
         super.onDestroy();
         Log.d(TAG, TRACE_LIFECYCLE_FOR_CAMERA + "PreviewActivity onDestroy");
     }
@@ -241,7 +245,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             dasEgoStatus.setModuleRunTable(3);
 //            Log.d("Jiehunt", "dasEgoStatus.getModuleRunTable() is " + dasEgoStatus.getModuleRunTable());
             dasEgoStatus.setSpeedStatus(2);
-            int spd = adasHelper.getspd();
+            int spd = obd.getSPD();
             // Used for testing FCW Event
             // spd = 50 ;
             dasEgoStatus.setSpeed(spd);
@@ -300,9 +304,9 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
         if (NeusoftHandler.isOddcOk && JobManager.getInstance().isAdasEnabled())
         {
             String filename = fileOutputPath.substring(fileOutputPath.lastIndexOf("/") + 1, fileOutputPath.length());
-            double accelerationX = adasHelper.getAccelerometerX();
-            double accelerationY = adasHelper.getAccelerometerY();
-            double accelerationZ = adasHelper.getAccelerometerZ();
+            double accelerationX = obd.getAccelerometerX();
+            double accelerationY = obd.getAccelerometerY();
+            double accelerationZ = obd.getAccelerometerZ();
 
             ContinuousData continuousData = nsfh.mkContinuousData(filename, accelerationX, accelerationY, accelerationZ);
 
@@ -380,18 +384,18 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
         }
 
         if (null != realTimeDataDrawer) {
-            String spdStr = "" + adasHelper.getspd() + " km/h";
+            String spdStr = "" + obd.getSPD() + " km/h";
             String vechicleIDStr = Utilities.getVehicleID();
             String latitudeStr = "";
             String longitudeStr = "";
-            Location location = adasHelper.getCoarseLocation();
+            Location location = obd.getLocation();
             if (null != location) {
                 latitudeStr = Utils.formatValueToStr(location.getLatitude());
                 longitudeStr = Utils.formatValueToStr(location.getLongitude());
             }
-            String accelXStr = Utils.formatValueToStr(adasHelper.getAccelerometerX());
-            String accelYStr = Utils.formatValueToStr(adasHelper.getAccelerometerY());
-            String accelZStr = Utils.formatValueToStr(adasHelper.getAccelerometerZ());
+            String accelXStr = Utils.formatValueToStr(obd.getAccelerometerX());
+            String accelYStr = Utils.formatValueToStr(obd.getAccelerometerY());
+            String accelZStr = Utils.formatValueToStr(obd.getAccelerometerZ());
             realTimeDataDrawer.setTopInfoStrings(spdStr, vechicleIDStr, latitudeStr, longitudeStr,
                     accelXStr, accelYStr, accelZStr);
             realTimeDataDrawer.setDasTrafficEnvironment(dasTrafficEnvironment);
@@ -755,7 +759,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
         if (!isActivityPresent || recorder.isRecording() || !isRecorderInitialized) {
             return;
         }
-        adasHelper.restartobd2thread();
+        //adasHelper.restartobd2thread();
         doStartRecording();
     }
 
@@ -839,7 +843,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
             isRecorderInitialized = false;
             startRecordTime = -1;
             recorder.stopRecording();
-            adasHelper.stopobd2thread();
+            //adasHelper.stopobd2thread();
         }
     }
 
@@ -882,7 +886,7 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
                     realTimeDataFragment.updateTimeUI();
                     realTimeDataFragment.updateRECTime("" + (duration / 1000));
 
-                    Location location = adasHelper.getCoarseLocation();
+                    Location location = obd.getLocation();
                     if (null != location) {
                         double mLongitude = location.getLongitude();
                         double mLatitude = location.getLatitude();
@@ -890,19 +894,19 @@ public class PreviewActivity extends BaseActivity implements Camera.PreviewCallb
                     }
 
 
-                    float[] mMagnetic = adasHelper.getmMagnetic();
-                    float[] mGravity = adasHelper.getmGravity();
+                    /*float[] mMagnetic = obd.getMagnetic();
+                    float[] mGravity = obd.getGravity();
                     if (null != mMagnetic && null != mGravity) {
                         realTimeDataFragment.updateGSensor(String.format("%.1f", mGravity[0]), String.format("%.1f", mGravity[1]), String.format("%.1f", mGravity[2]));
-//                        realTimeDataFragment.updateMagnetic(String.format("%.0f", mMagnetic[0]), String.format("%.0f", mMagnetic[1]), String.format("%.0f", mMagnetic[2]));
-                    }
+                        realTimeDataFragment.updateMagnetic(String.format("%.0f", mMagnetic[0]), String.format("%.0f", mMagnetic[1]), String.format("%.0f", mMagnetic[2]));
+                    }*/
 
-                    float x = adasHelper.getAccelerometerX();
-                    float y = adasHelper.getAccelerometerY();
-                    float z = adasHelper.getAccelerometerZ();
+                    float x = obd.getAccelerometerX();
+                    float y = obd.getAccelerometerY();
+                    float z = obd.getAccelerometerZ();
 //                    realTimeDataFragment.updateGSensor(String.valueOf(x),String.valueOf(y),String.valueOf(z));
 
-                    int spd = adasHelper.getspd();
+                    int spd = obd.getSPD();
                     realTimeDataFragment.updateSpeed(String.format("%d", spd));
 
                     realTimeDataFragment.updateLanDistance(leftDis + " mm", rightDis + " mm");

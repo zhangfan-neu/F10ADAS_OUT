@@ -34,6 +34,7 @@ import com.neusoft.oddc.db.gen.VehicleProfileEntityDao;
 import com.neusoft.oddc.entity.Constants;
 import com.neusoft.oddc.entity.EntityMainButton;
 import com.neusoft.oddc.fragment.ErrorDialogFragment;
+import com.neusoft.oddc.oddc.neusoft.OBDManager;
 import com.neusoft.oddc.widget.FileUtil;
 import com.neusoft.oddc.widget.PropertyUtil;
 import com.neusoft.oddc.widget.StorageUtil;
@@ -71,6 +72,10 @@ public class MainActivity extends BaseActivity {
 
     private NeusoftHandler nsfh;
     private ADASHelper adasHelper;
+    private static MainActivity instance;
+    private Context mContext;
+    private OBDManager obd;
+
 
     private MainButtonsAdapter.OnRecyclerViewItemClickListener mainButtonClickListener = new MainButtonsAdapter.OnRecyclerViewItemClickListener() {
         @Override
@@ -115,11 +120,15 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
 
         Log.d(TAG, "MainActivity onCreate");
 
         setContentView(R.layout.activity_main);
         setCustomTitle(R.string.title_main);
+
+        mContext = getApplicationContext();
+        obd = new OBDManager(mContext);
 
         initViews();
 
@@ -127,6 +136,18 @@ public class MainActivity extends BaseActivity {
         vehicleProfileEntityDao = ((MyApplication) getApplication()).getDaoSession().getVehicleProfileEntityDao();
         adasParametersEntityDao = ((MyApplication) getApplication()).getDaoSession().getADASParametersEntityDao();
 
+    }
+
+    public static MainActivity getInstance() {return instance;}
+
+    public void setVIN(){
+        Log.w(TAG,"setVIN "+obd.getVIN());
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                main_status_param2.setText(obd.getVIN());
+            }
+        });
     }
 
     @Override
@@ -163,16 +184,14 @@ public class MainActivity extends BaseActivity {
 
         initData();
 
-
-        Context context = getApplicationContext();
         // init ADASHelper
-        adasHelper = new ADASHelper(context);
-        adasHelper.init(context);
-        Log.d("Jiehunt", adasHelper.getvin());
+        adasHelper = new ADASHelper(mContext);
+        //adasHelper.init(mContext); /* don't init, using OBDManager instead */
+        Log.d("Jiehunt", obd.getVIN());
 
         // init NeusoftHandler
-        nsfh = new NeusoftHandler(context);
-        nsfh.init(context);
+        nsfh = new NeusoftHandler(mContext);
+        nsfh.init(mContext);
 
 
         // init ODDC

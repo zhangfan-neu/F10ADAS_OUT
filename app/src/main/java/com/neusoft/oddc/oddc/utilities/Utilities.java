@@ -17,11 +17,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.neusoft.oddc.MyApplication;
-import com.neusoft.oddc.adas.ADASHelper;
+//import com.neusoft.oddc.adas.ADASHelper;
 import com.neusoft.oddc.db.dbentity.VehicleProfileEntity;
 import com.neusoft.oddc.db.dbentity.VinOptionEntity;
 import com.neusoft.oddc.db.gen.VehicleProfileEntityDao;
 import com.neusoft.oddc.db.gen.VinOptionEntityDao;
+import com.neusoft.oddc.oddc.neusoft.OBDManager;
 
 
 public class Utilities
@@ -106,7 +107,7 @@ public class Utilities
         return dateFormat.format(date);
     }
 
-    private static String getObd2Vin()
+    /*private static String getObd2Vin()
     {
         String vin = "";
         String obd2Vin = ADASHelper.getvin();
@@ -116,7 +117,7 @@ public class Utilities
         }
 
         return vin;
-    }
+    }*/
 
     private static String getVehicleProfileVin()
     {
@@ -147,7 +148,7 @@ public class Utilities
         if(vinOptionEntity != null)
         {
             int vinOption = vinOptionEntity.getVinOption();
-            String obd2Vin = getObd2Vin();
+            String obd2Vin = OBDManager.getInstance().getVIN();
 
             switch (vinOption)
             {
