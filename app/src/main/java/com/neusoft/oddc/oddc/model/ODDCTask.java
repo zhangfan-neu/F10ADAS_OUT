@@ -6,7 +6,7 @@ package com.neusoft.oddc.oddc.model;
 
 import android.location.Location;
 
-import com.neusoft.oddc.adas.ADASHelper;
+import com.neusoft.oddc.oddc.neusoft.OBDManager;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -92,7 +92,7 @@ public class ODDCTask
         task.type = TaskType.JOB_REQUEST;
         task.status = TaskStatus.UNKNOWN;
 
-        Location location = ADASHelper.getCoarseLocation();
+        Location location = OBDManager.getInstance().getLocation();
         if (null != location) {
             task.longitude = location.getLongitude();
             task.latitude = location.getLatitude();
