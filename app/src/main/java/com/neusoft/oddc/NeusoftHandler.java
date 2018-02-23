@@ -4,7 +4,6 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
-import com.neusoft.oddc.adas.ADASHelper;
 import com.neusoft.oddc.entity.Constants;
 import com.neusoft.oddc.oddc.model.ContinuousData;
 import com.neusoft.oddc.oddc.model.DataPackageType;
@@ -20,7 +19,7 @@ import com.neusoft.oddc.widget.eventbus.EventStopDataCollection;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.text.SimpleDateFormat;import java.util.ArrayList;
+import java.util.ArrayList;
 
 public class NeusoftHandler implements NeuSoftInterface {
 
@@ -31,8 +30,6 @@ public class NeusoftHandler implements NeuSoftInterface {
     private static JobManager jobManager;
     public static boolean isOddcOk = false;
     private OBDManager obd;
-
-    private ADASHelper adasHelper;
 
     // for data transfer between Neusoft and ODDC
     public void onFLAparam(int param) {
@@ -82,7 +79,6 @@ public class NeusoftHandler implements NeuSoftInterface {
         File videodir = new File(Constants.FILE_PATH);
         oddCclass = new ODDCclass(url, context, videodir);
         oddCclass.setListener(this);
-        adasHelper = new ADASHelper(context);
         obd = OBDManager.getInstance();
 
 

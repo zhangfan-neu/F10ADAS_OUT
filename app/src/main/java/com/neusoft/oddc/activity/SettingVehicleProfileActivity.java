@@ -10,9 +10,9 @@ import android.widget.EditText;
 
 import com.neusoft.oddc.MyApplication;
 import com.neusoft.oddc.R;
-import com.neusoft.oddc.adas.ADASHelper;
 import com.neusoft.oddc.db.dbentity.VehicleProfileEntity;
 import com.neusoft.oddc.db.gen.VehicleProfileEntityDao;
+import com.neusoft.oddc.oddc.neusoft.OBDManager;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,6 @@ public class SettingVehicleProfileActivity extends BaseEdittableActivity {
     private EditText vp_color_edittext;
     private EditText vp_mileage_edittext;
     private EditText vp_vin_edittext;
-    private ADASHelper nsfh;
 
     private VehicleProfileEntityDao vehicleProfileEntityDao;
     private VehicleProfileEntity entity;
@@ -39,7 +38,6 @@ public class SettingVehicleProfileActivity extends BaseEdittableActivity {
 
         setCustomTitle(R.string.setting_group_item2);
 
-        nsfh = new ADASHelper();
         initViews();
 
         vehicleProfileEntityDao = ((MyApplication) getApplication()).getDaoSession().getVehicleProfileEntityDao();
@@ -68,7 +66,7 @@ public class SettingVehicleProfileActivity extends BaseEdittableActivity {
             entity = null;
 
             // Set vin read from odb2
-            String vin = nsfh.getvin();
+            String vin = OBDManager.getInstance().getVIN();
             Log.d(TAG, "VIN = " + vin);
             if (!TextUtils.isEmpty(vin)) {
                 vp_vin_edittext.setText(vin);
@@ -91,7 +89,7 @@ public class SettingVehicleProfileActivity extends BaseEdittableActivity {
         vp_model_edittext.setText(entity.getModel());
         vp_color_edittext.setText(entity.getColor());
         vp_mileage_edittext.setText(entity.getMileage());
-        String vin = nsfh.getvin();
+        String vin = OBDManager.getInstance().getVIN();
         Log.d(TAG, "VIN = " + vin);
         if (TextUtils.isEmpty(vin)) {
             vp_vin_edittext.setText(entity.getVin());
@@ -136,7 +134,7 @@ public class SettingVehicleProfileActivity extends BaseEdittableActivity {
         entity.setColor(color);
         entity.setMileage(mileage);
 
-        String vin = nsfh.getvin();
+        String vin = OBDManager.getInstance().getVIN();
         if (TextUtils.isEmpty(vin)) {
             vin = vp_vin_edittext.getText().toString();
         }
